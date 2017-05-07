@@ -19,17 +19,16 @@ android {
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'AWV_Client_Id', "\"AWV_Client_Id_Key\""
+        it.buildConfigField 'String', 'AWV_Client_Id', "\"d4f2828aa865b88193f7\""
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'AWV_Client_Secret', "\"AWV_Client_Secret_key\""
+        it.buildConfigField 'String', 'AWV_Client_Secret', "\"8266d37b3405e1a2c33e332754eb1331\""
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -39,4 +38,8 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.jakewharton:butterknife:8.2.1'
+    compile 'com.android.support:cardview-v7:25.3.1'
+    compile 'com.googlecode.android-query:android-query:0.25.9'
+    compile 'com.android.support:support-v4:25.3.1'
+    testCompile 'junit:junit:4.12'
 }
