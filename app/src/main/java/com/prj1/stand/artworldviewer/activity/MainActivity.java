@@ -17,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends FragmentActivity{
+public class MainActivity extends AppCompatActivity{
     private ApiFetchingService apiFetchingService;
 
     @Override
@@ -27,10 +27,13 @@ public class MainActivity extends FragmentActivity{
 
         // Create new instance of the MainFragment, but get the MainFragment from
         // the getSupportFragmentManager found fragment
-        MainFragment mainFragment = ((MainFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment));
+        //MainFragment mainFragment = ((MainFragment) getSupportFragmentManager()
+        //        .findFragmentById(R.id.fragment));
+        //MainFragment mainFragment = new MainFragment();
 
-        mainFragment.getLayoutInflater(savedInstanceState);
+        //getSupportFragmentManager().beginTransaction()
+        //        .add(mainFragment,"mainFragment");
+        //mainFragment.getLayoutInflater(savedInstanceState);
 
         // First thing I do is get my token
         apiFetchingService = ApiUtility.getApiService();
