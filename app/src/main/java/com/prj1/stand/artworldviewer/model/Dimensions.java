@@ -1,10 +1,11 @@
-
 package com.prj1.stand.artworldviewer.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Dimensions {
+public class Dimensions implements Parcelable {
 
     @SerializedName("in")
     @Expose
@@ -15,13 +16,13 @@ public class Dimensions {
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public Dimensions() {
     }
 
     /**
-     * 
+     *
      * @param cm
      * @param in
      */
@@ -57,4 +58,33 @@ public class Dimensions {
         return this;
     }
 
+
+    protected Dimensions(Parcel an) {
+        in = (In) an.readValue(In.class.getClassLoader());
+        cm = (Cm) an.readValue(Cm.class.getClassLoader());
+    }
+
+    @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeValue(in);
+            dest.writeValue(cm);
+        }
+
+        @SuppressWarnings("unused")
+        public static final Parcelable.Creator<Dimensions> CREATOR = new Parcelable.Creator<Dimensions>() {
+            @Override
+            public Dimensions createFromParcel(Parcel in) {
+                return new Dimensions(in);
+        }
+
+        @Override
+        public Dimensions[] newArray(int size) {
+            return new Dimensions[size];
+        }
+    };
 }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Art World Viewer</string>
+    <string name="title_activity_art_gallery">Art Gallery Activity</string>
+    <string name="action_settings">Settings</string>
 </resources>

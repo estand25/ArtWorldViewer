@@ -1,11 +1,11 @@
 package com.prj1.stand.artworldviewer.services.fetching;
 
 import com.prj1.stand.artworldviewer.model.Artist;
-import com.prj1.stand.artworldviewer.model.Artists_Embedded;
+import com.prj1.stand.artworldviewer.model.Artists;
 import com.prj1.stand.artworldviewer.model.Artwork;
-import com.prj1.stand.artworldviewer.model.Artworks_Embedded;
+import com.prj1.stand.artworldviewer.model.Artworks;
 import com.prj1.stand.artworldviewer.model.Gene;
-import com.prj1.stand.artworldviewer.model.Genes_Embedded;
+import com.prj1.stand.artworldviewer.model.Genes;
 import com.prj1.stand.artworldviewer.model.authorization.Token;
 
 import retrofit2.Call;
@@ -34,46 +34,46 @@ public interface ApiFetchingService {
 
     // Get Genes starting at resultStart with total retrieve size as numToRetrieve
     @GET("api/genes")
-    Call<Genes_Embedded> getGenesInRangeBySize(
+    Call<Genes> getGenesInRangeBySize(
             @Query("offset") Integer resultStart,
             @Query("size") String numToRetrieve,
-            @Header("xapp_token") String header
+            @Query("xapp_token") String header
     );
 
     // Get specific Gene
     @GET("api/genes/{id}")
     Call<Gene> getGene(
             @Path("id") String id,
-            @Header("xapp_token") String header
+            @Query("xapp_token") String header
     );
 
     // Get Artists starting at resultStart with total retrieve size as numToRetrieve
     @GET("api/artists")
-    Call<Artists_Embedded> getArtistsInRangeBySize(
+    Call<Artists> getArtistsInRangeBySize(
             @Query("offset") Integer resultStart,
             @Query("size") String numToRetrieve,
-            @Header("xapp_token") String header
+            @Query("xapp_token") String header
     );
 
     // Get specific Artist
     @GET("api/artists/{id}")
     Call<Artist> getArtist(
             @Path("id") String id,
-            @Header("xapp_token") String header
+            @Query("xapp_token") String header
     );
 
     // Get Artworks starting at resultStart with total retrieve size as numToRetrieve
     @GET("api/artworks")
-    Call<Artworks_Embedded> getArtworksInRangeBySize(
+    Call<Artworks> getArtworksInRangeBySize(
             @Query("offset") Integer resultStart,
             @Query("size") String numToRetrieve,
-            @Header("xapp_token") String header
+            @Query("xapp_token") String header
     );
 
     // Get specific Artwork
     @GET("api/artworks/{id}")
     Call<Artwork> getArtwork(
             @Path("id") String id,
-            @Header("xapp_token") String header
+            @Query("xapp_token") String header
     );
 }

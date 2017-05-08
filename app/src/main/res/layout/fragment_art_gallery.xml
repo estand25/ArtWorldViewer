@@ -1,17 +1,20 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment_main_container"
-    tools:context="com.prj1.stand.artworldviewer.activity.MainFragment"
-    tools:showIn="@layout/activity_main">
+    tools:context="com.prj1.stand.artworldviewer.activity.ArtGalleryActivityFragment"
+    tools:showIn="@layout/activity_art_gallery">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/mainFragment_swipe_refresh_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:ignore="MissingConstraints">
         <GridView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -20,4 +23,4 @@
             android:scaleType="fitXY"
             android:numColumns="auto_fit"/>
     </android.support.v4.widget.SwipeRefreshLayout>
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>

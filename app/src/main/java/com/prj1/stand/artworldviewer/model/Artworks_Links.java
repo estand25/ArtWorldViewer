@@ -1,10 +1,11 @@
-
 package com.prj1.stand.artworldviewer.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Artworks_Links {
+public class Artworks_Links implements Parcelable {
 
     @SerializedName("thumbnail")
     @Expose
@@ -33,13 +34,13 @@ public class Artworks_Links {
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public Artworks_Links() {
     }
 
     /**
-     * 
+     *
      * @param artists
      * @param thumbnail
      * @param permalink
@@ -165,4 +166,45 @@ public class Artworks_Links {
         return this;
     }
 
+
+    protected Artworks_Links(Parcel in) {
+        thumbnail = (Thumbnail) in.readValue(Thumbnail.class.getClassLoader());
+        image = (Image) in.readValue(Image.class.getClassLoader());
+        partner = (Partner) in.readValue(Partner.class.getClassLoader());
+        self = (Self_) in.readValue(Self_.class.getClassLoader());
+        permalink = (Permalink) in.readValue(Permalink.class.getClassLoader());
+        genes = (Genes) in.readValue(Genes.class.getClassLoader());
+        artists = (Artists) in.readValue(Artists.class.getClassLoader());
+        similarArtworks = (SimilarArtworks) in.readValue(SimilarArtworks.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(thumbnail);
+        dest.writeValue(image);
+        dest.writeValue(partner);
+        dest.writeValue(self);
+        dest.writeValue(permalink);
+        dest.writeValue(genes);
+        dest.writeValue(artists);
+        dest.writeValue(similarArtworks);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Artworks_Links> CREATOR = new Parcelable.Creator<Artworks_Links>() {
+        @Override
+        public Artworks_Links createFromParcel(Parcel in) {
+            return new Artworks_Links(in);
+        }
+
+        @Override
+        public Artworks_Links[] newArray(int size) {
+            return new Artworks_Links[size];
+        }
+    };
 }

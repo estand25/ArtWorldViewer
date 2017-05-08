@@ -1,12 +1,14 @@
-
 package com.prj1.stand.artworldviewer.model;
 
+
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Gene {
+public class Gene implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -35,13 +37,13 @@ public class Gene {
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public Gene() {
     }
 
     /**
-     * 
+     *
      * @param updatedAt
      * @param id
      * @param description
@@ -167,4 +169,55 @@ public class Gene {
         return this;
     }
 
+
+    protected Gene(Parcel in) {
+        id = in.readString();
+        createdAt = in.readString();
+        updatedAt = in.readString();
+        name = in.readString();
+        displayName = in.readString();
+        description = in.readString();
+        if (in.readByte() == 0x01) {
+            imageVersions = new ArrayList<String>();
+            in.readList(imageVersions, String.class.getClassLoader());
+        } else {
+            imageVersions = null;
+        }
+        links = (Genes_Links) in.readValue(Genes_Links.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
+        dest.writeString(name);
+        dest.writeString(displayName);
+        dest.writeString(description);
+        if (imageVersions == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(imageVersions);
+        }
+        dest.writeValue(links);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Gene> CREATOR = new Parcelable.Creator<Gene>() {
+        @Override
+        public Gene createFromParcel(Parcel in) {
+            return new Gene(in);
+        }
+
+        @Override
+        public Gene[] newArray(int size) {
+            return new Gene[size];
+        }
+    };
 }

@@ -1,9 +1,11 @@
 package com.prj1.stand.artworldviewer.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Artists_Links {
+public class Artists_Links implements Parcelable {
 
     @SerializedName("self")
     @Expose
@@ -111,4 +113,43 @@ public class Artists_Links {
         this.genes = genes;
     }
 
+
+    protected Artists_Links(Parcel in) {
+        self = (Self_) in.readValue(Self_.class.getClassLoader());
+        permalink = (Permalink) in.readValue(Permalink.class.getClassLoader());
+        artworks = (Artworks) in.readValue(Artworks.class.getClassLoader());
+        publishedArtworks = (PublishedArtworks) in.readValue(PublishedArtworks.class.getClassLoader());
+        similarArtists = (SimilarArtists) in.readValue(SimilarArtists.class.getClassLoader());
+        similarContemporaryArtists = (SimilarContemporaryArtists) in.readValue(SimilarContemporaryArtists.class.getClassLoader());
+        genes = (Genes) in.readValue(Genes.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(self);
+        dest.writeValue(permalink);
+        dest.writeValue(artworks);
+        dest.writeValue(publishedArtworks);
+        dest.writeValue(similarArtists);
+        dest.writeValue(similarContemporaryArtists);
+        dest.writeValue(genes);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Artists_Links> CREATOR = new Parcelable.Creator<Artists_Links>() {
+        @Override
+        public Artists_Links createFromParcel(Parcel in) {
+            return new Artists_Links(in);
+        }
+
+        @Override
+        public Artists_Links[] newArray(int size) {
+            return new Artists_Links[size];
+        }
+    };
 }

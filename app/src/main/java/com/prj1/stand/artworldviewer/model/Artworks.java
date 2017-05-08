@@ -1,9 +1,11 @@
 package com.prj1.stand.artworldviewer.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Artworks {
+public class Artworks implements Parcelable {
 
     @SerializedName("total_count")
     @Expose
@@ -20,13 +22,13 @@ public class Artworks {
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public Artworks() {
     }
 
     /**
-     * 
+     *
      * @param href
      */
     public Artworks(String href) {
@@ -35,7 +37,7 @@ public class Artworks {
     }
 
     /**
-     * 
+     *
      * @param totalCount
      * @param links
      * @param embedded
@@ -98,4 +100,37 @@ public class Artworks {
         this.embedded = embedded;
         return this;
     }
+
+    protected Artworks(Parcel in) {
+        totalCount = (Object) in.readValue(Object.class.getClassLoader());
+        links = (Artworks_Links) in.readValue(Artworks_Links.class.getClassLoader());
+        embedded = (Artworks_Embedded) in.readValue(Artworks_Embedded.class.getClassLoader());
+        href = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(totalCount);
+        dest.writeValue(links);
+        dest.writeValue(embedded);
+        dest.writeString(href);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Artworks> CREATOR = new Parcelable.Creator<Artworks>() {
+        @Override
+        public Artworks createFromParcel(Parcel in) {
+            return new Artworks(in);
+        }
+
+        @Override
+        public Artworks[] newArray(int size) {
+            return new Artworks[size];
+        }
+    };
 }

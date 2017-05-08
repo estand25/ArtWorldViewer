@@ -1,10 +1,12 @@
-
 package com.prj1.stand.artworldviewer.model;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Links {
+public class Links implements Parcelable {
 
     @SerializedName("self")
     @Expose
@@ -15,13 +17,13 @@ public class Links {
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public Links() {
     }
 
     /**
-     * 
+     *
      * @param next
      * @param self
      */
@@ -57,4 +59,33 @@ public class Links {
         return this;
     }
 
+
+    protected Links(Parcel in) {
+        self = (Self) in.readValue(Self.class.getClassLoader());
+        next = (Next) in.readValue(Next.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(self);
+        dest.writeValue(next);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Links> CREATOR = new Parcelable.Creator<Links>() {
+        @Override
+        public Links createFromParcel(Parcel in) {
+            return new Links(in);
+        }
+
+        @Override
+        public Links[] newArray(int size) {
+            return new Links[size];
+        }
+    };
 }

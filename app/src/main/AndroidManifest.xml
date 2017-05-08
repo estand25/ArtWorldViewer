@@ -4,10 +4,10 @@
 
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -16,17 +16,38 @@
         android:roundIcon="@mipmap/artworldviewer_ro"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+
+        <activity
+            android:name=".activity.ArtGalleryActivity"
+            android:label="@string/title_activity_art_gallery"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service            android:name=".services.ArtTokenService"
+            android:exported="false" />
+
+        <service
+            android:name=".services.AllModelService"
+            android:exported="false" />
+
+        <service
+            android:name=".services.GenesService"
+            android:exported="false" />
+
+        <service
+            android:name=".services.ArtistService"
+            android:exported="false" />
+
+        <service
+            android:name=".services.ArtworkService"
+            android:exported="false" />
 
         <receiver
             android:name=".sync.StartReceiver"
             android:exported="false" />
     </application>
-
 </manifest>

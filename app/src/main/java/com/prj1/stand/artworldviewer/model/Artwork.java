@@ -1,12 +1,14 @@
-
 package com.prj1.stand.artworldviewer.model;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Artwork {
+public class Artwork implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -104,13 +106,13 @@ public class Artwork {
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public Artwork() {
     }
 
     /**
-     * 
+     *
      * @param series
      * @param unique
      * @param canAcquire
@@ -177,6 +179,7 @@ public class Artwork {
         this.links = links;
         this.embedded = embedded;
     }
+
 
     public String getId() {
         return id;
@@ -581,4 +584,136 @@ public class Artwork {
         return this;
     }
 
+
+    protected Artwork(Parcel in) {
+        id = in.readString();
+        slug = in.readString();
+        createdAt = in.readString();
+        updatedAt = in.readString();
+        title = in.readString();
+        category = in.readString();
+        medium = in.readString();
+        date = in.readString();
+        dimensions = (Dimensions) in.readValue(Dimensions.class.getClassLoader());
+        byte publishedVal = in.readByte();
+        published = publishedVal == 0x02 ? null : publishedVal != 0x00;
+        website = in.readString();
+        signature = in.readString();
+        series = (Object) in.readValue(Object.class.getClassLoader());
+        provenance = in.readString();
+        literature = in.readString();
+        exhibitionHistory = in.readString();
+        collectingInstitution = in.readString();
+        additionalInformation = in.readString();
+        imageRights = in.readString();
+        blurb = in.readString();
+        byte uniqueVal = in.readByte();
+        unique = uniqueVal == 0x02 ? null : uniqueVal != 0x00;
+        culturalMaker = (Object) in.readValue(Object.class.getClassLoader());
+        iconicity = in.readByte() == 0x00 ? null : in.readDouble();
+        byte canInquireVal = in.readByte();
+        canInquire = canInquireVal == 0x02 ? null : canInquireVal != 0x00;
+        byte canAcquireVal = in.readByte();
+        canAcquire = canAcquireVal == 0x02 ? null : canAcquireVal != 0x00;
+        byte canShareVal = in.readByte();
+        canShare = canShareVal == 0x02 ? null : canShareVal != 0x00;
+        saleMessage = (Object) in.readValue(Object.class.getClassLoader());
+        byte soldVal = in.readByte();
+        sold = soldVal == 0x02 ? null : soldVal != 0x00;
+        if (in.readByte() == 0x01) {
+            imageVersions = new ArrayList<String>();
+            in.readList(imageVersions, String.class.getClassLoader());
+        } else {
+            imageVersions = null;
+        }
+        links = (Artworks_Links) in.readValue(Artworks_Links.class.getClassLoader());
+        embedded = (Artworks_Embedded) in.readValue(Artworks_Embedded.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(slug);
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
+        dest.writeString(title);
+        dest.writeString(category);
+        dest.writeString(medium);
+        dest.writeString(date);
+        dest.writeValue(dimensions);
+        if (published == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (published ? 0x01 : 0x00));
+        }
+        dest.writeString(website);
+        dest.writeString(signature);
+        dest.writeValue(series);
+        dest.writeString(provenance);
+        dest.writeString(literature);
+        dest.writeString(exhibitionHistory);
+        dest.writeString(collectingInstitution);
+        dest.writeString(additionalInformation);
+        dest.writeString(imageRights);
+        dest.writeString(blurb);
+        if (unique == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (unique ? 0x01 : 0x00));
+        }
+        dest.writeValue(culturalMaker);
+        if (iconicity == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(iconicity);
+        }
+        if (canInquire == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (canInquire ? 0x01 : 0x00));
+        }
+        if (canAcquire == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (canAcquire ? 0x01 : 0x00));
+        }
+        if (canShare == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (canShare ? 0x01 : 0x00));
+        }
+        dest.writeValue(saleMessage);
+        if (sold == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (sold ? 0x01 : 0x00));
+        }
+        if (imageVersions == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(imageVersions);
+        }
+        dest.writeValue(links);
+        dest.writeValue(embedded);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Artwork> CREATOR = new Parcelable.Creator<Artwork>() {
+        @Override
+        public Artwork createFromParcel(Parcel in) {
+            return new Artwork(in);
+        }
+
+        @Override
+        public Artwork[] newArray(int size) {
+            return new Artwork[size];
+        }
+    };
 }

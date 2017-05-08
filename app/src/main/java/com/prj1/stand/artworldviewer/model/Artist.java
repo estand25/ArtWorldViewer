@@ -1,14 +1,12 @@
-
 package com.prj1.stand.artworldviewer.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-public class Artist {
+public class Artist implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -181,4 +179,53 @@ public class Artist {
         this.links = links;
     }
 
+
+    protected Artist(Parcel in) {
+        id = in.readString();
+        slug = in.readString();
+        createdAt = in.readString();
+        updatedAt = in.readString();
+        name = in.readString();
+        sortableName = in.readString();
+        gender = (Object) in.readValue(Object.class.getClassLoader());
+        birthday = in.readString();
+        hometown = in.readString();
+        location = in.readString();
+        nationality = in.readString();
+        links = (Artists_Links) in.readValue(Artists_Links.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(slug);
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
+        dest.writeString(name);
+        dest.writeString(sortableName);
+        dest.writeValue(gender);
+        dest.writeString(birthday);
+        dest.writeString(hometown);
+        dest.writeString(location);
+        dest.writeString(nationality);
+        dest.writeValue(links);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Artist> CREATOR = new Parcelable.Creator<Artist>() {
+        @Override
+        public Artist createFromParcel(Parcel in) {
+            return new Artist(in);
+        }
+
+        @Override
+        public Artist[] newArray(int size) {
+            return new Artist[size];
+        }
+    };
 }

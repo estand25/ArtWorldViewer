@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
+import com.prj1.stand.artworldviewer.services.ArtTokenService;
+
 /**
  * Handles the wakefulness and start populating art
  * with IntentSerice
@@ -28,7 +30,8 @@ public class StartReceiver extends WakefulBroadcastReceiver{
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        // Go fetch an art information
-    //    Intent service = new Intent(context)
+        // Go fetch Art API token
+        Intent artToken = new Intent(context, ArtTokenService.class);
+        startWakefulService(context,artToken);
     }
 }

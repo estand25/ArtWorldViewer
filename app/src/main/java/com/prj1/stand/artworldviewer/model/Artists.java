@@ -1,13 +1,11 @@
-
 package com.prj1.stand.artworldviewer.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-public class Artists {
+public class Artists implements Parcelable {
 
     @SerializedName("total_count")
     @Expose
@@ -63,4 +61,35 @@ public class Artists {
         this.embedded = embedded;
     }
 
+
+    protected Artists(Parcel in) {
+        totalCount = (Object) in.readValue(Object.class.getClassLoader());
+        links = (Links) in.readValue(Links.class.getClassLoader());
+        embedded = (Artists_Embedded) in.readValue(Artists_Embedded.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(totalCount);
+        dest.writeValue(links);
+        dest.writeValue(embedded);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Artists> CREATOR = new Parcelable.Creator<Artists>() {
+        @Override
+        public Artists createFromParcel(Parcel in) {
+            return new Artists(in);
+        }
+
+        @Override
+        public Artists[] newArray(int size) {
+            return new Artists[size];
+        }
+    };
 }

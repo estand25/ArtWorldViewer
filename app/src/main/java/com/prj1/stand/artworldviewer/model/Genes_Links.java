@@ -1,10 +1,11 @@
-
 package com.prj1.stand.artworldviewer.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Genes_Links {
+public class Genes_Links implements Parcelable {
 
     @SerializedName("thumbnail")
     @Expose
@@ -30,13 +31,13 @@ public class Genes_Links {
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public Genes_Links() {
     }
 
     /**
-     * 
+     *
      * @param publishedArtworks
      * @param artists
      * @param thumbnail
@@ -147,4 +148,43 @@ public class Genes_Links {
         return this;
     }
 
+
+    protected Genes_Links(Parcel in) {
+        thumbnail = (Thumbnail) in.readValue(Thumbnail.class.getClassLoader());
+        image = (Image) in.readValue(Image.class.getClassLoader());
+        self = (Self_) in.readValue(Self_.class.getClassLoader());
+        permalink = (Permalink) in.readValue(Permalink.class.getClassLoader());
+        artworks = (Artworks) in.readValue(Artworks.class.getClassLoader());
+        publishedArtworks = (PublishedArtworks) in.readValue(PublishedArtworks.class.getClassLoader());
+        artists = (Artists) in.readValue(Artists.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(thumbnail);
+        dest.writeValue(image);
+        dest.writeValue(self);
+        dest.writeValue(permalink);
+        dest.writeValue(artworks);
+        dest.writeValue(publishedArtworks);
+        dest.writeValue(artists);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Genes_Links> CREATOR = new Parcelable.Creator<Genes_Links>() {
+        @Override
+        public Genes_Links createFromParcel(Parcel in) {
+            return new Genes_Links(in);
+        }
+
+        @Override
+        public Genes_Links[] newArray(int size) {
+            return new Genes_Links[size];
+        }
+    };
 }

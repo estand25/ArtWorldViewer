@@ -1,10 +1,11 @@
-
 package com.prj1.stand.artworldviewer.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Genes {
+public class Genes implements Parcelable {
 
     @SerializedName("total_count")
     @Expose
@@ -21,13 +22,13 @@ public class Genes {
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public Genes() {
     }
 
     /**
-     * 
+     *
      * @param totalCount
      * @param links
      * @param embedded
@@ -38,16 +39,16 @@ public class Genes {
         this.links = links;
         this.embedded = embedded;
     }
-	
+
     /**
-     * 
+     *
      * @param href
      */
     public Genes(String href) {
         super();
         this.href = href;
     }
-	
+
     public String getHref() {
         return href;
     }
@@ -100,4 +101,37 @@ public class Genes {
         return this;
     }
 
+
+    protected Genes(Parcel in) {
+        totalCount = (Object) in.readValue(Object.class.getClassLoader());
+        links = (Genes_Links) in.readValue(Genes_Links.class.getClassLoader());
+        embedded = (Genes_Embedded) in.readValue(Genes_Embedded.class.getClassLoader());
+        href = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(totalCount);
+        dest.writeValue(links);
+        dest.writeValue(embedded);
+        dest.writeString(href);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Genes> CREATOR = new Parcelable.Creator<Genes>() {
+        @Override
+        public Genes createFromParcel(Parcel in) {
+            return new Genes(in);
+        }
+
+        @Override
+        public Genes[] newArray(int size) {
+            return new Genes[size];
+        }
+    };
 }

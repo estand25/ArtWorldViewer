@@ -1,10 +1,11 @@
-
 package com.prj1.stand.artworldviewer.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class In {
+public class In implements Parcelable {
 
     @SerializedName("text")
     @Expose
@@ -24,13 +25,13 @@ public class In {
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public In() {
     }
 
     /**
-     * 
+     *
      * @param diameter
      * @param text
      * @param height
@@ -111,4 +112,49 @@ public class In {
         return this;
     }
 
+
+    protected In(Parcel in) {
+        text = in.readString();
+        height = in.readByte() == 0x00 ? null : in.readInt();
+        width = in.readByte() == 0x00 ? null : in.readInt();
+        depth = (Object) in.readValue(Object.class.getClassLoader());
+        diameter = (Object) in.readValue(Object.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(text);
+        if (height == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(height);
+        }
+        if (width == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(width);
+        }
+        dest.writeValue(depth);
+        dest.writeValue(diameter);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<In> CREATOR = new Parcelable.Creator<In>() {
+        @Override
+        public In createFromParcel(Parcel in) {
+            return new In(in);
+        }
+
+        @Override
+        public In[] newArray(int size) {
+            return new In[size];
+        }
+    };
 }
