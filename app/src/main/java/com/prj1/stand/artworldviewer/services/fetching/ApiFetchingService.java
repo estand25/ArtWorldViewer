@@ -4,8 +4,13 @@ import com.prj1.stand.artworldviewer.model.Artist;
 import com.prj1.stand.artworldviewer.model.Artists;
 import com.prj1.stand.artworldviewer.model.Artwork;
 import com.prj1.stand.artworldviewer.model.Artworks;
+import com.prj1.stand.artworldviewer.model.Artworks_Embedded;
+import com.prj1.stand.artworldviewer.model.Fair;
+import com.prj1.stand.artworldviewer.model.Fairs_Embedded;
 import com.prj1.stand.artworldviewer.model.Gene;
 import com.prj1.stand.artworldviewer.model.Genes;
+import com.prj1.stand.artworldviewer.model.Show;
+import com.prj1.stand.artworldviewer.model.Shows_Embedded;
 import com.prj1.stand.artworldviewer.model.authorization.Token;
 
 import retrofit2.Call;
@@ -23,7 +28,6 @@ import retrofit2.http.Query;
  * Created by Stand on 5/6/2017.
  */
 public interface ApiFetchingService {
-
     // Get the Art World Token to perform API requires
     @POST("api/tokens/xapp_token")
     @FormUrlEncoded
@@ -64,7 +68,7 @@ public interface ApiFetchingService {
 
     // Get Artworks starting at resultStart with total retrieve size as numToRetrieve
     @GET("api/artworks")
-    Call<Artworks> getArtworksInRangeBySize(
+    Call<Artworks_Embedded> getArtworksInRangeBySize(
             @Query("offset") Integer resultStart,
             @Query("size") String numToRetrieve,
             @Query("xapp_token") String header
@@ -73,6 +77,37 @@ public interface ApiFetchingService {
     // Get specific Artwork
     @GET("api/artworks/{id}")
     Call<Artwork> getArtwork(
+            @Path("id") String id,
+            @Query("xapp_token") String header
+    );
+
+    // Get Fairs Starting at resultStart with total retrieve size as numToRetrieve
+    @GET("api/fairs")
+    Call<Fairs_Embedded> getFairsInRangeBySize(
+            @Query("offset") Integer resultStart,
+            @Query("size") String numToRetrieve,
+            @Query("xapp_token") String header
+    );
+
+    // Get specific fair
+    @GET("/api/fairs/{id}")
+    Call<Fair> getFair(
+            @Path("id") String id,
+            @Query("xapp_token") String header
+    );
+
+
+    // Get Shows Starting at resultStart with total retrieve size as numToRetrieve
+    @GET("api/shows")
+    Call<Shows_Embedded> getShowsInRangeBySize(
+            @Query("offset") Integer resultStart,
+            @Query("size") String numToRetrieve,
+            @Query("xapp_token") String header
+    );
+
+    // Get specific Show
+    @GET("/api/shows/{id}")
+    Call<Show> getShow(
             @Path("id") String id,
             @Query("xapp_token") String header
     );

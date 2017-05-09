@@ -8,10 +8,12 @@ import android.util.Log;
 
 import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
 import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
+import com.prj1.stand.artworldviewer.model.Gene;
 import com.prj1.stand.artworldviewer.model.Genes;
 import com.prj1.stand.artworldviewer.model.Genes_Embedded;
 import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
@@ -58,15 +60,26 @@ public class GenesService extends IntentService{
                 .enqueue(new Callback<Genes>() {
                     @Override
                     public void onResponse(Call<Genes> call, Response<Genes> response) {
-                        Log.v("ArtGenesService", "OnResponse - Success ..."+response.message());
-                        Log.v("ArtGenesService", "OnResponse - Getting Genes size ..."+response.body().describeContents());
-                        Log.v("ArtGenesService", "OnResponse - Request ..."+call.request());
+                        Log.v("GenesService", "OnResponse - Success ..."+response.isSuccessful());
+                        Log.v("GenesService", "OnResponse - "+call.request());
+
+                        // Grab the response (a list of Genes) from the API
+                        // and puts it in the local list of variable
+                        List<Gene> Genes = response.body().getEmbedded().getGenes();
+
+                        for(Gene gene: Genes){
+                            Log.v("GenesService","Gene Name: "+gene.getName());
+                            Log.v("GenesService","Gene Description: "+gene.getDescription());
+                            Log.v("GenesService","Gene Thumbnail: "+gene.getLinks().getThumbnail().toString());
+                            Log.v("GenesService","Gene Created At: "+gene.getCreatedAt());
+                            Log.v("GenesService","Gene Updated At: "+gene.getUpdatedAt());
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<Genes> call, Throwable t) {
-                        Log.v("ArtGenesService", "onFailure - Failure on the request");
-                        Log.v("ArtGenesService", "onFailure - "+call.request());
+                        Log.v("GenesService", "onFailure - Failure on the request");
+                        Log.v("GenesService", "onFailure - "+call.request());
                     }
                 });
     }

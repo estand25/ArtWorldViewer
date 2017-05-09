@@ -1,36 +1,36 @@
 package com.prj1.stand.artworldviewer.model;
 
-import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.Parcel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Artworks implements Parcelable {
+public class Fairs implements Parcelable {
 
     @SerializedName("total_count")
     @Expose
     private Object totalCount;
     @SerializedName("_links")
     @Expose
-    private Artworks_Links links;
+    private Fairs_Links links;
     @SerializedName("_embedded")
     @Expose
-    private Artworks_Embedded embedded;
+    private Fairs_Embedded embedded;
 
     /**
      * No args constructor for use in serialization
-     *
+     * 
      */
-    public Artworks() {
+    public Fairs() {
     }
 
     /**
-     *
+     * 
      * @param totalCount
      * @param links
      * @param embedded
      */
-    public Artworks(Object totalCount, Artworks_Links links, Artworks_Embedded embedded) {
+    public Fairs(Object totalCount, Fairs_Links links, Fairs_Embedded embedded) {
         super();
         this.totalCount = totalCount;
         this.links = links;
@@ -45,41 +45,27 @@ public class Artworks implements Parcelable {
         this.totalCount = totalCount;
     }
 
-    public Artworks withTotalCount(Object totalCount) {
-        this.totalCount = totalCount;
-        return this;
-    }
-
-    public Artworks_Links getLinks() {
+    public Fairs_Links getLinks() {
         return links;
     }
 
-    public void setLinks(Artworks_Links links) {
+    public void setLinks(Fairs_Links links) {
         this.links = links;
     }
 
-    public Artworks withLinks(Artworks_Links links) {
-        this.links = links;
-        return this;
-    }
-
-    public Artworks_Embedded getEmbedded() {
+    public Fairs_Embedded getEmbedded() {
         return embedded;
     }
 
-    public void setEmbedded(Artworks_Embedded embedded) {
+    public void setEmbedded(Fairs_Embedded embedded) {
         this.embedded = embedded;
     }
 
-    public Artworks withEmbedded(Artworks_Embedded embedded) {
-        this.embedded = embedded;
-        return this;
-    }
 
-    protected Artworks(Parcel in) {
+    protected Fairs(Parcel in) {
         totalCount = (Object) in.readValue(Object.class.getClassLoader());
-        links = (Artworks_Links) in.readValue(Artworks_Links.class.getClassLoader());
-        embedded = (Artworks_Embedded) in.readValue(Artworks_Embedded.class.getClassLoader());
+        links = (Fairs_Links) in.readValue(Fairs_Links.class.getClassLoader());
+        embedded = (Fairs_Embedded) in.readValue(Fairs_Embedded.class.getClassLoader());
     }
 
     @Override
@@ -95,15 +81,15 @@ public class Artworks implements Parcelable {
     }
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Artworks> CREATOR = new Parcelable.Creator<Artworks>() {
+    public static final Parcelable.Creator<Fairs> CREATOR = new Parcelable.Creator<Fairs>() {
         @Override
-        public Artworks createFromParcel(Parcel in) {
-            return new Artworks(in);
+        public Fairs createFromParcel(Parcel in) {
+            return new Fairs(in);
         }
 
         @Override
-        public Artworks[] newArray(int size) {
-            return new Artworks[size];
+        public Fairs[] newArray(int size) {
+            return new Fairs[size];
         }
     };
 }

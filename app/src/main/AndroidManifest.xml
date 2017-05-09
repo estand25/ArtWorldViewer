@@ -39,11 +39,39 @@
             android:exported="false" />
 
         <service
-            android:name=".services.ArtistService"
+            android:name=".services.GeneSingleService"
             android:exported="false" />
 
         <service
-            android:name=".services.ArtworkService"
+            android:name=".services.ArtistsService"
+            android:exported="false" />
+
+        <service
+            android:name=".services.ArtistSingleService"
+            android:exported="false" />
+
+        <service
+            android:name=".services.ArtworksService"
+            android:exported="false" />
+
+        <service
+            android:name=".services.ArtworkSingleService"
+            android:exported="false" />
+
+        <service
+            android:name=".services.FairsService"
+            android:exported="false" />
+
+        <service
+            android:name=".services.FairSingleService"
+            android:exported="false"/>
+
+        <service
+            android:name=".services.ShowsService"
+            android:exported="false" />
+
+        <service
+            android:name=".services.ShowSingleService"
             android:exported="false" />
 
         <receiver
