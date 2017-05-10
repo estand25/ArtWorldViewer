@@ -4,13 +4,12 @@ import com.prj1.stand.artworldviewer.model.Artist;
 import com.prj1.stand.artworldviewer.model.Artists;
 import com.prj1.stand.artworldviewer.model.Artwork;
 import com.prj1.stand.artworldviewer.model.Artworks;
-import com.prj1.stand.artworldviewer.model.Artworks_Embedded;
 import com.prj1.stand.artworldviewer.model.Fair;
-import com.prj1.stand.artworldviewer.model.Fairs_Embedded;
+import com.prj1.stand.artworldviewer.model.Fairs;
 import com.prj1.stand.artworldviewer.model.Gene;
 import com.prj1.stand.artworldviewer.model.Genes;
 import com.prj1.stand.artworldviewer.model.Show;
-import com.prj1.stand.artworldviewer.model.Shows_Embedded;
+import com.prj1.stand.artworldviewer.model.Shows;
 import com.prj1.stand.artworldviewer.model.authorization.Token;
 
 import retrofit2.Call;
@@ -68,7 +67,7 @@ public interface ApiFetchingService {
 
     // Get Artworks starting at resultStart with total retrieve size as numToRetrieve
     @GET("api/artworks")
-    Call<Artworks_Embedded> getArtworksInRangeBySize(
+    Call<Artworks> getArtworksInRangeBySize(
             @Query("offset") Integer resultStart,
             @Query("size") String numToRetrieve,
             @Query("xapp_token") String header
@@ -83,7 +82,7 @@ public interface ApiFetchingService {
 
     // Get Fairs Starting at resultStart with total retrieve size as numToRetrieve
     @GET("api/fairs")
-    Call<Fairs_Embedded> getFairsInRangeBySize(
+    Call<Fairs> getFairsInRangeBySize(
             @Query("offset") Integer resultStart,
             @Query("size") String numToRetrieve,
             @Query("xapp_token") String header
@@ -99,7 +98,7 @@ public interface ApiFetchingService {
 
     // Get Shows Starting at resultStart with total retrieve size as numToRetrieve
     @GET("api/shows")
-    Call<Shows_Embedded> getShowsInRangeBySize(
+    Call<Shows> getShowsInRangeBySize(
             @Query("offset") Integer resultStart,
             @Query("size") String numToRetrieve,
             @Query("xapp_token") String header

@@ -2,13 +2,15 @@ package com.prj1.stand.artworldviewer.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v4.media.session.MediaSessionCompat;
+import android.util.Log;
 
 import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
 import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
-import com.prj1.stand.artworldviewer.model.Fairs_Embedded;
+import com.prj1.stand.artworldviewer.model.Fair;
+import com.prj1.stand.artworldviewer.model.Fairs;
 import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,18 +46,39 @@ public class FairsService extends IntentService{
     }
 
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
+    protected void onHandleIntent(Intent intent) {
         apiFetchingService = ApiUtility.getApiService();
         apiFetchingService.getFairsInRangeBySize(0,"5", TokenUtility.getInstance().getOurToken())
-                .enqueue(new Callback<Fairs_Embedded>() {
+                .enqueue(new Callback<Fairs>() {
                     @Override
-                    public void onResponse(Call<Fairs_Embedded> call, Response<Fairs_Embedded> response) {
+                    public void onResponse(Call<Fairs> call, Response<Fairs> response) {
+                        Log.v("FairsService", "OnResponse - Success ..."+response.isSuccessful());
+                        Log.v("FairsService", "OnResponse - "+call.request());
+
+                        // Grab the response (a list of Fairs) from the API
+                        // and puts it in the local list of variable
+                        List<Fair> Fairs = response.body().getEmbedded().getFairs();
+
+                        for(Fair fair: Fairs){
+                            Log.v("FairsService","Fair Name: "+fair.getName());
+                            Log.v("FairsService","About Fair: "+fair.getAbout());
+                            Log.v("FairsService","Fair Summary: "+fair.getSummary());
+                            Log.v("FairsService","Contact Fair: "+fair.getContact());
+                            Log.v("FairsService","Fair Published: "+fair.getPublished());
+                            Log.v("FairsService","Fair Status: "+fair.getStatus());
+                            Log.v("FairsService","Fair Start at: "+fair.getStartAt());
+                            Log.v("FairsService","Fair End at: "+fair.getEndAt());
+                            Log.v("FairsService","Fair Created at: "+fair.getCreatedAt());
+                            Log.v("FairsService","Fair Updated at: "+fair.getUpdatedAt());
+
+                        }
 
                     }
 
                     @Override
-                    public void onFailure(Call<Fairs_Embedded> call, Throwable t) {
-
+                    public void onFailure(Call<Fairs> call, Throwable t) {
+                        Log.v("FairsService", "onFailure - Failure on the request");
+                        Log.v("FairsService", "onFailure - "+call.request());
                     }
                 });
     }

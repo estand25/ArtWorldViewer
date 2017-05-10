@@ -7,7 +7,7 @@ import android.util.Log;
 import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
 import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
 import com.prj1.stand.artworldviewer.model.Artwork;
-import com.prj1.stand.artworldviewer.model.Artworks_Embedded;
+import com.prj1.stand.artworldviewer.model.Artworks;
 import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;
 
 import java.util.List;
@@ -48,14 +48,14 @@ public class ArtworksService extends IntentService{
     protected void onHandleIntent(Intent artworkIntent) {
         apiFetchingService = ApiUtility.getApiService();
         apiFetchingService.getArtworksInRangeBySize(0,"50", TokenUtility.getInstance().getOurToken())
-                .enqueue(new Callback<Artworks_Embedded>() {
+                .enqueue(new Callback<Artworks>() {
                     @Override
-                    public void onResponse(Call<Artworks_Embedded> call, Response<Artworks_Embedded> response) {
+                    public void onResponse(Call<Artworks> call, Response<Artworks> response) {
                         Log.v("ArtworksService", "OnResponse - Success ..."+response.isSuccessful());
                         Log.v("ArtworksService", "OnResponse - "+call.request());
-                        Log.v("ArtworksService", "OnResponse - "+String.valueOf(response.body().getArtworks().size()));
+                        Log.v("ArtworksService", "OnResponse - "+response.body().getEmbedded());
 
-                        List<Artwork> Artworks = response.body().getArtworks();
+                        List<Artwork> Artworks = response.body().getEmbedded().getArtworks();
 
                         for(Artwork artwork: Artworks)
                         {
@@ -77,7 +77,7 @@ public class ArtworksService extends IntentService{
                     }
 
                     @Override
-                    public void onFailure(Call<Artworks_Embedded> call, Throwable t) {
+                    public void onFailure(Call<Artworks> call, Throwable t) {
                         Log.v("ArtworksService", "onFailure - Failure on the request");
                         Log.v("ArtworksService", "onFailure - "+call.request().body());
                     }
