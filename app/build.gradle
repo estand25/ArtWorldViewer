@@ -19,11 +19,11 @@ android {
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'AWV_Client_Id', "\"d4f2828aa865b88193f7\""
+        it.buildConfigField 'String', 'AWV_Client_Id', "\"\""
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'AWV_Client_Secret', "\"8266d37b3405e1a2c33e332754eb1331\""
+        it.buildConfigField 'String', 'AWV_Client_Secret', "\"\""
     }
 }
 
