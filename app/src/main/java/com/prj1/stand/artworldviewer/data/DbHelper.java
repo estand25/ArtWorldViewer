@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Art World Viewer class creates the Database and creates
  * the individual tables
+ *
  * Created by Stand on 5/9/2017.
  */
 

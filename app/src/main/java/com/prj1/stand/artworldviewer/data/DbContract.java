@@ -29,6 +29,15 @@ public class DbContract {
     public static final String PATH_FAIR ="fair";
     public static final String PATH_GENE = "gene";
     public static final String PATH_SHOW = "show";
+    public static final String PATH_Link = "link";
+    public static final String PATH_IMAGE_VERSION = "image_version";
+    public static final String PATH_IMAGE = "image";
+    public static final String PATH_THUMBNAIL = "thumbnail";
+    public static final String PATH_PERMALINK = "permalik";
+    public static final String PATH_DIMENSION = "dimension";
+    public static final String PATH_CM = "cm";
+    public static final String PATH_IN = "in";
+    public static final String PATH__PARTNER = "_partner";
 
     /**
      * Class that create the Artist (ArtistEntry) table
@@ -201,7 +210,7 @@ public class DbContract {
         public static final String COLUMN_CAN_SHARE = "can_share";
         public static final String COLUMN_SALE_MESSAGE = "sale_message";
         public static final String COLUMN_SOLD = "sold";
-        public static final String COLUMN_IMAGE_VERSION_ID = "image_version";
+        public static final String COLUMN_IMAGE_VERSION_ID = "image_version_id";
         public static final String COLUMN_LINK_ID = "link_id";
     }
 
@@ -293,6 +302,142 @@ public class DbContract {
      * Class that creates the Gene (GeneEntry) table
      */
     public static final class GeneEntry implements BaseColumns{
+        /**
+         * Location for the specific table (used to access table data)
+         */
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_GENE).build();
 
+        /**
+         * The type of data I will be sending if retrieved
+         */
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" +PATH_GENE;
+
+        /**
+         * Builds gene details
+         */
+        public static Uri buildGeneDetailAllSection(int GeneId){
+            return BASE_CONTENT_URI.buildUpon().appendPath("gene_detail")
+                    .appendPath(Integer.toString(GeneId)).build();
+        }
+
+        /**
+         * URI for the specific Gene row in the Gene table
+         */
+        public static Uri buildGeneUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        /**
+         * Uri for the specific Gene id in the gene table
+         */
+        public static Uri buildGeneIDUri(int GeneID){
+            return CONTENT_URI.buildUpon().appendPath(Integer.toString(GeneID)).build();
+        }
+
+        /**
+         * Uri for getting the gene id
+         */
+        public static String getGeneID(Uri uri){
+            return uri.getPathSegments().get(1);
+        }
+
+        /**
+         * Uri for getting the gene id
+         */
+        public static int getIntegerGeneID(Uri uri){
+            return Integer.parseInt(uri.getPathSegments().get(1));
+        }
+
+        /**
+         * String holds the table name
+         */
+        public static final String TABLE_NAME = "gene";
+
+        /**
+         * Columns in the gene table
+         */
+        public static final String COLUMN_GENE_ID = "gene_id";
+        public static final String COLUMN_CREATED_AT = "created_at";
+        public static final String COLUMN_UPDATED_AT = "updated_at";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_DISPLAY_NAME = "display_name";
+        public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_IMAGE_VERSION_ID = "image_version_id";
+        public static final String COLUMN_LINK_ID = "link_id";
+    }
+
+    /**
+     * Class that creates the Show (ShowEntry) table
+     */
+    public static final class ShowEntry implements BaseColumns{
+        /**
+         * Location for the specific table (used to access table data)
+         */
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_SHOW).build();
+
+        /**
+         * The type of data I will be send if retrieved
+         */
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE +"/"+CONTENT_AUTHORITY +"/"+PATH_SHOW;
+
+        /**
+         * Build show detail section
+         */
+        public static Uri buildShowDetailAllSection(int showID){
+            return BASE_CONTENT_URI.buildUpon().appendPath("show_detail")
+                    .appendPath(Integer.toString(showID)).build();
+        }
+
+        /**
+         * URI for the specific show row in the Show table
+         */
+        public static Uri buildShowUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        /**
+         * Uri for the specific show id in the Show table
+         */
+        public static Uri buildShowIDUri(int ShowID){
+            return CONTENT_URI.buildUpon().appendPath(Integer.toString(ShowID)).build();
+        }
+
+        /**
+         * Uri for getting the show id
+         */
+        public static String getShowID(Uri uri){
+            return uri.getPathSegments().get(1);
+        }
+
+        /**
+         * Uri for getting the show id
+         */
+        public static int getIntegerShowID(Uri uri){
+            return Integer.parseInt(uri.getPathSegments().get(1));
+        }
+
+        /**
+         * String holds the table name
+         */
+        public static final String TABLE_NAME = "show";
+
+        /**
+         * Columns in the show table for db
+         */
+        public static final String COLUMN_SHOW_ID = "show_id";
+        public static final String COLUMN_CREATED_AT = "created_at";
+        public static final String COLUMN_UPDATED_AT = "updated_at";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_PRESS_RELEASE = "press_release";
+        public static final String COLUMN_START_AT = "start_at";
+        public static final String COLUMN_END_AT = "end_at";
+        public static final String COLUMN_STATUS = "status";
+        public static final String COLUMN_IMAGE_VERSION_ID = "image_version_id";
+        public static final String COLUMN_LINK_ID = "link_id";
     }
 }
