@@ -39,6 +39,9 @@ public class DbContract {
     public static final String PATH_IN = "in";
     public static final String PATH_PROFILE = "profile";
     public static final String PATH_PARTNER = "partner";
+    public static final String PATH_WEBSITE = "website";
+    public static final String PATH_SELF = "self";
+    public static final String PATH_PARTNER_CONTACT = "partner_contact";
 
     /**
      * Class that create the Artist (ArtistEntry) table
@@ -195,7 +198,7 @@ public class DbContract {
         public static final String COLUMN_DATE = "date";
         public static final String COLUMN_DIMESIONS_ID = "dimension_id";
         public static final String COLUMN_PUBLISHED = "published";
-        public static final String COLUMN_WEBSITE = "website";
+        public static final String COLUMN_WEBSITE_ID = "website_id";
         public static final String COLUMN_SIGNATURE = "signature";
         public static final String COLUMN_PROVENANCE = "provenance";
         public static final String COLUMN_LITERATURE = "literature";
@@ -207,6 +210,7 @@ public class DbContract {
         public static final String COLUMN_UNIQUE = "unique";
         public static final String COLUMN_CULTURAL_MAKER = "cultural_maker";
         public static final String COLUMN_ICONICITY = "iconicity";
+        public static final String COLUMN_CAN_INQUIRE = "can_inquire";
         public static final String COLUMN_CAN_ACQUIRE = "can_acquire";
         public static final String COLUMN_CAN_SHARE = "can_share";
         public static final String COLUMN_SALE_MESSAGE = "sale_message";
@@ -747,6 +751,292 @@ public class DbContract {
     }
 
     /**
+     * Class that creates the Profile (ProfileEntry) table
+     */
+    public static final class ProfileEntry implements BaseColumns{
+        /**
+         * Location for the specific table (used to access table data)
+         */
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PROFILE).build();
+
+        /**
+         * The type of data I will be sending if retrieved
+         */
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PROFILE;
+
+        /**
+         * URI for the specific Profile row in the Profile table
+         */
+        public static Uri buildProfileUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        /**
+         * Uri for the specific Profile ID in the Profile table
+         */
+        public static Uri buildProfileIDUri(int ProfileID){
+            return CONTENT_URI.buildUpon().appendPath(Integer.toString(ProfileID)).build();
+        }
+
+        /**
+         * Uri for getting the Profile id
+         */
+        public static String getProfileID(Uri uri){
+            return uri.getPathSegments().get(1);
+        }
+
+        /**
+         * Uri for getting the Profile Id
+         */
+        public static int getIntegerProfileID(Uri uri){
+            return Integer.parseInt(uri.getPathSegments().get(1));
+        }
+
+        /**
+         * String holds the table name
+         */
+        public static final String TABLE_NAME = "profile";
+
+        /**
+         * Column in the Profile table for DB
+         */
+        public static final String COLUMN_PROFILE_ID = "profile_id";
+        public static final String COLUMN_HREF = "href";
+    }
+
+    /**
+     * Class that creates the Website (WebsiteEntry) table
+     */
+    public static final class WebsiteEntry implements BaseColumns{
+        /**
+         * Location for the specific table (used to access table data)
+         */
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_WEBSITE).build();
+
+        /**
+         * The type of data I will be sending if retrieved
+         */
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_WEBSITE;
+
+        /**
+         * URI for the specific Website row in the Website table
+         */
+        public static Uri buildWebsiteUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        /**
+         * Uri for the specific Website ID in the Website table
+         */
+        public static Uri buildWebsiteIDUri(int WebsiteID){
+            return CONTENT_URI.buildUpon().appendPath(Integer.toString(WebsiteID)).build();
+        }
+
+        /**
+         * Uri for getting the Website id
+         */
+        public static String getWebsiteID(Uri uri){
+            return uri.getPathSegments().get(1);
+        }
+
+        /**
+         * Uri for getting the Website Id
+         */
+        public static int getIntegerWebsiteID(Uri uri){
+            return Integer.parseInt(uri.getPathSegments().get(1));
+        }
+
+        /**
+         * String holds the table name
+         */
+        public static final String TABLE_NAME = "website";
+
+        /**
+         * Column in the Website table for DB
+         */
+        public static final String COLUMN_WEBSITE_ID = "website_id";
+        public static final String COLUMN_HREF = "href";
+    }
+
+    /**
+     * Class that creates the Self (SelfEntry) table
+     */
+    public static final class SelfEntry implements BaseColumns{
+        /**
+         * Location for the specific table (used to access table data)
+         */
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_SELF).build();
+
+        /**
+         * The type of data I will be sending if retrieved
+         */
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SELF;
+
+        /**
+         * URI for the specific Self row in the Self table
+         */
+        public static Uri buildSelfUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        /**
+         * Uri for the specific Self ID in the Self table
+         */
+        public static Uri buildSelfIDUri(int SelfID){
+            return CONTENT_URI.buildUpon().appendPath(Integer.toString(SelfID)).build();
+        }
+
+        /**
+         * Uri for getting the Self id
+         */
+        public static String getSelfID(Uri uri){
+            return uri.getPathSegments().get(1);
+        }
+
+        /**
+         * Uri for getting the Self Id
+         */
+        public static int getIntegerSelfID(Uri uri){
+            return Integer.parseInt(uri.getPathSegments().get(1));
+        }
+
+        /**
+         * String holds the table name
+         */
+        public static final String TABLE_NAME = "self";
+
+        /**
+         * Column in the Self table for DB
+         */
+        public static final String COLUMN_SELF_ID = "self_id";
+        public static final String COLUMN_HREF = "href";
+    }
+
+    /**
+     * Class that creates the PartnerContacts (PartnerContactsEntry) table
+     */
+    public static final class PartnerContactEntry implements BaseColumns{
+        /**
+         * Location for the specific table (used to access table data)
+         */
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PARTNER_CONTACT).build();
+
+        /**
+         * The type of data I will be sending if retrieved
+         */
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PARTNER_CONTACT;
+
+        /**
+         * URI for the specific Partner Contact row in the Partner Contact table
+         */
+        public static Uri buildPartnerContactUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        /**
+         * Uri for the specific Partner Contact ID in the Partner Contact table
+         */
+        public static Uri buildPartnerContactIDUri(int PCID){
+            return CONTENT_URI.buildUpon().appendPath(Integer.toString(PCID)).build();
+        }
+
+        /**
+         * Uri for getting the Partner Contact id
+         */
+        public static String getSelfID(Uri uri){
+            return uri.getPathSegments().get(1);
+        }
+
+        /**
+         * Uri for getting the Partner Contact Id
+         */
+        public static int getIntegerSelfID(Uri uri){
+            return Integer.parseInt(uri.getPathSegments().get(1));
+        }
+
+        /**
+         * String holds the table name
+         */
+        public static final String TABLE_NAME = "partner_contact";
+
+        /**
+         * Column in the Partner Contact table for DB
+         */
+        public static final String COLUMN_PARTNER_CONTACT_ID = "partner_contact_id";
+        public static final String COLUMN_HREF = "href";
+    }
+
+    /**
+     * Class that creates the Partner (PartnerEntry) table
+     */
+    public static final class PartnerEntry implements BaseColumns {
+        /**
+         * Location for the specific table (used to access table data)
+         */
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PARTNER).build();
+
+        /**
+         * The type of data I will be sending if retrieved
+         */
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PARTNER;
+
+        /**
+         * URI for the specific Partner row in the Partner table
+         */
+        public static Uri buildPartnerUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        /**
+         * Uri for the specific Partner ID in the Partner table
+         */
+        public static Uri buildPartnerIDUri(int PartnerID) {
+            return CONTENT_URI.buildUpon().appendPath(Integer.toString(PartnerID)).build();
+        }
+
+        /**
+         * Uri for getting the Partner id
+         */
+        public static String getPartnerID(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+
+        /**
+         * Uri for getting the Partner Id
+         */
+        public static int getIntegerPartnerID(Uri uri) {
+            return Integer.parseInt(uri.getPathSegments().get(1));
+        }
+
+        /**
+         * String holds the table name
+         */
+        public static final String TABLE_NAME = "Partner";
+
+        /**
+         * Column in the Partner table for DB
+         */
+        public static final String COLUMN_PARTNER_ID = "partners_id";
+        public static final String COLUMN_SLUG = "slug";
+        public static final String COLUMN_CREATEDAT = "created_at";
+        public static final String COLUMN_UPDATEDAT = "updated_at";
+        public static final String COLUMN_TYPE = "type";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_EMAIL = "email";
+        public static final String COLUMN_REGION = "region";
+    }
+
+    /**
      * Class that creates the Dimension (DimensionEntry) table
      */
     public static final class DimensionEntry implements BaseColumns{
@@ -923,121 +1213,4 @@ public class DbContract {
         public static final String COLUMN_DIAMETER = "diameter";
     }
 
-    /**
-     * Class that creates the Profile (ProfileEntry) table
-     */
-    public static final class ProfileEntry implements BaseColumns{
-        /**
-         * Location for the specific table (used to access table data)
-         */
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PROFILE).build();
-
-        /**
-         * The type of data I will be sending if retrieved
-         */
-        public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PROFILE;
-
-        /**
-         * URI for the specific Profile row in the Profile table
-         */
-        public static Uri buildProfileUri(long id){
-            return ContentUris.withAppendedId(CONTENT_URI, id);
-        }
-
-        /**
-         * Uri for the specific Profile ID in the Profile table
-         */
-        public static Uri buildProfileIDUri(int ProfileID){
-            return CONTENT_URI.buildUpon().appendPath(Integer.toString(ProfileID)).build();
-        }
-
-        /**
-         * Uri for getting the Profile id
-         */
-        public static String getProfileID(Uri uri){
-            return uri.getPathSegments().get(1);
-        }
-
-        /**
-         * Uri for getting the Profile Id
-         */
-        public static int getIntegerProfileID(Uri uri){
-            return Integer.parseInt(uri.getPathSegments().get(1));
-        }
-
-        /**
-         * String holds the table name
-         */
-        public static final String TABLE_NAME = "profile";
-
-        /**
-         * Column in the Profile table for DB
-         */
-        public static final String COLUMN_PROFILE_ID = "profile_id";
-        public static final String COLUMN_HREF = "href";
-    }
-
-    /**
-     * Class that creates the Partner (PartnerEntry) table
-     */
-    public static final class PartnerEntry implements BaseColumns {
-        /**
-         * Location for the specific table (used to access table data)
-         */
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PARTNER).build();
-
-        /**
-         * The type of data I will be sending if retrieved
-         */
-        public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PARTNER;
-
-        /**
-         * URI for the specific Partner row in the Partner table
-         */
-        public static Uri buildPartnerUri(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
-        }
-
-        /**
-         * Uri for the specific Partner ID in the Partner table
-         */
-        public static Uri buildPartnerIDUri(int PartnerID) {
-            return CONTENT_URI.buildUpon().appendPath(Integer.toString(PartnerID)).build();
-        }
-
-        /**
-         * Uri for getting the Partner id
-         */
-        public static String getPartnerID(Uri uri) {
-            return uri.getPathSegments().get(1);
-        }
-
-        /**
-         * Uri for getting the Partner Id
-         */
-        public static int getIntegerPartnerID(Uri uri) {
-            return Integer.parseInt(uri.getPathSegments().get(1));
-        }
-
-        /**
-         * String holds the table name
-         */
-        public static final String TABLE_NAME = "Partner";
-
-        /**
-         * Column in the Partner table for DB
-         */
-        public static final String COLUMN_PARTNER_ID = "partners_id";
-        public static final String COLUMN_SLUG = "slug";
-        public static final String COLUMN_CREATEDAT = "created_at";
-        public static final String COLUMN_UPDATEDAT = "updated_at";
-        public static final String COLUMN_TYPE = "type";
-        public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_EMAIL = "email";
-        public static final String COLUMN_REGION = "region";
-    }
 }
