@@ -49,9 +49,9 @@ public class AllModelService extends IntentService{
 
         Log.v("AllModuleService","Starting Movie Services ...");
 
-        startService(new Intent(getApplicationContext(), GenesService.class));
         startService(new Intent(getApplicationContext(), ArtistsService.class));
         startService(new Intent(getApplicationContext(), ArtworksService.class));
+        startService(new Intent(getApplicationContext(), GenesService.class));
         startService(new Intent(getApplicationContext(), ShowsService.class));
         startService(new Intent(getApplicationContext(), FairsService.class));
 
