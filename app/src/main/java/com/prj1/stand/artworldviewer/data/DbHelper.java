@@ -3,6 +3,12 @@ package com.prj1.stand.artworldviewer.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import com.prj1.stand.artworldviewer.data.DbContract.ArtistEntry;
+import com.prj1.stand.artworldviewer.data.DbContract.ArtworkEntry;
+import com.prj1.stand.artworldviewer.data.DbContract.FairEntry;
+import com.prj1.stand.artworldviewer.data.DbContract.GeneEntry;
+import com.prj1.stand.artworldviewer.data.DbContract.ShowEntry;
+
 
 /**
  * Art World Viewer class creates the Database and creates
@@ -28,6 +34,8 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         // Create the string for the individual tables
+        final String SQL_CREATE_ARTIST_TALBE = "CREATE TALBE " + ArtistEntry.TABLE_NAME + " ( "+
+                ArtistEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+
 
     }
 }
