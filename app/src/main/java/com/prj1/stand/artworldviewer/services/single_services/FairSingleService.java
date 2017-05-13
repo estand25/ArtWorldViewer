@@ -1,12 +1,12 @@
-package com.prj1.stand.artworldviewer.services;
-
+package com.prj1.stand.artworldviewer.services.single_services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 
 import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
 import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
-import com.prj1.stand.artworldviewer.model.Artwork;
+import com.prj1.stand.artworldviewer.model.Fair;
 import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;
 
 import retrofit2.Call;
@@ -14,13 +14,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * IntentService that handles that retrieve a single Artwork information from the Art World API
+ * IntentService that handles that retrieve a single Artist information from the Art World API
  * extends IntentService
  * Created by Stand on 5/6/2017.
  */
 
 
-public class ArtworkSingleService extends IntentService{
+public class FairSingleService extends IntentService {
     // Local Api fetching Service
     private ApiFetchingService apiFetchingService;
 
@@ -30,8 +30,8 @@ public class ArtworkSingleService extends IntentService{
      * a name to the IntentService's background thread
      *
      */
-    public ArtworkSingleService(){
-        super("ArtworkSingleService");
+    public FairSingleService(){
+        super("FairSingleService");
     }
 
     /**
@@ -43,20 +43,20 @@ public class ArtworkSingleService extends IntentService{
     }
 
     @Override
-    protected void onHandleIntent(Intent artworkSingleIntent) {
+    protected void onHandleIntent(Intent fairSingleIntent) {
         // Get the data from the artist single intent
-        final String artwork_id = artworkSingleIntent.getStringExtra("ArtworkSingle");
+        final String fair_id = fairSingleIntent.getStringExtra("FairSingle");
 
         apiFetchingService = ApiUtility.getApiService();
-        apiFetchingService.getArtwork(artwork_id, TokenUtility.getInstance().getOurToken())
-                .enqueue(new Callback<Artwork>() {
+        apiFetchingService.getFair(fair_id, TokenUtility.getInstance().getOurToken())
+                .enqueue(new Callback<Fair>() {
                     @Override
-                    public void onResponse(Call<Artwork> call, Response<Artwork> response) {
+                    public void onResponse(Call<Fair> call, Response<Fair> response) {
 
                     }
 
                     @Override
-                    public void onFailure(Call<Artwork> call, Throwable t) {
+                    public void onFailure(Call<Fair> call, Throwable t) {
 
                     }
                 });

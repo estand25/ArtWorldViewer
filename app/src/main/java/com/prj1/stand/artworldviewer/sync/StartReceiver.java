@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
-import com.prj1.stand.artworldviewer.services.ArtTokenService;
+import com.prj1.stand.artworldviewer.services.group_services.ArtTokenService;
 
 /**
  * Handles the wakefulness and start populating art

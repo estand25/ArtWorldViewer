@@ -1,4 +1,5 @@
-package com.prj1.stand.artworldviewer.services;
+package com.prj1.stand.artworldviewer.services.single_services;
+
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -6,7 +7,7 @@ import android.support.annotation.Nullable;
 
 import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
 import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
-import com.prj1.stand.artworldviewer.model.Fair;
+import com.prj1.stand.artworldviewer.model.Gene;
 import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;
 
 import retrofit2.Call;
@@ -19,8 +20,7 @@ import retrofit2.Response;
  * Created by Stand on 5/6/2017.
  */
 
-
-public class FairSingleService extends IntentService {
+public class GeneSingleService extends IntentService{
     // Local Api fetching Service
     private ApiFetchingService apiFetchingService;
 
@@ -30,8 +30,8 @@ public class FairSingleService extends IntentService {
      * a name to the IntentService's background thread
      *
      */
-    public FairSingleService(){
-        super("FairSingleService");
+    public GeneSingleService(){
+        super("GeneSingleService");
     }
 
     /**
@@ -43,23 +43,22 @@ public class FairSingleService extends IntentService {
     }
 
     @Override
-    protected void onHandleIntent(Intent fairSingleIntent) {
+    protected void onHandleIntent(Intent geneSingleIntent) {
         // Get the data from the artist single intent
-        final String fair_id = fairSingleIntent.getStringExtra("FairSingle");
+        final String gene_id = geneSingleIntent.getStringExtra("GenesSingle");
 
         apiFetchingService = ApiUtility.getApiService();
-        apiFetchingService.getFair(fair_id, TokenUtility.getInstance().getOurToken())
-                .enqueue(new Callback<Fair>() {
+        apiFetchingService.getGene(gene_id, TokenUtility.getInstance().getOurToken())
+                .enqueue(new Callback<Gene>() {
                     @Override
-                    public void onResponse(Call<Fair> call, Response<Fair> response) {
+                    public void onResponse(Call<Gene> call, Response<Gene> response) {
 
                     }
 
                     @Override
-                    public void onFailure(Call<Fair> call, Throwable t) {
+                    public void onFailure(Call<Gene> call, Throwable t) {
 
                     }
                 });
-
     }
 }

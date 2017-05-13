@@ -1,4 +1,4 @@
-package com.prj1.stand.artworldviewer.services;
+package com.prj1.stand.artworldviewer.services.group_services;
 
 
 import android.app.IntentService;

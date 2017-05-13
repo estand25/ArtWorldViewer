@@ -34,51 +34,51 @@
             android:syncable="true" />
 
         <service
-            android:name=".services.ArtTokenService"
+            android:name=".services.group_services.ArtTokenService"
             android:exported="false" />
 
         <service
-            android:name=".services.AllModelService"
+            android:name=".services.group_services.AllModelService"
             android:exported="false" />
 
         <service
-            android:name=".services.GenesService"
+            android:name=".services.group_services.GenesService"
             android:exported="false" />
 
         <service
-            android:name=".services.GeneSingleService"
+            android:name=".services.single_services.GeneSingleService"
             android:exported="false" />
 
         <service
-            android:name=".services.ArtistsService"
+            android:name=".services.group_services.ArtistsService"
             android:exported="false" />
 
         <service
-            android:name=".services.ArtistSingleService"
+            android:name=".services.single_services.ArtistSingleService"
             android:exported="false" />
 
         <service
-            android:name=".services.ArtworksService"
+            android:name=".services.group_services.ArtworksService"
             android:exported="false" />
 
         <service
-            android:name=".services.ArtworkSingleService"
+            android:name=".services.single_services.ArtworkSingleService"
             android:exported="false" />
 
         <service
-            android:name=".services.FairsService"
+            android:name=".services.group_services.FairsService"
             android:exported="false" />
 
         <service
-            android:name=".services.FairSingleService"
+            android:name=".services.single_services.FairSingleService"
             android:exported="false"/>
 
         <service
-            android:name=".services.ShowsService"
+            android:name=".services.group_services.ShowsService"
             android:exported="false" />
 
         <service
-            android:name=".services.ShowSingleService"
+            android:name=".services.single_services.ShowSingleService"
             android:exported="false" />
 
         <receiver

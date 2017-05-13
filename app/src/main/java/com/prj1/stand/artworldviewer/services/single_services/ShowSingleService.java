@@ -1,5 +1,4 @@
-package com.prj1.stand.artworldviewer.services;
-
+package com.prj1.stand.artworldviewer.services.single_services;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -7,7 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
 import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
-import com.prj1.stand.artworldviewer.model.Gene;
+import com.prj1.stand.artworldviewer.model.Show;
 import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;
 
 import retrofit2.Call;
@@ -15,12 +14,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * IntentService that handles that retrieve a single Artist information from the Art World API
+ * IntentService that handles that retrieve a single Showinformation from the Art World API
  * extends IntentService
  * Created by Stand on 5/6/2017.
  */
 
-public class GeneSingleService extends IntentService{
+
+public class ShowSingleService extends IntentService{
     // Local Api fetching Service
     private ApiFetchingService apiFetchingService;
 
@@ -30,8 +30,8 @@ public class GeneSingleService extends IntentService{
      * a name to the IntentService's background thread
      *
      */
-    public GeneSingleService(){
-        super("GeneSingleService");
+    public ShowSingleService(){
+        super("ShowSingleService");
     }
 
     /**
@@ -43,20 +43,20 @@ public class GeneSingleService extends IntentService{
     }
 
     @Override
-    protected void onHandleIntent(Intent geneSingleIntent) {
+    protected void onHandleIntent(Intent showSingleIntent) {
         // Get the data from the artist single intent
-        final String gene_id = geneSingleIntent.getStringExtra("GenesSingle");
+        final String show_id = showSingleIntent.getStringExtra("ShowSingle");
 
         apiFetchingService = ApiUtility.getApiService();
-        apiFetchingService.getGene(gene_id, TokenUtility.getInstance().getOurToken())
-                .enqueue(new Callback<Gene>() {
+        apiFetchingService.getShow(show_id, TokenUtility.getInstance().getOurToken())
+                .enqueue(new Callback<Show>() {
                     @Override
-                    public void onResponse(Call<Gene> call, Response<Gene> response) {
+                    public void onResponse(Call<Show> call, Response<Show> response) {
 
                     }
 
                     @Override
-                    public void onFailure(Call<Gene> call, Throwable t) {
+                    public void onFailure(Call<Show> call, Throwable t) {
 
                     }
                 });
