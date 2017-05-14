@@ -128,7 +128,7 @@ public class DbProvider extends ContentProvider {
                 DbContract.DimensionEntry.TABLE_NAME + " INNER JOIN " +
                         DbContract.ArtworkEntry.TABLE_NAME +
                         " ON " + DbContract.ArtworkEntry.TABLE_NAME +
-                        "." + DbContract.ArtworkEntry.COLUMN_DIMESIONS_ID +
+                        "." + DbContract.ArtworkEntry.COLUMN_DIMENSIONS_ID +
                         " = " + DbContract.DimensionEntry.TABLE_NAME +
                         "." + DbContract.DimensionEntry.COLUMN_DIMENSION_ID
         );

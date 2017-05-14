@@ -196,7 +196,7 @@ public class DbContract {
         public static final String COLUMN_CATEGORY = "category";
         public static final String COLUMN_MEDIUM = "medium";
         public static final String COLUMN_DATE = "date";
-        public static final String COLUMN_DIMESIONS_ID = "dimension_id";
+        public static final String COLUMN_DIMENSIONS_ID = "dimension_id";
         public static final String COLUMN_PUBLISHED = "published";
         public static final String COLUMN_WEBSITE_ID = "website_id";
         public static final String COLUMN_SIGNATURE = "signature";
@@ -207,7 +207,7 @@ public class DbContract {
         public static final String COLUMN_ADDITIONAL_INFORMATION = "additional_information";
         public static final String COLUMN_IMAGE_RIGHTS = "image_rights";
         public static final String COLUMN_BLURB = "blurb";
-        public static final String COLUMN_UNIQUE = "unique";
+        public static final String COLUMN_UNIQUE = "is_unique";
         public static final String COLUMN_CULTURAL_MAKER = "cultural_maker";
         public static final String COLUMN_ICONICITY = "iconicity";
         public static final String COLUMN_CAN_INQUIRE = "can_inquire";
@@ -1200,7 +1200,7 @@ public class DbContract {
         /**
          * String holds the table name
          */
-        public static final String TABLE_NAME = "in";
+        public static final String TABLE_NAME = "in_";
 
         /**
          * Column in the IN table for DB

@@ -43,7 +43,7 @@ public class AllModelService extends IntentService{
             Log.v("AllModelService","Can't sleep for 10 second because " + e.getMessage());
         }
 
-        Log.v("AllModuleService","Starting Movie Services ...");
+        Log.v("AllModuleService","Starting All Services ...");
 
         startService(new Intent(getApplicationContext(), ArtistsService.class));
         startService(new Intent(getApplicationContext(), ArtworksService.class));
@@ -52,6 +52,6 @@ public class AllModelService extends IntentService{
         startService(new Intent(getApplicationContext(), FairsService.class));
 
 
-        Log.v("AllModuleService","Ending Movie Services ...");
+        Log.v("AllModuleService","Ending All Services ...");
     }
 }

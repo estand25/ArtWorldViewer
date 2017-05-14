@@ -31,7 +31,7 @@ import com.prj1.stand.artworldviewer.data.DbContract.PartnerContactEntry;
 
 public class DbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     static final String DATABASE_NAME = "artworlddatabase.db";
 
@@ -61,7 +61,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 ArtistEntry.COLUMN_HOMETOWN + " TEXT NOT NULL, " +
                 ArtistEntry.COLUMN_LOCATION + " TEXT NOT NULL, " +
                 ArtistEntry.COLUMN_NATIONALITY + " TEXT NOT NULL, " +
-                ArtistEntry.COLUMN_LINK_ID + " TEXT NOT NULL, " +
+                ArtistEntry.COLUMN_LINK_ID + " TEXT NULL, " +
 
                 " UNIQUE (" + ArtistEntry.COLUMN_ARTIST_ID + ") ON CONFLICT REPLACE " +
                 " FOREIGN KEY (" + ArtistEntry.COLUMN_LINK_ID + ") REFERENCES " +
@@ -78,8 +78,8 @@ public class DbHelper extends SQLiteOpenHelper {
                 ArtworkEntry.COLUMN_CATEGORY + " TEXT NOT NULL, " +
                 ArtworkEntry.COLUMN_MEDIUM + " TEXT NOT NULL, " +
                 ArtworkEntry.COLUMN_DATE + " TEXT NOT NULL, " +
-                ArtworkEntry.COLUMN_DIMESIONS_ID + " TEXT NOT NULL, " +
-                ArtworkEntry.COLUMN_PUBLISHED + " BLOB NULL, " +
+                ArtworkEntry.COLUMN_DIMENSIONS_ID + " TEXT NOT NULL, " +
+                ArtworkEntry.COLUMN_PUBLISHED + " BLOB NOT NULL, " +
                 ArtworkEntry.COLUMN_WEBSITE_ID + " TEXT NOT NULL, " +
                 ArtworkEntry.COLUMN_SIGNATURE + " TEXT NOT NULL, " +
                 ArtworkEntry.COLUMN_PROVENANCE + " TEXT NOT NULL, " +
@@ -89,19 +89,19 @@ public class DbHelper extends SQLiteOpenHelper {
                 ArtworkEntry.COLUMN_ADDITIONAL_INFORMATION + " TEXT NOT NULL, " +
                 ArtworkEntry.COLUMN_IMAGE_RIGHTS + " TEXT NOT NULL, " +
                 ArtworkEntry.COLUMN_BLURB + " TEXT NOT NULL, " +
-                ArtworkEntry.COLUMN_UNIQUE + " BLOB NULL, " +
+                ArtworkEntry.COLUMN_UNIQUE + " BLOB NOT NULL, " +
                 ArtworkEntry.COLUMN_CULTURAL_MAKER + " TEXT NOT NULL, " +
                 ArtworkEntry.COLUMN_ICONICITY + " TEXT NOT NULL, " +
-                ArtworkEntry.COLUMN_CAN_INQUIRE + " BLOB NULL, " +
-                ArtworkEntry.COLUMN_CAN_ACQUIRE + " BLOB NULL, " +
-                ArtworkEntry.COLUMN_CAN_SHARE + " BLOB NULL, " +
+                ArtworkEntry.COLUMN_CAN_INQUIRE + " BLOB NOT NULL, " +
+                ArtworkEntry.COLUMN_CAN_ACQUIRE + " BLOB NOT NULL, " +
+                ArtworkEntry.COLUMN_CAN_SHARE + " BLOB NOT NULL, " +
                 ArtworkEntry.COLUMN_SALE_MESSAGE + " TEXT NOT NULL, " +
                 ArtworkEntry.COLUMN_SOLD + " TEXT NOT NULL, " +
                 ArtworkEntry.COLUMN_IMAGE_VERSION_ID + " TEXT NOT NULL, " +
                 ArtworkEntry.COLUMN_LINK_ID + " TEXT NOT NULL, " +
 
                 " UNIQUE (" + ArtworkEntry.COLUMN_ARTWORK_ID + ") ON CONFLICT REPLACE " +
-                " FOREIGN KEY (" + ArtworkEntry.COLUMN_DIMESIONS_ID + ") REFERENCES " +
+                " FOREIGN KEY (" + ArtworkEntry.COLUMN_DIMENSIONS_ID + ") REFERENCES " +
                 DimensionEntry.TABLE_NAME + " (" + DimensionEntry.COLUMN_DIMENSION_ID + ") " +
                 " FOREIGN KEY (" + ArtworkEntry.COLUMN_WEBSITE_ID + ") REFERENCES " +
                 WebsiteEntry.TABLE_NAME + " (" + WebsiteEntry.COLUMN_WEBSITE_ID + ") " +
@@ -123,7 +123,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 FairEntry.COLUMN_START_AT + " TEXT NOT NULL, " +
                 FairEntry.COLUMN_END_AT + " TEXT NOT NULL, " +
                 FairEntry.COLUMN_STATUS + " TEXT NOT NULL, " +
-                FairEntry.COLUMN_PUBLISHED + " BLOB NULL, " +
+                FairEntry.COLUMN_PUBLISHED + " BLOB NOT NULL, " +
                 FairEntry.COLUMN_LINK_ID + " TEXT NOT NULL, " +
 
                 " UNIQUE (" + FairEntry.COLUMN_FAIR_ID + ") ON CONFLICT REPLACE " +
@@ -170,31 +170,31 @@ public class DbHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_LINK_TABLE = "CREATE TABLE " + LinkEntry.TABLE_NAME + " ( " +
                 LinkEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                LinkEntry.COLUMN_LINK_ID + " TEXT NOT NULL, " +
-                LinkEntry.COLUMN_SELF_ID + " TEXT NOT NULL, " +
-                LinkEntry.COLUMN_LINK_TYPE + " TEXT NOT NULL, " +
-                LinkEntry.COLUMN_IMAGE_ID + " TEXT NOT NULL, " +
-                LinkEntry.COLUMN_THUMBNAIL_ID + " TEXT NOT NULL, " +
-                LinkEntry.COLUMN_PERMALINK_ID + " TEXT NOT NULL, " +
-                LinkEntry.COLUMN_PARTNER_CONTACT_ID + " TEXT NOT NULL, " +
-                LinkEntry.COLUMN_WEBSITE_ID + " TEXT NOT NULL, " +
-                LinkEntry.COLUMN_PROFILE_ID + " TEXT NOT NULL, " +
+                LinkEntry.COLUMN_LINK_ID + " TEXT NULL, " +
+                LinkEntry.COLUMN_SELF_ID + " TEXT NULL, " +
+                LinkEntry.COLUMN_LINK_TYPE + " TEXT NULL, " +
+                LinkEntry.COLUMN_IMAGE_ID + " TEXT NULL, " +
+                LinkEntry.COLUMN_THUMBNAIL_ID + " TEXT NULL, " +
+                LinkEntry.COLUMN_PERMALINK_ID + " TEXT NULL, " +
+                LinkEntry.COLUMN_PARTNER_CONTACT_ID + " TEXT NULL, " +
+                LinkEntry.COLUMN_WEBSITE_ID + " TEXT NULL, " +
+                LinkEntry.COLUMN_PROFILE_ID + " TEXT NULL, " +
 
-                " UNIQUE (" + LinkEntry.COLUMN_LINK_ID + ") ON CONFLICT REPLACE " +
-                " FOREIGN KEY (" + LinkEntry.COLUMN_SELF_ID + ") REFERENCES " +
-                SelfEntry.TABLE_NAME + " (" + SelfEntry.COLUMN_SELF_ID + ") " +
-                " FOREIGN KEY (" + LinkEntry.COLUMN_IMAGE_ID + ") REFERENCES " +
-                ImageEntry.TABLE_NAME + " (" + ImageEntry.COLUMN_IMAGE_ID + ") " +
-                " FOREIGN KEY (" + LinkEntry.COLUMN_THUMBNAIL_ID + ") REFERENCES " +
-                ThumbnailEntry.TABLE_NAME + " (" + ThumbnailEntry.COLUMN_THUMBNAIL_ID + ") " +
-                " FOREIGN KEY (" + LinkEntry.COLUMN_PERMALINK_ID + ") REFERENCES " +
-                PermalinkEntry.TABLE_NAME + " (" + PermalinkEntry.COLUMN_PERMALINK_ID + ") " +
-                " FOREIGN KEY (" + LinkEntry.COLUMN_PARTNER_CONTACT_ID + ") REFERENCES " +
-                PartnerContactEntry.TABLE_NAME + " (" + PartnerContactEntry.COLUMN_PARTNER_CONTACT_ID + ") " +
-                " FOREIGN KEY (" + LinkEntry.COLUMN_WEBSITE_ID + ") REFERENCES " +
-                WebsiteEntry.TABLE_NAME + " (" + WebsiteEntry.COLUMN_WEBSITE_ID + ") " +
-                " FOREIGN KEY (" + LinkEntry.COLUMN_PROFILE_ID + ") REFERENCES " +
-                ProfileEntry.TABLE_NAME + " (" + ProfileEntry.COLUMN_PROFILE_ID + ")) ";
+                " UNIQUE (" + LinkEntry.COLUMN_LINK_ID + ") ON CONFLICT REPLACE) "; //" +
+                //" FOREIGN KEY (" + LinkEntry.COLUMN_SELF_ID + ") REFERENCES " +
+                //SelfEntry.TABLE_NAME + " (" + SelfEntry.COLUMN_SELF_ID + ") " +
+                //" FOREIGN KEY (" + LinkEntry.COLUMN_IMAGE_ID + ") REFERENCES " +
+                //ImageEntry.TABLE_NAME + " (" + ImageEntry.COLUMN_IMAGE_ID + ") " +
+                //" FOREIGN KEY (" + LinkEntry.COLUMN_THUMBNAIL_ID + ") REFERENCES " +
+                //ThumbnailEntry.TABLE_NAME + " (" + ThumbnailEntry.COLUMN_THUMBNAIL_ID + ") " +
+                //" FOREIGN KEY (" + LinkEntry.COLUMN_PERMALINK_ID + ") REFERENCES " +
+                //PermalinkEntry.TABLE_NAME + " (" + PermalinkEntry.COLUMN_PERMALINK_ID + ") " +
+                //" FOREIGN KEY (" + LinkEntry.COLUMN_PARTNER_CONTACT_ID + ") REFERENCES " +
+                //PartnerContactEntry.TABLE_NAME + " (" + PartnerContactEntry.COLUMN_PARTNER_CONTACT_ID + ") " +
+                //" FOREIGN KEY (" + LinkEntry.COLUMN_WEBSITE_ID + ") REFERENCES " +
+                //WebsiteEntry.TABLE_NAME + " (" + WebsiteEntry.COLUMN_WEBSITE_ID + ") " +
+                //" FOREIGN KEY (" + LinkEntry.COLUMN_PROFILE_ID + ") REFERENCES " +
+                //ProfileEntry.TABLE_NAME + " (" + ProfileEntry.COLUMN_PROFILE_ID + ")) ";
         sqLiteDatabase.execSQL(SQL_CREATE_LINK_TABLE);
 
         final String SQL_CREATE_IMAGE_VERSION_TABLE = "CREATE TABLE " + ImageVersionEntry.TABLE_NAME + " ( " +
@@ -202,7 +202,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 ImageVersionEntry.COLUMN_IMAGE_VERSION_ID + " TEXT NOT NULL, " +
                 ImageVersionEntry.COLUMN_VERSION_TYPE + " TEXT NOT NULL, " +
 
-                " UNIQUE (" + LinkEntry.COLUMN_LINK_ID + ") ON CONFLICT REPLACE );";
+                " UNIQUE (" + ImageVersionEntry.COLUMN_IMAGE_VERSION_ID + ") ON CONFLICT REPLACE );";
         sqLiteDatabase.execSQL(SQL_CREATE_IMAGE_VERSION_TABLE);
 
         final String SQL_CREATE_IMAGE_TABLE = "CREATE TABLE " + ImageEntry.TABLE_NAME + " ( " +
@@ -282,7 +282,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 DimensionEntry.COLUMN_CM_ID + " TEXT NOT NULL, " +
                 DimensionEntry.COLUMN_IN_ID + " TEXT NOT NULL, " +
 
-                " UNIQUE (" + PartnerEntry.COLUMN_PARTNER_ID + ") ON CONFLICT REPLACE )" +
+                " UNIQUE (" + DimensionEntry.COLUMN_DIMENSION_ID  + ") ON CONFLICT REPLACE " +
                 " FOREIGN KEY (" + DimensionEntry.COLUMN_CM_ID + ") REFERENCES " +
                 CMEntry.TABLE_NAME + " (" + CMEntry.COLUMN_CM_ID + ") " +
                 " FOREIGN KEY (" + DimensionEntry.COLUMN_IN_ID + ") REFERENCES " +
@@ -298,7 +298,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 CMEntry.COLUMN_DEPTH + " TEXT NOT NULL, " +
                 CMEntry.COLUMN_DIAMETER + " TEXT NOT NULL, " +
 
-                " UNIQUE (" + CMEntry.COLUMN_CM_ID + ") ON CONFLICT REPLACE )); ";
+                " UNIQUE (" + CMEntry.COLUMN_CM_ID + ") ON CONFLICT REPLACE ); ";
         sqLiteDatabase.execSQL(SQL_CREATE_CM_TABLE);
 
         final String SQL_CREATE_IN_TABLE = "CREATE TABLE " + INEntry.TABLE_NAME + " ( " +
@@ -310,7 +310,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 INEntry.COLUMN_DEPTH + " TEXT NOT NULL, " +
                 INEntry.COLUMN_DIAMETER + " TEXT NOT NULL, " +
 
-                " UNIQUE (" + INEntry.COLUMN_IN_ID + ") ON CONFLICT REPLACE )); ";
+                " UNIQUE (" + INEntry.COLUMN_IN_ID + ") ON CONFLICT REPLACE ); ";
         sqLiteDatabase.execSQL(SQL_CREATE_IN_TABLE);
     }
 
