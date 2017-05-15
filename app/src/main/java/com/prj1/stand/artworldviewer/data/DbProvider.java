@@ -23,6 +23,7 @@ public class DbProvider extends ContentProvider {
     /**
      * Static constants for app tables
      */
+    static final int TOKEN = 001;
     static final int ARTIST = 100;
     static final int ARTWORK = 101;
     static final int FAIR = 102;
@@ -483,6 +484,7 @@ public class DbProvider extends ContentProvider {
         /**
          * For each type of URI you want to add, create a corresponding code
          */
+        uriMatcher.addURI(authority, DbContract.PATH_TOKEN, TOKEN);
         uriMatcher.addURI(authority, DbContract.PATH_ARTIST, ARTIST);
         uriMatcher.addURI(authority, DbContract.PATH_ARTWORK, ARTWORK);
         uriMatcher.addURI(authority, DbContract.PATH_FAIR, FAIR);
@@ -527,6 +529,8 @@ public class DbProvider extends ContentProvider {
         final int match = dbProviderUriMatcher.match(uri);
 
         switch(match){
+            case TOKEN:
+                return DbContract.TokenEntry.CONTENT_TYPE;
             case ARTIST:
                 return DbContract.ArtistEntry.CONTENT_TYPE;
             case ARTWORK:
@@ -580,6 +584,18 @@ public class DbProvider extends ContentProvider {
                         String sortOrder){
         Cursor retCursor = null;
         switch(dbProviderUriMatcher.match(uri)){
+            case TOKEN: {
+                retCursor = dbHelper.getReadableDatabase().query(
+                        DbContract.TokenEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             case ARTIST: {
                 retCursor = dbHelper.getReadableDatabase().query(
                         DbContract.ArtistEntry.TABLE_NAME,
@@ -803,6 +819,14 @@ public class DbProvider extends ContentProvider {
         Uri returnUri = null;
 
         switch (match){
+            case TOKEN:{
+                long _id = db.insert(DbContract.TokenEntry.TABLE_NAME, null, contentValues);
+                if(_id > 0)
+                    returnUri = DbContract.TokenEntry.buildTokenUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
             case ARTIST:{
                 long _id = db.insert(DbContract.ArtistEntry.TABLE_NAME, null, contentValues);
                 if(_id > 0)
@@ -961,6 +985,14 @@ public class DbProvider extends ContentProvider {
         if(null == selection) selection = "1";
 
         switch (match){
+            case TOKEN:{
+                rowDeleted = db.delete(
+                        DbContract.TokenEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs
+                );
+                break;
+            }
             case ARTIST:{
                 rowDeleted = db.delete(
                         DbContract.ArtistEntry.TABLE_NAME,
@@ -1124,6 +1156,13 @@ public class DbProvider extends ContentProvider {
         int rowUpdated = 0;
 
         switch (match){
+            case TOKEN:{
+                rowUpdated = db.update(DbContract.TokenEntry.TABLE_NAME,
+                        contentValues,
+                        selection,
+                        selectionArgs);
+                break;
+            }
             case ARTIST:{
                 rowUpdated = db.update(DbContract.ArtistEntry.TABLE_NAME,
                         contentValues,

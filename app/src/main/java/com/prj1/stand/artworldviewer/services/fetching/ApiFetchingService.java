@@ -1,22 +1,21 @@
 package com.prj1.stand.artworldviewer.services.fetching;
 
-import com.prj1.stand.artworldviewer.model.Artist;
-import com.prj1.stand.artworldviewer.model.Artists;
-import com.prj1.stand.artworldviewer.model.Artwork;
-import com.prj1.stand.artworldviewer.model.Artworks;
-import com.prj1.stand.artworldviewer.model.Fair;
-import com.prj1.stand.artworldviewer.model.Fairs;
-import com.prj1.stand.artworldviewer.model.Gene;
-import com.prj1.stand.artworldviewer.model.Genes;
-import com.prj1.stand.artworldviewer.model.Show;
-import com.prj1.stand.artworldviewer.model.Shows;
+import com.prj1.stand.artworldviewer.model.artists.Artist;
+import com.prj1.stand.artworldviewer.model.artists.Artists;
+import com.prj1.stand.artworldviewer.model.artworks.Artwork;
+import com.prj1.stand.artworldviewer.model.artworks.Artworks;
 import com.prj1.stand.artworldviewer.model.authorization.Token;
+import com.prj1.stand.artworldviewer.model.fairs.Fair;
+import com.prj1.stand.artworldviewer.model.fairs.Fairs;
+import com.prj1.stand.artworldviewer.model.genes.Gene;
+import com.prj1.stand.artworldviewer.model.genes.Genes;
+import com.prj1.stand.artworldviewer.model.shows.Show;
+import com.prj1.stand.artworldviewer.model.shows.Shows;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;

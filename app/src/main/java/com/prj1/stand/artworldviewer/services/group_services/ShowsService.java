@@ -2,16 +2,20 @@ package com.prj1.stand.artworldviewer.services.group_services;
 
 
 import android.app.IntentService;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.util.Log;
 
 import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
 import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
-import com.prj1.stand.artworldviewer.model.Show;
-import com.prj1.stand.artworldviewer.model.Shows;
+import com.prj1.stand.artworldviewer.data.DbContract;
+import com.prj1.stand.artworldviewer.model.shows.Show;
+import com.prj1.stand.artworldviewer.model.shows.Shows;
 import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;
 
 import java.util.List;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +30,9 @@ import retrofit2.Response;
 public class ShowsService extends IntentService{
     // Local Api fetching Service
     private ApiFetchingService apiFetchingService;
+
+    // Define a variable to contain a content resolver instance
+    ContentResolver contentResolver;
 
     /**
      * An IntentService must always have a constructor that calls super
@@ -43,6 +50,9 @@ public class ShowsService extends IntentService{
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // Set the current context content resolver
+        contentResolver = getApplicationContext().getContentResolver();
     }
 
     @Override
@@ -54,21 +64,49 @@ public class ShowsService extends IntentService{
                     public void onResponse(Call<Shows> call, Response<Shows> response) {
                         Log.v("ShowsService", "OnResponse - Success ..."+response.isSuccessful());
                         Log.v("ShowsService", "OnResponse - "+call.request());
+                        Log.v("ShowsService", "OnResponse - "+response.body().getEmbedded().getShows().size());
 
                         // Grab the response (a list of Shows) from the API
                         // and puts it in the local list of variable
                         List<Show> Shows = response.body().getEmbedded().getShows();
 
+                        // Content value array that I will pass to bulk insert
+                        ContentValues[] bulkShow = new ContentValues[Shows.size()];
+
+                        // Index counter
+                        int i = 0;
                         for(Show show: Shows)
                         {
-                            Log.v("ShowsService","Show Name: "+show.getName());
-                            Log.v("ShowsService","Show Press Release: "+show.getPressRelease());
-                            Log.v("ShowsService","Show Description: "+show.getDescription());
-                            Log.v("ShowsService","Show Start at: "+show.getStartAt());
-                            Log.v("ShowsService","Show End at: "+show.getEndAt());
-                            Log.v("ShowsService","Show Creation at: "+show.getCreatedAt());
-                            Log.v("ShowsService","Show Updated at: "+show.getUpdatedAt());
+                            // Content that holds all the gene information retrieved
+                            // from the API
+                            ContentValues showContent = new ContentValues();
+
+                            // Generate unique identify for foreign keys record
+                            String link_id = UUID.randomUUID().toString();
+                            String image_version_id = UUID.randomUUID().toString();
+
+                            // Set the value of each column and insert the artwork properties
+                            showContent.put(DbContract.ShowEntry.COLUMN_SHOW_ID, show.getId());
+                            showContent.put(DbContract.ShowEntry.COLUMN_CREATED_AT, show.getCreatedAt());
+                            showContent.put(DbContract.ShowEntry.COLUMN_UPDATED_AT, show.getUpdatedAt());
+                            showContent.put(DbContract.ShowEntry.COLUMN_NAME, show.getName());
+                            showContent.put(DbContract.ShowEntry.COLUMN_DESCRIPTION, (String)show.getDescription());
+                            showContent.put(DbContract.ShowEntry.COLUMN_PRESS_RELEASE, (String)show.getPressRelease());
+                            showContent.put(DbContract.ShowEntry.COLUMN_START_AT, show.getStartAt());
+                            showContent.put(DbContract.ShowEntry.COLUMN_END_AT, show.getEndAt());
+                            showContent.put(DbContract.ShowEntry.COLUMN_STATUS, show.getStatus());
+                            showContent.put(DbContract.ShowEntry.COLUMN_IMAGE_VERSION_ID, image_version_id);
+                            showContent.put(DbContract.ShowEntry.COLUMN_LINK_ID, link_id);
+
+                            // Add Genes details to the contentValue array
+                            bulkShow[i] = showContent;
+
+                            // Increment index
+                            i++;
                         }
+
+                        // Insert the content array to our local DB
+                        contentResolver.bulkInsert(DbContract.ShowEntry.CONTENT_URI,bulkShow);
 
                     }
 

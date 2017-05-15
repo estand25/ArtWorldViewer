@@ -1,6 +1,5 @@
 package com.prj1.stand.artworldviewer.activity;
 
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.prj1.stand.artworldviewer.R;
-import com.prj1.stand.artworldviewer.model.Artwork;
 
 import java.util.ArrayList;
 
@@ -17,7 +15,7 @@ import java.util.ArrayList;
  * A placeholder fragment containing a simple view.
  */
 public class ArtGalleryActivityFragment extends Fragment {
-    private ArrayList<Artwork> artGallaryList;
+    //private ArrayList<Artwork> artGallaryList;
 
     public ArtGalleryActivityFragment() {
     }

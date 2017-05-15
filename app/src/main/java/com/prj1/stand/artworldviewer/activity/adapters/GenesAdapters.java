@@ -1,20 +1,15 @@
 package com.prj1.stand.artworldviewer.activity.adapters;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.androidquery.util.AQUtility;
 import com.prj1.stand.artworldviewer.R;
-import com.prj1.stand.artworldviewer.model.Genes_Embedded;
-import org.w3c.dom.Text;
-import java.util.List;
+import com.prj1.stand.artworldviewer.model.genes.Genes;
 
 import com.androidquery.AQuery;
 
@@ -26,16 +21,16 @@ import com.androidquery.AQuery;
 
 public class GenesAdapters extends BaseAdapter{
     private Context gContext;
-    private final Genes_Embedded genes_embedded;
+    private final Genes genes;
 
     /**
      * GenesAdapters constructor the set-up outside stuff inside
      *
      */
-    public GenesAdapters (Context context, Genes_Embedded g_embedded) {
+    public GenesAdapters (Context context, Genes _genes) {
         //super(context,cursor,flags);
         gContext = context;
-        genes_embedded = g_embedded;
+        genes = _genes;
     }
 
     /**
@@ -59,7 +54,7 @@ public class GenesAdapters extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return genes_embedded.getGenes().size();
+        return genes.getEmbedded().getGenes().size();
     }
 
     @Override
@@ -87,11 +82,11 @@ public class GenesAdapters extends BaseAdapter{
             // Create an instance of ViewHolder
             ViewHolder viewHolder = new ViewHolder(view);
 
-            viewHolder.geneNameTextView.setText(genes_embedded.getGenes().get(i).getName());
-            viewHolder.geneDesTextView.setText(genes_embedded.getGenes().get(i).getDescription());
+            viewHolder.geneNameTextView.setText(genes.getEmbedded().getGenes().get(i).getName());
+            viewHolder.geneDesTextView.setText(genes.getEmbedded().getGenes().get(i).getDescription());
 
             AQuery aq = new AQuery(viewHolder.geneImageView);
-            aq.id(viewHolder.geneImageView).image(genes_embedded.getGenes().get(i).getLinks().getThumbnail().toString());
+            aq.id(viewHolder.geneImageView).image(genes.getEmbedded().getGenes().get(i).getLinks().getThumbnail().getHref());
 
             v.setTag(viewHolder);
         } else {

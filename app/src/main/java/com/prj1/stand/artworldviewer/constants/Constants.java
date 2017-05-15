@@ -11,4 +11,10 @@ import android.content.Context;
 public final class Constants {
     // Art World root
     public static final String artRoot = "https://api.artsy.net/";
+
+    // Static Context used by LastSelectedMovieType
+    public static Context cConetext;
+
+    // Static constants for DONE
+    public static final String TABLE_LOADER = "TABLE_LOADER";
 }

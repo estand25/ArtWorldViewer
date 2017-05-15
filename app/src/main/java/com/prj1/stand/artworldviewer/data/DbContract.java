@@ -24,6 +24,7 @@ public class DbContract {
     /**
      * Individual tables name
      */
+    public static final String PATH_TOKEN = "token";
     public static final String PATH_ARTIST = "artist";
     public static final String PATH_ARTWORK = "artwork";
     public static final String PATH_FAIR ="fair";
@@ -44,6 +45,71 @@ public class DbContract {
     public static final String PATH_PARTNER_CONTACT = "partner_contact";
 
     /**
+     * Class that creates the authorization token for the API
+     */
+    public static final class TokenEntry implements BaseColumns{
+        /**
+         * Location for the specific table (used to access table data) & api
+         */
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_TOKEN).build();
+
+        /**
+         * The type of data i will be send if retrieved
+         */
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TOKEN;
+
+        /**
+         * URI for the specific Artist row in the artist table
+         * @param id - Artist identifier
+         * @return - Returns Uri
+         */
+        public static Uri buildTokenUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI,id);
+        }
+
+        /**
+         * Uri for specific Artist ID int he Artist table
+         * @param TokenId - Artist unique id
+         * @return - Returns Uri
+         */
+        public static Uri buildTokenIDUri(int TokenId){
+            return CONTENT_URI.buildUpon().appendPath(Integer.toString(TokenId)).build();
+        }
+
+        /**
+         * Uri to get the movie id
+         * @param uri
+         * @return
+         */
+        public static String getTokenID(Uri uri){
+            return uri.getPathSegments().get(1);
+        }
+
+        /**
+         * Uri to get the movie id in Integer
+         * @param uri
+         * @return
+         */
+        public static int getIntegerTokenID(Uri uri){
+            return Integer.parseInt(uri.getPathSegments().get(1));
+        }
+
+        /**
+         * String holds the table name
+         */
+        public static final String TABLE_NAME = "token";
+
+        /**
+         * Columns in the token DB
+         */
+        public static final String COLUMN_TYPE = "type";
+        public static final String COLUMN_TOKEN = "token";
+        public static final String COLUMN_EXPIRES_AT = "expires_at";
+    }
+
+    /**
      * Class that create the Artist (ArtistEntry) table
      */
     public static final class ArtistEntry implements BaseColumns {
@@ -57,7 +123,7 @@ public class DbContract {
          * The type of data I will be send if retrieved
          */
         public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE +"/"+CONTENT_AUTHORITY+"/"+PATH_ARTIST;
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ARTIST;
 
         /**
          * Build the artist
@@ -515,6 +581,7 @@ public class DbContract {
         public static final String COLUMN_PARTNER_CONTACT_ID = "partner_contact_id";
         public static final String COLUMN_WEBSITE_ID = "website_id";
         public static final String COLUMN_PROFILE_ID = "profile_id";
+        public static final String COLUMN_PARTNER_ID = "partner_id";
     }
 
     /**
@@ -741,7 +808,7 @@ public class DbContract {
         /**
          * String holds the table name
          */
-        public static final String TABLE_NAME = "Permalink";
+        public static final String TABLE_NAME = "permalink";
 
         /**
          * Column in the Permalink table for DB
@@ -1021,7 +1088,7 @@ public class DbContract {
         /**
          * String holds the table name
          */
-        public static final String TABLE_NAME = "Partner";
+        public static final String TABLE_NAME = "partner";
 
         /**
          * Column in the Partner table for DB

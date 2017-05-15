@@ -1,12 +1,17 @@
 package com.prj1.stand.artworldviewer.services.group_services;
 
 import android.app.IntentService;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.util.Log;
 
 import com.prj1.stand.artworldviewer.BuildConfig;
 import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
 import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
+import com.prj1.stand.artworldviewer.constants.Constants;
+import com.prj1.stand.artworldviewer.data.DbContract;
 import com.prj1.stand.artworldviewer.model.authorization.Token;
 import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;
 
@@ -14,7 +19,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+ /**
  * IntentService that handle retrieving the Token or replaced if expired
  *
  * Created by Stand on 5/7/2017.
@@ -23,6 +33,15 @@ import retrofit2.Response;
 public class ArtTokenService extends IntentService{
     // Local Api fetching Service
     private ApiFetchingService apiFetchingService;
+
+    // Define a variable to contain a content resolver instance
+    ContentResolver contentResolver;
+
+    private String token0;
+    private String token1;
+    private String token2;
+    private String token3;
+    private String token4;
 
     /**
       An IntentService must always have a constructor that calls super
@@ -40,6 +59,9 @@ public class ArtTokenService extends IntentService{
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // Set the current context content resolver
+        contentResolver = getApplicationContext().getContentResolver();
     }
 
     /**
@@ -50,24 +72,96 @@ public class ArtTokenService extends IntentService{
      */
     @Override
     protected void onHandleIntent(final Intent artTokenIntent) {
+        // Call the api/retrofit2 passing in the APi client id and client secret to get a access token
         apiFetchingService = ApiUtility.getApiService();
-        apiFetchingService.sendAccessRequestToService(BuildConfig.AWV_Client_Id,BuildConfig.AWV_Client_Secret)
+        apiFetchingService.sendAccessRequestToService(BuildConfig.AWV_Client_Id, BuildConfig.AWV_Client_Secret)
                 .enqueue(new Callback<Token>() {
                     @Override
                     public void onResponse(Call<Token> call, Response<Token> response) {
-                        TokenUtility.getInstance().setToken(new Token(response.body().getType(),
-                                response.body().getToken(),
-                                response.body().getExpiresAt(),
-                                response.body().getLinks()));
+                        // Get the current token in the tokens table
+                        Cursor cursor = contentResolver.query(DbContract.TokenEntry.CONTENT_URI,
+                                null,
+                                null,
+                                null,
+                                null);
 
-                        Log.v("ArtTokenService","onResponse - Got the Token "+TokenUtility.getInstance().getOurToken());
+                        // Check if cursor has any table data if so read-out the record
+                        // otherwise set the new system token and insert the record into the table
+                        if(cursor.getCount() > 0) {
+                            cursor.moveToPosition(0);
+
+                            Log.d("ArtTokenService", "Token Information: " + cursor.getString(0));
+                            Log.d("ArtTokenService", "Token Information: " + cursor.getString(1));
+                            Log.d("ArtTokenService", "Token Information: " + cursor.getString(2));
+                            Log.d("ArtTokenService", "Token Information: " + cursor.getString(3));
+
+                            try {
+                                // Get the system token and compare it to the current dateTime minus 2 days
+                                // I will replace the token before it expires+
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                Date currentTokenExpiry = dateFormat.parse(cursor.getString(3));
+                                Calendar currentCalDate = Calendar.getInstance();
+                                currentCalDate.add(Calendar.DATE,+2);
+
+                                Log.v("ArtTokenService","CurrentCalDate: "+currentCalDate.getTime().toString());
+                                Log.v("ArtTokenService","currentTokenExpiry: "+currentTokenExpiry.toString());
+                                if(currentCalDate.getTime().compareTo(currentTokenExpiry) > 0)
+                                {
+                                    // Delete the current system token to insert new one
+                                    contentResolver.delete(DbContract.TokenEntry.CONTENT_URI, "", new String[]{});
+
+                                    // Set the response token to the system current token
+                                    TokenUtility.getInstance().setToken(new Token(response.body().getType(),
+                                            response.body().getToken(),
+                                            response.body().getExpiresAt(),
+                                            response.body().getLinks()));
+                                }
+                                else
+                                {
+                                    // Delete the current system token to insert new one
+                                    contentResolver.delete(DbContract.TokenEntry.CONTENT_URI, "", new String[]{});
+
+                                    // Set the System token to the data token
+                                    TokenUtility.getInstance().setToken(new Token(cursor.getString(1),
+                                            cursor.getString(2),
+                                            cursor.getString(3),
+                                            null));
+                                }
+
+                            } catch(Exception e){
+                                System.out.println(e.getMessage());
+                            }
+                        }
+                        else {
+                            // Set the response token to the system current token
+                            TokenUtility.getInstance().setToken(new Token(response.body().getType(),
+                                    response.body().getToken(),
+                                    response.body().getExpiresAt(),
+                                    response.body().getLinks()));
+
+                            // Create content holder to hold token information
+                            ContentValues tokenContentValue = new ContentValues();
+
+                            // Populate content holder with token specific information
+                            tokenContentValue.put(DbContract.TokenEntry.COLUMN_TYPE, TokenUtility.getInstance().getOurTokenType());
+                            tokenContentValue.put(DbContract.TokenEntry.COLUMN_TOKEN, TokenUtility.getInstance().getOurToken());
+                            tokenContentValue.put(DbContract.TokenEntry.COLUMN_EXPIRES_AT, TokenUtility.getInstance().getOurTokenExpire());
+
+                            // Populate the current system token into the token table
+                            contentResolver.insert(DbContract.TokenEntry.CONTENT_URI,tokenContentValue);
+                        }
+                        cursor.close();
+
+                        Log.v("ArtTokenService", "OnResponse - Got the Token " + TokenUtility.getInstance().getOurToken());
                         startService(new Intent(getApplicationContext(), AllModelService.class));
                     }
 
                     @Override
                     public void onFailure(Call<Token> call, Throwable t) {
-                        Log.v("ArtTokenService","onFailure - Got nothing, not Token set");
+                        Log.v("ArtTokenService", "onFailure - Got nothing, not Token set");
                     }
                 });
+
     }
+
 }

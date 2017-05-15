@@ -5,20 +5,18 @@ import android.app.IntentService;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.util.Log;
 
 import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
 import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
 import com.prj1.stand.artworldviewer.data.DbContract;
-import com.prj1.stand.artworldviewer.model.Artist;
-import com.prj1.stand.artworldviewer.model.Artists;
-import com.prj1.stand.artworldviewer.model.Artists_Links;
-import com.prj1.stand.artworldviewer.model.Permalink;
+import com.prj1.stand.artworldviewer.model.artists.Artist;
+import com.prj1.stand.artworldviewer.model.artists.Artists;
 import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,8 +61,17 @@ public class ArtistsService extends IntentService{
 
     @Override
     protected void onHandleIntent(Intent artistIntent) {
-        // Set the current context content resolver
-        contentResolver.delete(DbContract.ArtistEntry.CONTENT_URI, "", new String[]{});
+        // Get the current Artists table entry
+        /*Cursor cursor = contentResolver.query(DbContract.ArtistEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+
+
+        if(cursor.getCount() > 0){
+            contentResolver.delete(DbContract.ArtistEntry.CONTENT_URI, "", new String[]{});
+        }*/
 
         apiFetchingService = ApiUtility.getApiService();
         apiFetchingService.getArtistsInRangeBySize(0,"5", TokenUtility.getInstance().getOurToken())
@@ -73,9 +80,10 @@ public class ArtistsService extends IntentService{
                     public void onResponse(Call<Artists> call, Response<Artists> response) {
                         Log.v("ArtistsService", "OnResponse - Success ..."+response.isSuccessful());
                         Log.v("ArtistsService", "OnResponse - "+call.request());
+                        Log.v("ArtistsService", "OnResponse - "+response.body().getEmbedded().getArtists().size());
 
                         // Grab the response (a list of artist) from the API
-                        // and puts it in the local list of variables
+                        // and puts it in the local list variable and table
                         List<Artist> Artists = response.body().getEmbedded().getArtists();
 
                         //  Content Value array that I will pass to bulk insert
@@ -85,8 +93,6 @@ public class ArtistsService extends IntentService{
                         int i = 0;
 
                         for(Artist artist: Artists){
-                            Log.v("ArtistsService","Artist Pop ");
-
                             // Content that holds all the artist information
                             // retrieved from the API
                             ContentValues artistContent = new ContentValues();
@@ -101,22 +107,12 @@ public class ArtistsService extends IntentService{
                             artistContent.put(DbContract.ArtistEntry.COLUMN_UPDATED_AT, artist.getUpdatedAt());
                             artistContent.put(DbContract.ArtistEntry.COLUMN_NAME, artist.getName());
                             artistContent.put(DbContract.ArtistEntry.COLUMN_SORTABLE_NAME, artist.getSortableName());
-                            artistContent.put(DbContract.ArtistEntry.COLUMN_GENDER, (String) artist.getGender());
+                            artistContent.put(DbContract.ArtistEntry.COLUMN_GENDER, artist.getGender());
                             artistContent.put(DbContract.ArtistEntry.COLUMN_BIRTHDAY, artist.getBirthday());
                             artistContent.put(DbContract.ArtistEntry.COLUMN_HOMETOWN, artist.getHometown());
                             artistContent.put(DbContract.ArtistEntry.COLUMN_LOCATION, artist.getLocation());
                             artistContent.put(DbContract.ArtistEntry.COLUMN_NATIONALITY, artist.getNationality());
                             artistContent.put(DbContract.ArtistEntry.COLUMN_LINK_ID, link_id);
-
-                            // Content that holds all this artist links
-                            Artists_Links artists_links = new Artists_Links(
-                                    artist.getLinks().getSelf(),
-                                    artist.getLinks().getPermalink(),
-                                    artist.getLinks().getArtworks(),
-                                    artist.getLinks().getPublishedArtworks(),
-                                    artist.getLinks().getSimilarArtists(),
-                                    artist.getLinks().getSimilarContemporaryArtists(),
-                                    artist.getLinks().getGenes());
 
                             // Generate unique identify for self id & permalink id record
                             String self_id = UUID.randomUUID().toString();
@@ -128,16 +124,16 @@ public class ArtistsService extends IntentService{
                             ContentValues selfValue = new ContentValues();
                             ContentValues permalinkValue = new ContentValues();
 
-                            linkValue.put(DbContract.LinkEntry.COLUMN_LINK_ID, link_id);
-                            linkValue.put(DbContract.LinkEntry.COLUMN_SELF_ID, self_id);
                             linkValue.put(DbContract.LinkEntry.COLUMN_LINK_TYPE, "artist");
+                            linkValue.put(DbContract.LinkEntry.COLUMN_SELF_ID, self_id);
+                            linkValue.put(DbContract.LinkEntry.COLUMN_LINK_ID, link_id);
                             linkValue.put(DbContract.LinkEntry.COLUMN_PERMALINK_ID, permalink_id);
 
                             selfValue.put(DbContract.SelfEntry.COLUMN_SELF_ID, self_id);
-                            selfValue.put(DbContract.SelfEntry.COLUMN_HREF, artists_links.getSelf().getHref());
+                            selfValue.put(DbContract.SelfEntry.COLUMN_HREF, artist.getLinks().getSelf().getHref());
 
                             permalinkValue.put(DbContract.PermalinkEntry.COLUMN_PERMALINK_ID, permalink_id);
-                            permalinkValue.put(DbContract.PermalinkEntry.COLUMN_HREF, artists_links.getPermalink().getHref());
+                            permalinkValue.put(DbContract.PermalinkEntry.COLUMN_HREF, artist.getLinks().getPermalink().getHref());
 
                             contentResolver.insert(DbContract.LinkEntry.CONTENT_URI,linkValue);
                             contentResolver.insert(DbContract.SelfEntry.CONTENT_URI, selfValue);
@@ -162,10 +158,5 @@ public class ArtistsService extends IntentService{
                 });
     }
 }
-//linkValue.put(DbContract.LinkEntry.COLUMN_IMAGE_ID, );
-//linkValue.put(DbContract.LinkEntry.COLUMN_THUMBNAIL_ID, );
-//linkValue.put(DbContract.LinkEntry.COLUMN_PARTNER_CONTACT_ID, );
-//linkValue.put(DbContract.LinkEntry.COLUMN_WEBSITE_ID, );
-//linkValue.put(DbContract.LinkEntry.COLUMN_PROFILE_ID, );
 
 

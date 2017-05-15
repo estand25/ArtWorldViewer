@@ -19,12 +19,13 @@ android {
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'AWV_Client_Id', "\"\""
+        it.buildConfigField 'String', 'AWV_Client_Id', "\"AWV_Client_Id_Key\""
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'AWV_Client_Secret', "\"\""
+        it.buildConfigField 'String', 'AWV_Client_Secret', "\"AWV_Client_Secret_key\""
     }
+
 }
 
 dependencies {

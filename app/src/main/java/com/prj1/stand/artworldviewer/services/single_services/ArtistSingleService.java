@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
 import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
-import com.prj1.stand.artworldviewer.model.Artist;
+import com.prj1.stand.artworldviewer.model.artists.Artist;
 import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;
 
 import retrofit2.Call;

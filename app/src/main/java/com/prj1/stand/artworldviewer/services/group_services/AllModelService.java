@@ -35,14 +35,6 @@ public class AllModelService extends IntentService{
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        // Do not want to over use the Art API so I wait 5 second before I start anything
-        try {
-            Log.v("AllModelService","Sleep for 5 second...");
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
-            Log.v("AllModelService","Can't sleep for 10 second because " + e.getMessage());
-        }
-
         Log.v("AllModuleService","Starting All Services ...");
 
         startService(new Intent(getApplicationContext(), ArtistsService.class));
@@ -50,7 +42,6 @@ public class AllModelService extends IntentService{
         startService(new Intent(getApplicationContext(), GenesService.class));
         startService(new Intent(getApplicationContext(), ShowsService.class));
         startService(new Intent(getApplicationContext(), FairsService.class));
-
 
         Log.v("AllModuleService","Ending All Services ...");
     }

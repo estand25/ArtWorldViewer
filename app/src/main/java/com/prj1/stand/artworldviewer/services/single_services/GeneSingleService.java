@@ -3,11 +3,10 @@ package com.prj1.stand.artworldviewer.services.single_services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 
 import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
 import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
-import com.prj1.stand.artworldviewer.model.Gene;
+import com.prj1.stand.artworldviewer.model.genes.Gene;
 import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;
 
 import retrofit2.Call;
