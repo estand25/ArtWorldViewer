@@ -219,6 +219,15 @@ public class DbContract {
                     .appendPath(Integer.toString(ArtworkId)).build();
         }
 
+        public static Uri buildArtworkDThumbnailSection(int ArtworkId){
+            return BASE_CONTENT_URI.buildUpon().appendPath("artwork_link_thumbnail")
+                    .appendPath(Integer.toString(ArtworkId)).build();
+        }
+
+        public static Uri buildAllArtworkThumbnailSection(){
+            return BASE_CONTENT_URI.buildUpon().appendPath("artwork_link_thumbnail")
+                    .appendPath("*").build();
+        }
         /**
          * URI for the specific Artwork row in the Artwork table
          * @param id
@@ -244,6 +253,10 @@ public class DbContract {
          */
         public static int getIntegerArtworkId(Uri uri){
             return Integer.parseInt(uri.getPathSegments().get(1));
+        }
+
+        public static String getArtworkId(Uri uri){
+            return uri.getPathSegments().get(1);
         }
 
         /**

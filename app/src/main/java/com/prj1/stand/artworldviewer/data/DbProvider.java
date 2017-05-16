@@ -42,6 +42,7 @@ public class DbProvider extends ContentProvider {
     static final int WEBSITE = 115;
     static final int SELF = 116;
     static final int PARTNER_CONTACT = 117;
+    static final int ARTWORK_LINK_THUMBNAIL = 118;
 
     /**
      * Static constants for app unique row identifies
@@ -71,6 +72,7 @@ public class DbProvider extends ContentProvider {
     private static final SQLiteQueryBuilder SLQB_ArtworkWithWebsites;
     private static final SQLiteQueryBuilder SLQB_ArtworkWithImageVersions;
     private static final SQLiteQueryBuilder SLQB_ArtworkWithLinks;
+    private static final SQLiteQueryBuilder SLQB_ArtworkWithLinksToThumbnail;
     private static final SQLiteQueryBuilder SLQB_FairWithLinks;
     private static final SQLiteQueryBuilder SLQB_GeneWithLinks;
     private static final SQLiteQueryBuilder SLQB_ShowWithImageVersions;
@@ -94,6 +96,7 @@ public class DbProvider extends ContentProvider {
         SLQB_ArtworkWithWebsites = new SQLiteQueryBuilder();
         SLQB_ArtworkWithImageVersions = new SQLiteQueryBuilder();
         SLQB_ArtworkWithLinks = new SQLiteQueryBuilder();
+        SLQB_ArtworkWithLinksToThumbnail = new SQLiteQueryBuilder();
         SLQB_FairWithLinks = new SQLiteQueryBuilder();
         SLQB_GeneWithLinks = new SQLiteQueryBuilder();
         SLQB_ShowWithImageVersions = new SQLiteQueryBuilder();
@@ -171,6 +174,17 @@ public class DbProvider extends ContentProvider {
                         "." + DbContract.ArtworkEntry.COLUMN_LINK_ID +
                         " = " + DbContract.LinkEntry.TABLE_NAME +
                         "." + DbContract.LinkEntry.COLUMN_LINK_ID
+        );
+
+        SLQB_ArtworkWithLinksToThumbnail.setTables(
+                DbContract.LinkEntry.TABLE_NAME + " INNER JOIN " +
+                        DbContract.ArtworkEntry.TABLE_NAME +
+                        " ON " + DbContract.ArtworkEntry.TABLE_NAME + "." + DbContract.ArtworkEntry.COLUMN_LINK_ID + " = " +
+                        DbContract.LinkEntry.TABLE_NAME + "." + DbContract.LinkEntry.COLUMN_LINK_ID +" "+
+                        DbContract.ThumbnailEntry.TABLE_NAME + " INNER JOIN " +
+                        DbContract.LinkEntry.TABLE_NAME +
+                        " ON " + DbContract.LinkEntry.TABLE_NAME + "." + DbContract.LinkEntry.COLUMN_THUMBNAIL_ID + " = " +
+                        DbContract.ThumbnailEntry.TABLE_NAME + "." + DbContract.ThumbnailEntry.COLUMN_THUMBNAIL_ID
         );
 
         /**
@@ -472,6 +486,29 @@ public class DbProvider extends ContentProvider {
     /**
      * Create private cursor for the above table
      */
+    public Cursor getThumbnailForSpecificArtwork(Uri uri){
+        return SLQB_ArtworkWithLinksToThumbnail.query(
+                dbHelper.getReadableDatabase(),
+                new String[]{"artwork.title, thumbnail.href "},
+                SQL_ArtworkIdSettingSelection,
+                new String[]{DbContract.ArtworkEntry.getArtworkId(uri)},
+                null,
+                null,
+                null
+        );
+    }
+
+    public Cursor getThumbnailForArtwork(){
+        return SLQB_ArtworkWithLinksToThumbnail.query(
+                dbHelper.getReadableDatabase(),
+                new String[]{"artwork.title, thumbnail.href "},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+    }
 
     /**
      * Uri Matcher that determine how the Uri is handling inputs
@@ -486,6 +523,7 @@ public class DbProvider extends ContentProvider {
          */
         uriMatcher.addURI(authority, DbContract.PATH_TOKEN, TOKEN);
         uriMatcher.addURI(authority, DbContract.PATH_ARTIST, ARTIST);
+        uriMatcher.addURI(authority, "artwork_link_thumbnail/*",ARTWORK_LINK_THUMBNAIL);
         uriMatcher.addURI(authority, DbContract.PATH_ARTWORK, ARTWORK);
         uriMatcher.addURI(authority, DbContract.PATH_FAIR, FAIR);
         uriMatcher.addURI(authority, DbContract.PATH_GENE, GENE);
@@ -533,6 +571,8 @@ public class DbProvider extends ContentProvider {
                 return DbContract.TokenEntry.CONTENT_TYPE;
             case ARTIST:
                 return DbContract.ArtistEntry.CONTENT_TYPE;
+            case ARTWORK_LINK_THUMBNAIL:
+                return DbContract.ArtworkEntry.CONTENT_TYPE;
             case ARTWORK:
                 return DbContract.ArtworkEntry.CONTENT_TYPE;
             case FAIR:
@@ -618,6 +658,10 @@ public class DbProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
+                break;
+            }
+            case ARTWORK_LINK_THUMBNAIL:{
+                retCursor = getThumbnailForArtwork();
                 break;
             }
             case FAIR:{

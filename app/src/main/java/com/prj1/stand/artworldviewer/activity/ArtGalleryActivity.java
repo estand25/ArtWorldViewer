@@ -6,19 +6,39 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.prj1.stand.artworldviewer.R;
 import com.prj1.stand.artworldviewer.sync.StartReceiver;
 
+import java.util.concurrent.TimeUnit;
+
 public class ArtGalleryActivity extends AppCompatActivity {
+    private ArtGalleryActivityFragment artGalleryActivityFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Send Broadcast to get the Art API Token
+        sendBroadcast(new Intent(this, StartReceiver.class));
+
+        try {
+            Log.v("ArtGalleryActivity","Sleep for 15 second...");
+            TimeUnit.SECONDS.sleep(15);
+        } catch (InterruptedException e) {
+            Log.v("AllModelService","Can't sleep for 15 second because " + e.getMessage());
+        }
+
         setContentView(R.layout.activity_art_gallery);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        artGalleryActivityFragment = ((ArtGalleryActivityFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -28,8 +48,5 @@ public class ArtGalleryActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        // Send Broadcast to get the Art API Token
-        sendBroadcast(new Intent(this, StartReceiver.class));
     }
 }
