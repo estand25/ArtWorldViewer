@@ -57,7 +57,6 @@ public class ArtGalleryActivityFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Log.v("ArtGActivityFragment", "OnCreate");
 
         if(savedInstanceState == null || !savedInstanceState.containsKey("Artworks"))
@@ -80,6 +79,7 @@ public class ArtGalleryActivityFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.v("ArtGActivityFragment", "onCreateView");
         //try {
         //    Log.v("ArtGalleryActivity","Sleep for 10 second...");
         //    TimeUnit.SECONDS.sleep(10);
@@ -128,8 +128,10 @@ public class ArtGalleryActivityFragment extends Fragment
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Log.v("ArtGActivityFragment", "onActivityCreated");
 
         // Initials the loader
         getLoaderManager().initLoader(0, null, this);
@@ -143,6 +145,8 @@ public class ArtGalleryActivityFragment extends Fragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.v("ArtGActivityFragment", "onCreateLoader");
+
         return new CursorLoader(
                 getActivity(),
                 DbContract.ArtworkEntry.buildAllArtworkThumbnailSection(),
@@ -155,12 +159,14 @@ public class ArtGalleryActivityFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.v("ArtGActivityFragment", "onLoadFinished");
         artworkAdapter.swapCursor(data);
         artworkAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        Log.v("ArtGActivityFragment", "onLoaderReset");
         artworkAdapter.swapCursor(null);
     }
 }

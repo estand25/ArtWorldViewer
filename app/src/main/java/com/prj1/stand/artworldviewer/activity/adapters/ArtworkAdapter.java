@@ -2,6 +2,7 @@ package com.prj1.stand.artworldviewer.activity.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,9 +74,14 @@ public class ArtworkAdapter extends CursorAdapter{
         ArtworkViewHolder artworkViewHolder = (ArtworkViewHolder) view.getTag();
 
         artworkViewHolder.artworkTextSlider
-                .description(cursor.getString(0))
-                .image(cursor.getString(1));
+                .description(cursor.getString(1))
+                .image(cursor.getString(2));
+
+        Log.v("bindView","cursor 0 "+cursor.getString(0));
+        Log.v("bindView","cursor 1 "+cursor.getString(1));
+        Log.v("bindView","cursor 2 "+cursor.getString(2));
 
         artworkViewHolder.artworkSlideShow.addSlider(artworkViewHolder.artworkTextSlider);
+        cursor.close();
     }
 }

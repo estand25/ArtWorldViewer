@@ -153,7 +153,7 @@ public class ArtTokenService extends IntentService{
                         cursor.close();
 
                         Log.v("ArtTokenService", "OnResponse - Got the Token " + TokenUtility.getInstance().getOurToken());
-                        startService(new Intent(getApplicationContext(), AllModelService.class));
+                        //startService(new Intent(getApplicationContext(), AllModelService.class));
                     }
 
                     @Override

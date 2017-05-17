@@ -5,8 +5,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.util.Log;
 
+import com.prj1.stand.artworldviewer.services.group_services.AllModelService;
 import com.prj1.stand.artworldviewer.services.group_services.ArtTokenService;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Handles the wakefulness and start populating art
@@ -31,7 +35,35 @@ public class StartReceiver extends WakefulBroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
         // Go fetch Art API token
-        Intent artToken = new Intent(context, ArtTokenService.class);
-        startWakefulService(context,artToken);
+        //Intent artToken = new Intent(context, ArtTokenService.class);
+        //startWakefulService(context,artToken);
+
+        Intent allModel = new Intent(context, AllModelService.class);
+        startWakefulService(context,allModel);
+
+        //setAlarm(context);
+    }
+
+    public void setAlarm(Context context){
+        try {
+            Log.v("ArtGalleryActivity","Sleep for 10 second...");
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            Log.v("AllModelService","Can't sleep for 10 second because " + e.getMessage());
+        }
+        // Get the Alarm Manager from the context Alarm Service
+        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        // Create an Intent for the PopulateAllMovie class
+        Intent intent = new Intent(context, AllModelService.class);
+
+        // Create a PendingIntent for the broadcast and intent
+        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+
+        // Wake up the device to fire the alarm ever 30-60 minutes
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                AlarmManager.INTERVAL_HALF_HOUR,
+                AlarmManager.INTERVAL_HOUR,
+                alarmIntent);
     }
 }

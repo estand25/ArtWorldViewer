@@ -176,15 +176,20 @@ public class DbProvider extends ContentProvider {
                         "." + DbContract.LinkEntry.COLUMN_LINK_ID
         );
 
+        /**
+         * This is an inner join which looks at
+         * link INNER JOIN artwork ON artwork.link_id = link.link_id
+         *      INNER JOIN thumbnail ON thumbnail.thumbnail_id = link.thumbnail_id
+         */
         SLQB_ArtworkWithLinksToThumbnail.setTables(
                 DbContract.LinkEntry.TABLE_NAME + " INNER JOIN " +
                         DbContract.ArtworkEntry.TABLE_NAME +
                         " ON " + DbContract.ArtworkEntry.TABLE_NAME + "." + DbContract.ArtworkEntry.COLUMN_LINK_ID + " = " +
                         DbContract.LinkEntry.TABLE_NAME + "." + DbContract.LinkEntry.COLUMN_LINK_ID +" "+
-                        DbContract.ThumbnailEntry.TABLE_NAME + " INNER JOIN " +
-                        DbContract.LinkEntry.TABLE_NAME +
-                        " ON " + DbContract.LinkEntry.TABLE_NAME + "." + DbContract.LinkEntry.COLUMN_THUMBNAIL_ID + " = " +
-                        DbContract.ThumbnailEntry.TABLE_NAME + "." + DbContract.ThumbnailEntry.COLUMN_THUMBNAIL_ID
+                        " INNER JOIN " + DbContract.ThumbnailEntry.TABLE_NAME +
+                        " ON " + DbContract.ThumbnailEntry.TABLE_NAME + "." + DbContract.ThumbnailEntry.COLUMN_THUMBNAIL_ID + " = " +
+                        DbContract.LinkEntry.TABLE_NAME + "." + DbContract.LinkEntry.COLUMN_THUMBNAIL_ID
+
         );
 
         /**
@@ -489,7 +494,7 @@ public class DbProvider extends ContentProvider {
     public Cursor getThumbnailForSpecificArtwork(Uri uri){
         return SLQB_ArtworkWithLinksToThumbnail.query(
                 dbHelper.getReadableDatabase(),
-                new String[]{"artwork.title, thumbnail.href "},
+                new String[]{"artwork._id,artwork.title, thumbnail.href "},
                 SQL_ArtworkIdSettingSelection,
                 new String[]{DbContract.ArtworkEntry.getArtworkId(uri)},
                 null,
@@ -501,7 +506,7 @@ public class DbProvider extends ContentProvider {
     public Cursor getThumbnailForArtwork(){
         return SLQB_ArtworkWithLinksToThumbnail.query(
                 dbHelper.getReadableDatabase(),
-                new String[]{"artwork.title, thumbnail.href "},
+                new String[]{"artwork._id,artwork.title, thumbnail.href "},
                 null,
                 null,
                 null,
