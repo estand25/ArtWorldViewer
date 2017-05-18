@@ -229,10 +229,6 @@ public class DbContract {
                     .appendPath("*").build();
         }
 
-        public static Uri buildAllArtwork(){
-            return BASE_CONTENT_URI.buildUpon().appendPath("ALL_artwork_link_thumbnail")
-                    .appendPath("*").build();
-        }
         /**
          * URI for the specific Artwork row in the Artwork table
          * @param id
