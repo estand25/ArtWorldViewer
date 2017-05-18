@@ -57,7 +57,7 @@ public class FairsService extends IntentService{
     @Override
     protected void onHandleIntent(Intent intent) {
         apiFetchingService = ApiUtility.getApiService();
-        apiFetchingService.getFairsInRangeBySize(0,"5", TokenUtility.getInstance().getOurToken())
+        apiFetchingService.getFairsInRangeBySize(0,"25", TokenUtility.getInstance().getOurToken())
                 .enqueue(new Callback<Fairs>() {
                     @Override
                     public void onResponse(Call<Fairs> call, Response<Fairs> response) {

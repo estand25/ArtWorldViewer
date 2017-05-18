@@ -28,15 +28,6 @@ public class ArtGalleryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_art_gallery);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Intent artToken = new Intent(this, ArtTokenService.class);
-        startService(artToken);
-
-        //try {
-        //    Log.v("ArtGalleryActivity","Sleep for 10 second...");
-        //    TimeUnit.SECONDS.sleep(10);
-        //} catch (InterruptedException e) {
-        //    Log.v("AllModelService","Can't sleep for 10 second because " + e.getMessage());
-        //}
 
         artGalleryActivityFragment = ((ArtGalleryActivityFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment));

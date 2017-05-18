@@ -74,7 +74,7 @@ public class ArtistsService extends IntentService{
         }*/
 
         apiFetchingService = ApiUtility.getApiService();
-        apiFetchingService.getArtistsInRangeBySize(0,"5", TokenUtility.getInstance().getOurToken())
+        apiFetchingService.getArtistsInRangeBySize(0,"25", TokenUtility.getInstance().getOurToken())
                 .enqueue(new Callback<Artists>() {
                     @Override
                     public void onResponse(Call<Artists> call, Response<Artists> response) {

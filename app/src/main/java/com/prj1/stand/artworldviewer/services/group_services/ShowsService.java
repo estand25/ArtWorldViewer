@@ -58,7 +58,7 @@ public class ShowsService extends IntentService{
     @Override
     protected void onHandleIntent(Intent showsIntent) {
         apiFetchingService = ApiUtility.getApiService();
-        apiFetchingService.getShowsInRangeBySize(0,"5", TokenUtility.getInstance().getOurToken())
+        apiFetchingService.getShowsInRangeBySize(0,"25", TokenUtility.getInstance().getOurToken())
                 .enqueue(new Callback<Shows>() {
                     @Override
                     public void onResponse(Call<Shows> call, Response<Shows> response) {

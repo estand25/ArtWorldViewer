@@ -62,7 +62,7 @@ public class GenesService extends IntentService{
     @Override
     protected void onHandleIntent(Intent genesIntent) {
         apiFetchingService = ApiUtility.getApiService();
-        apiFetchingService.getGenesInRangeBySize(0,"5", TokenUtility.getInstance().getOurToken())
+        apiFetchingService.getGenesInRangeBySize(0,"25", TokenUtility.getInstance().getOurToken())
                 .enqueue(new Callback<Genes>() {
                     @Override
                     public void onResponse(Call<Genes> call, Response<Genes> response) {

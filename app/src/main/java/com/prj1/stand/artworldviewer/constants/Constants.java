@@ -17,4 +17,7 @@ public final class Constants {
 
     // Static constants for DONE
     public static final String TABLE_LOADER = "TABLE_LOADER";
+
+    public static final String SELECTED_KEY = "selected_position";
+
 }

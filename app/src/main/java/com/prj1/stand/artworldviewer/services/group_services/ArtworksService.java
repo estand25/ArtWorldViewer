@@ -57,7 +57,7 @@ public class ArtworksService extends IntentService{
     @Override
     protected void onHandleIntent(Intent artworkIntent) {
         apiFetchingService = ApiUtility.getApiService();
-        apiFetchingService.getArtworksInRangeBySize(0,"5", TokenUtility.getInstance().getOurToken())
+        apiFetchingService.getArtworksInRangeBySize(0,"10", TokenUtility.getInstance().getOurToken())
                 .enqueue(new Callback<Artworks>() {
                     @Override
                     public void onResponse(Call<Artworks> call, Response<Artworks> response) {
@@ -144,7 +144,7 @@ public class ArtworksService extends IntentService{
                             _cmValue.put(DbContract.CMEntry.COLUMN_CM_ID, cm_id);
                             _cmValue.put(DbContract.CMEntry.COLUMN_TEXT, artwork.getDimensions().getCm().getText());
                             _cmValue.put(DbContract.CMEntry.COLUMN_HEIGHT, artwork.getDimensions().getCm().getHeight().toString());
-                            _cmValue.put(DbContract.CMEntry.COLUMN_WIDTH, artwork.getDimensions().getCm().getWidth().toString());
+                            _cmValue.put(DbContract.CMEntry.COLUMN_WIDTH, artwork.getDimensions().getIn().getWidth().toString());
                             _cmValue.put(DbContract.CMEntry.COLUMN_DEPTH, (String) artwork.getDimensions().getCm().getDepth());
                             _cmValue.put(DbContract.CMEntry.COLUMN_DIAMETER, (String) artwork.getDimensions().getCm().getDiameter());
 
@@ -180,8 +180,25 @@ public class ArtworksService extends IntentService{
                             selfValue.put(DbContract.SelfEntry.COLUMN_HREF, artwork.getLinks().getSelf().getHref());
 
                             permalinkValue.put(DbContract.PermalinkEntry.COLUMN_PERMALINK_ID, permalink_id);
-                            permalinkValue.put(DbContract.PermalinkEntry.COLUMN_PERMALINK_ID, artwork.getLinks().getPermalink().getHref());
+                            permalinkValue.put(DbContract.PermalinkEntry.COLUMN_HREF, artwork.getLinks().getPermalink().getHref());
 
+                            List<String> ImageVersions = artwork.getImageVersions();
+                            Log.v("ArtworksService", "OnResponse ImageVersions - "+String.valueOf(ImageVersions.size()));
+                            ContentValues[] bulkImageVersions = new ContentValues[ImageVersions.size()];
+
+                            for(int iv = 0; iv < ImageVersions.size();iv++) {
+                                ContentValues imageVersionValue = new ContentValues();
+
+                                Log.v("ArtworksService", "OnResponse ImageVersions "+String.valueOf(iv)+" - "+ImageVersions.get(iv));
+                                imageVersionValue.put(DbContract.ImageVersionEntry.COLUMN_IMAGE_VERSION_ID, image_version_id);
+                                imageVersionValue.put(DbContract.ImageVersionEntry.COLUMN_VERSION_TYPE, ImageVersions.get(iv));
+
+                                bulkImageVersions[iv] = imageVersionValue;
+
+                                Log.v("ArtworksService", "OnResponse ImageVersions  - "+String.valueOf(bulkImageVersions[iv].size()));
+                            }
+
+                            contentResolver.bulkInsert(DbContract.ImageVersionEntry.CONTENT_URI, bulkImageVersions);
                             contentResolver.insert(DbContract.DimensionEntry.CONTENT_URI, dimensionValue);
                             contentResolver.insert(DbContract.CMEntry.CONTENT_URI, _cmValue);
                             contentResolver.insert(DbContract.INEntry.CONTENT_URI, _inValue);

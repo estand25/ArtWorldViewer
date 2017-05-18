@@ -105,7 +105,7 @@ public class ArtTokenService extends IntentService{
 
                                 Log.v("ArtTokenService","CurrentCalDate: "+currentCalDate.getTime().toString());
                                 Log.v("ArtTokenService","currentTokenExpiry: "+currentTokenExpiry.toString());
-                                if(currentCalDate.getTime().compareTo(currentTokenExpiry) > 0)
+                                if(currentCalDate.getTime().compareTo(currentTokenExpiry) > 2)
                                 {
                                     // Delete the current system token to insert new one
                                     contentResolver.delete(DbContract.TokenEntry.CONTENT_URI, "", new String[]{});
@@ -153,7 +153,7 @@ public class ArtTokenService extends IntentService{
                         cursor.close();
 
                         Log.v("ArtTokenService", "OnResponse - Got the Token " + TokenUtility.getInstance().getOurToken());
-                        //startService(new Intent(getApplicationContext(), AllModelService.class));
+                        startService(new Intent(getApplicationContext(), AllModelService.class));
                     }
 
                     @Override

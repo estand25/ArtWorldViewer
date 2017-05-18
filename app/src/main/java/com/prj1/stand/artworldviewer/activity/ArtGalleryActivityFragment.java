@@ -3,9 +3,9 @@ package com.prj1.stand.artworldviewer.activity;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -20,6 +20,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.prj1.stand.artworldviewer.R;
 import com.prj1.stand.artworldviewer.activity.adapters.ArtworkAdapter;
+import com.prj1.stand.artworldviewer.constants.Constants;
 import com.prj1.stand.artworldviewer.data.DbContract;
 import com.prj1.stand.artworldviewer.model.artworks.Artwork;
 
@@ -36,6 +37,7 @@ public class ArtGalleryActivityFragment extends Fragment
     private SliderLayout sliderShow;
     private ArtworkAdapter artworkAdapter;
     private GridView gridView;
+    private int gridSelectionPosition = gridView.INVALID_POSITION;
     public SwipeRefreshLayout mSwipeRefreshLayout;
 
     public ArtGalleryActivityFragment() {
@@ -80,12 +82,6 @@ public class ArtGalleryActivityFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.v("ArtGActivityFragment", "onCreateView");
-        //try {
-        //    Log.v("ArtGalleryActivity","Sleep for 10 second...");
-        //    TimeUnit.SECONDS.sleep(10);
-        //} catch (InterruptedException e) {
-        //    Log.v("AllModelService","Can't sleep for 10 second because " + e.getMessage());
-        //}
 
         // Initialize the custom artwork adapter with necessary curse adapter information
         artworkAdapter = new ArtworkAdapter(getActivity(), null, 0);
@@ -100,6 +96,75 @@ public class ArtGalleryActivityFragment extends Fragment
         // local representation
         gridView = (GridView) rootView.findViewById(R.id.artFragment_gridView);
 
+        setupAdapter();
+
+        /*
+        sliderShow = (SliderLayout) rootView.findViewById(R.id.artSlider);
+
+        TextSliderView textSliderView = new TextSliderView(rootView.getContext());
+        textSliderView
+                .description("Test")
+                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
+
+        sliderShow.addSlider(textSliderView);*/
+
+        // If there's instance state, mine it for useful information.
+        // The end-goal here is that the user never knows that turning their device sideways
+        // does crazy lifecycle related things.  It should feel like some stuff stretched out,
+        // or magically appeared to take advantage of room, but data or place in the app was never
+        // actually *lost*.
+        if (savedInstanceState != null && savedInstanceState.containsKey(Constants.SELECTED_KEY)) {
+            // The gradView probably hasn't even been populated yet.  Actually perform the
+            // swap out in onLoadFinished.
+            gridSelectionPosition = savedInstanceState.getInt(Constants.SELECTED_KEY);
+        }
+
+        // Set-up the SwipeRefreshLayout color order
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorBlack,R.color.colorGray,R.color.colorDarkGray);
+
+
+        // Set-up the SwipeRefreshLayout pull-down response
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
+
+        return rootView;
+    }
+
+    /**
+     * Handles the refresh functionality for the SwipeRefreshLayout
+     * I wasn't sure I could do this so I look around for a couple of examples
+     * I found this one
+     *
+     * https://www.bignerdranch.com/blog/implementing-swipe-to-refresh/
+     */
+    public void refreshContent(){
+        // the refresh handler for the swipeRefreshLayout
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Reset the gridView location
+                gridSelectionPosition = 0;
+
+                // Sync the content provide data with internal SQL db's
+                onItemChanged();
+
+                // re-connect the adapter to the gridview
+                setupAdapter();
+
+                // show the progress of the refresh per the color scheme above
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        },250); // wait 25 second
+    }
+
+    /**
+     * Set-up Adapter to GridView and set-up column number based on device rotation
+     */
+    private void setupAdapter(){
         // Populate the GridView with custom adapter information
         gridView.setAdapter(artworkAdapter);
 
@@ -113,18 +178,6 @@ public class ArtGalleryActivityFragment extends Fragment
         {
             gridView.setNumColumns(2);
         }
-
-        /*
-        sliderShow = (SliderLayout) rootView.findViewById(R.id.artSlider);
-
-        TextSliderView textSliderView = new TextSliderView(rootView.getContext());
-        textSliderView
-                .description("Test")
-                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
-
-        sliderShow.addSlider(textSliderView);*/
-
-        return rootView;
     }
 
     @Override
@@ -137,11 +190,13 @@ public class ArtGalleryActivityFragment extends Fragment
         getLoaderManager().initLoader(0, null, this);
     }
 
-    //@Override
-    //public void onStart() {
-    //    sliderShow.stopAutoCycle();
-    //    super.onStart();
-    //}
+    public void onItemChanged(){
+        //  Add the adapter to the gridView and setup the columns depending on the screens orientation
+        setupAdapter();
+
+        // Restart the loader
+        getLoaderManager().restartLoader(0, null, this);
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -162,6 +217,12 @@ public class ArtGalleryActivityFragment extends Fragment
         Log.v("ArtGActivityFragment", "onLoadFinished");
         artworkAdapter.swapCursor(data);
         artworkAdapter.notifyDataSetChanged();
+
+        if (gridSelectionPosition != GridView.INVALID_POSITION) {
+            // If we don't need to restart the loader, and there's a desired position to restore
+            // to, do so now.
+            gridView.smoothScrollToPosition(gridSelectionPosition);
+        }
     }
 
     @Override

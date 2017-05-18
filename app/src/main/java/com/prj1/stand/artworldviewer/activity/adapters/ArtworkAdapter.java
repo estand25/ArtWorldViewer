@@ -82,6 +82,5 @@ public class ArtworkAdapter extends CursorAdapter{
         Log.v("bindView","cursor 2 "+cursor.getString(2));
 
         artworkViewHolder.artworkSlideShow.addSlider(artworkViewHolder.artworkTextSlider);
-        cursor.close();
     }
 }
