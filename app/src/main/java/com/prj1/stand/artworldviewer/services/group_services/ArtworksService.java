@@ -57,7 +57,7 @@ public class ArtworksService extends IntentService{
     @Override
     protected void onHandleIntent(Intent artworkIntent) {
         apiFetchingService = ApiUtility.getApiService();
-        apiFetchingService.getArtworksInRangeBySize(0,"10", TokenUtility.getInstance().getOurToken())
+        apiFetchingService.getArtworksInRangeBySize(0,"25", TokenUtility.getInstance().getOurToken())
                 .enqueue(new Callback<Artworks>() {
                     @Override
                     public void onResponse(Call<Artworks> call, Response<Artworks> response) {
@@ -141,17 +141,38 @@ public class ArtworksService extends IntentService{
                             dimensionValue.put(DbContract.DimensionEntry.COLUMN_CM_ID, cm_id);
                             dimensionValue.put(DbContract.DimensionEntry.COLUMN_IN_ID, in_id);
 
+                            String cm_Height = "";
+                            String cm_Width = "";
+
+                            if(artwork.getDimensions().getCm().getHeight() != null) {
+                                cm_Height = artwork.getDimensions().getCm().getHeight().toString();
+                            }
+
+                            if(artwork.getDimensions().getIn().getWidth() != null) {
+                                cm_Width = artwork.getDimensions().getIn().getWidth().toString();
+                            }
+
                             _cmValue.put(DbContract.CMEntry.COLUMN_CM_ID, cm_id);
                             _cmValue.put(DbContract.CMEntry.COLUMN_TEXT, artwork.getDimensions().getCm().getText());
-                            _cmValue.put(DbContract.CMEntry.COLUMN_HEIGHT, artwork.getDimensions().getCm().getHeight().toString());
-                            _cmValue.put(DbContract.CMEntry.COLUMN_WIDTH, artwork.getDimensions().getIn().getWidth().toString());
+                            _cmValue.put(DbContract.CMEntry.COLUMN_HEIGHT, cm_Height);
+                            _cmValue.put(DbContract.CMEntry.COLUMN_WIDTH, cm_Width);
                             _cmValue.put(DbContract.CMEntry.COLUMN_DEPTH, (String) artwork.getDimensions().getCm().getDepth());
                             _cmValue.put(DbContract.CMEntry.COLUMN_DIAMETER, (String) artwork.getDimensions().getCm().getDiameter());
 
+                            String in_Height = "";
+                            String in_Width = "";
+
+                            if(artwork.getDimensions().getIn().getHeight() != null) {
+                                in_Height = artwork.getDimensions().getCm().getHeight().toString();
+                            }
+
+                            if(artwork.getDimensions().getIn().getWidth() != null) {
+                                in_Width = artwork.getDimensions().getIn().getWidth().toString();
+                            }
                             _inValue.put(DbContract.INEntry.COLUMN_IN_ID, in_id);
                             _inValue.put(DbContract.INEntry.COLUMN_TEXT, artwork.getDimensions().getIn().getText());
-                            _inValue.put(DbContract.INEntry.COLUMN_HEIGHT, artwork.getDimensions().getIn().getHeight().toString());
-                            _inValue.put(DbContract.INEntry.COLUMN_WIDTH, artwork.getDimensions().getIn().getWidth().toString());
+                            _inValue.put(DbContract.INEntry.COLUMN_HEIGHT, in_Height);
+                            _inValue.put(DbContract.INEntry.COLUMN_WIDTH, in_Width);
                             _inValue.put(DbContract.INEntry.COLUMN_DEPTH, (String) artwork.getDimensions().getIn().getDepth());
                             _inValue.put(DbContract.INEntry.COLUMN_DIAMETER,(String) artwork.getDimensions().getIn().getDiameter());
 
@@ -195,7 +216,7 @@ public class ArtworksService extends IntentService{
 
                                 bulkImageVersions[iv] = imageVersionValue;
 
-                                Log.v("ArtworksService", "OnResponse ImageVersions  - "+String.valueOf(bulkImageVersions[iv].size()));
+                                Log.v("ArtworksService", "OnResponse ImageVersions  - "+String.valueOf(bulkImageVersions.length));
                             }
 
                             contentResolver.bulkInsert(DbContract.ImageVersionEntry.CONTENT_URI, bulkImageVersions);

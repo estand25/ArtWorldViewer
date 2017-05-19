@@ -6,10 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 
 import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.prj1.stand.artworldviewer.R;
 
@@ -54,7 +54,7 @@ public class ArtworkAdapter extends CursorAdapter{
      * @param context - Current context for view
      * @param cursor - Current cursor information
      * @param viewGroup - ViewGroup of the view
-     * @return = Inflated view with viewholder tags
+     * @return = Inflated view with view holder tags
      */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
@@ -75,11 +75,12 @@ public class ArtworkAdapter extends CursorAdapter{
 
         artworkViewHolder.artworkTextSlider
                 .description(cursor.getString(1))
-                .image(cursor.getString(2));
+                .image(cursor.getString(2))
+                .setScaleType(BaseSliderView.ScaleType.CenterCrop);
 
-        Log.v("bindView","cursor 0 "+cursor.getString(0));
-        Log.v("bindView","cursor 1 "+cursor.getString(1));
-        Log.v("bindView","cursor 2 "+cursor.getString(2));
+        Log.v("bindView", "cursor 0 " + cursor.getString(0));
+        Log.v("bindView", "cursor 1 " + cursor.getString(1));
+        Log.v("bindView", "cursor 2 " + cursor.getString(2));
 
         artworkViewHolder.artworkSlideShow.addSlider(artworkViewHolder.artworkTextSlider);
     }
