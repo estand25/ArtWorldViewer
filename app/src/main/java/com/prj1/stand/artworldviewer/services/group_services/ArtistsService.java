@@ -5,11 +5,10 @@ import android.app.IntentService;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.util.Log;
 
-import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
-import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
+import com.prj1.stand.artworldviewer.utilities.ApiUtility;
+import com.prj1.stand.artworldviewer.utilities.TokenUtility;
 import com.prj1.stand.artworldviewer.data.DbContract;
 import com.prj1.stand.artworldviewer.model.artists.Artist;
 import com.prj1.stand.artworldviewer.model.artists.Artists;

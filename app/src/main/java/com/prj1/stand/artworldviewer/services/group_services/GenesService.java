@@ -6,8 +6,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.util.Log;
 
-import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
-import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
+import com.prj1.stand.artworldviewer.utilities.ApiUtility;
+import com.prj1.stand.artworldviewer.utilities.TokenUtility;
 import com.prj1.stand.artworldviewer.data.DbContract;
 import com.prj1.stand.artworldviewer.model.genes.Gene;
 import com.prj1.stand.artworldviewer.model.genes.Genes;

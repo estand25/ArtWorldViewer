@@ -8,9 +8,8 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.prj1.stand.artworldviewer.BuildConfig;
-import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
-import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
-import com.prj1.stand.artworldviewer.constants.Constants;
+import com.prj1.stand.artworldviewer.utilities.ApiUtility;
+import com.prj1.stand.artworldviewer.utilities.TokenUtility;
 import com.prj1.stand.artworldviewer.data.DbContract;
 import com.prj1.stand.artworldviewer.model.authorization.Token;
 import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;
@@ -19,7 +18,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;

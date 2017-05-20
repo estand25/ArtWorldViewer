@@ -3,8 +3,8 @@ package com.prj1.stand.artworldviewer.services.single_services;
 import android.app.IntentService;
 import android.content.Intent;
 
-import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
-import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
+import com.prj1.stand.artworldviewer.utilities.ApiUtility;
+import com.prj1.stand.artworldviewer.utilities.TokenUtility;
 import com.prj1.stand.artworldviewer.model.shows.Show;
 import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;
 

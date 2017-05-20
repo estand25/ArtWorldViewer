@@ -1,4 +1,4 @@
-package com.prj1.stand.artworldviewer.Utilities;
+package com.prj1.stand.artworldviewer.utilities;
 
 import com.prj1.stand.artworldviewer.constants.Constants;
 import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;

@@ -220,9 +220,8 @@ public class DbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_IMAGE_VERSION_TABLE = "CREATE TABLE " + ImageVersionEntry.TABLE_NAME + " ( " +
                 ImageVersionEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ImageVersionEntry.COLUMN_IMAGE_VERSION_ID + " TEXT NULL, " +
-                ImageVersionEntry.COLUMN_VERSION_TYPE + " TEXT NULL, " +
+                ImageVersionEntry.COLUMN_VERSION_TYPE + " TEXT NULL );";
 
-                " UNIQUE (" + ImageVersionEntry.COLUMN_IMAGE_VERSION_ID + ") ON CONFLICT REPLACE );";
         Log.v("Creating - iv",SQL_CREATE_IMAGE_VERSION_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_IMAGE_VERSION_TABLE);
 

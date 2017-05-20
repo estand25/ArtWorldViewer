@@ -6,8 +6,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.util.Log;
 
-import com.prj1.stand.artworldviewer.Utilities.ApiUtility;
-import com.prj1.stand.artworldviewer.Utilities.TokenUtility;
+import com.prj1.stand.artworldviewer.utilities.ApiUtility;
+import com.prj1.stand.artworldviewer.utilities.TokenUtility;
 import com.prj1.stand.artworldviewer.data.DbContract;
 import com.prj1.stand.artworldviewer.model.artworks.Artwork;
 import com.prj1.stand.artworldviewer.model.artworks.Artworks;
@@ -204,19 +204,19 @@ public class ArtworksService extends IntentService{
                             permalinkValue.put(DbContract.PermalinkEntry.COLUMN_HREF, artwork.getLinks().getPermalink().getHref());
 
                             List<String> ImageVersions = artwork.getImageVersions();
-                            Log.v("ArtworksService", "OnResponse ImageVersions - "+String.valueOf(ImageVersions.size()));
+                            //Log.v("ArtworksService", "OnResponse ImageVersions - "+String.valueOf(ImageVersions.size()));
                             ContentValues[] bulkImageVersions = new ContentValues[ImageVersions.size()];
 
                             for(int iv = 0; iv < ImageVersions.size();iv++) {
                                 ContentValues imageVersionValue = new ContentValues();
 
-                                Log.v("ArtworksService", "OnResponse ImageVersions "+String.valueOf(iv)+" - "+ImageVersions.get(iv));
+                                //Log.v("ArtworksService", "OnResponse ImageVersions "+String.valueOf(iv)+" - "+ImageVersions.get(iv));
                                 imageVersionValue.put(DbContract.ImageVersionEntry.COLUMN_IMAGE_VERSION_ID, image_version_id);
                                 imageVersionValue.put(DbContract.ImageVersionEntry.COLUMN_VERSION_TYPE, ImageVersions.get(iv));
 
                                 bulkImageVersions[iv] = imageVersionValue;
 
-                                Log.v("ArtworksService", "OnResponse ImageVersions  - "+String.valueOf(bulkImageVersions.length));
+                                //Log.v("ArtworksService", "OnResponse ImageVersions  - "+String.valueOf(bulkImageVersions.length));
                             }
 
                             contentResolver.bulkInsert(DbContract.ImageVersionEntry.CONTENT_URI, bulkImageVersions);

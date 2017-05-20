@@ -74,6 +74,7 @@ public class ArtGalleryActivityFragment extends Fragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Log.v("ArtGActivityFragment", "onSaveInstanceState");
 
         outState.putParcelableArrayList("Artworks", artGallaryList);
     }
@@ -98,15 +99,16 @@ public class ArtGalleryActivityFragment extends Fragment
 
         setupAdapter();
 
-        /*
-        sliderShow = (SliderLayout) rootView.findViewById(R.id.artSlider);
+		/*
+        sliderShow = (SliderLayout) rootView.findViewById(R.id.slider);
 
-        TextSliderView textSliderView = new TextSliderView(rootView.getContext());
-        textSliderView
-                .description("Test")
-                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
-
-        sliderShow.addSlider(textSliderView);*/
+        for(int i = 0; i < artGallaryList.size(); i++) {
+            TextSliderView textSliderView = new TextSliderView(rootView.getContext());
+            textSliderView
+                    .image(artGallaryList.get(i).getLinks().getThumbnail().getHref());
+                    //.description("Test")
+            sliderShow.addSlider(textSliderView);
+        }*/
 
         // If there's instance state, mine it for useful information.
         // The end-goal here is that the user never knows that turning their device sideways
@@ -121,7 +123,6 @@ public class ArtGalleryActivityFragment extends Fragment
 
         // Set-up the SwipeRefreshLayout color order
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorBlack,R.color.colorGray,R.color.colorDarkGray);
-
 
         // Set-up the SwipeRefreshLayout pull-down response
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -183,11 +184,10 @@ public class ArtGalleryActivityFragment extends Fragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         Log.v("ArtGActivityFragment", "onActivityCreated");
 
         // Initials the loader
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(1, null, this);
     }
 
     public void onItemChanged(){
@@ -195,7 +195,7 @@ public class ArtGalleryActivityFragment extends Fragment
         setupAdapter();
 
         // Restart the loader
-        getLoaderManager().restartLoader(0, null, this);
+        getLoaderManager().restartLoader(1, null, this);
     }
 
     @Override
@@ -204,7 +204,8 @@ public class ArtGalleryActivityFragment extends Fragment
 
         return new CursorLoader(
                 getActivity(),
-                DbContract.ArtworkEntry.buildAllArtworkThumbnailSection(),
+		        DbContract.ArtworkEntry.buildArtworkImagesSection(),
+		        //DbContract.ArtworkEntry.buildAllArtworkThumbnailSection(),
                 null,
                 null,
                 null,

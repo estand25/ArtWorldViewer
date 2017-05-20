@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 /**
  * ArtWorldViewer handle the SQLite query create (insertion, deletion, and updates)
@@ -43,6 +44,7 @@ public class DbProvider extends ContentProvider {
     static final int SELF = 116;
     static final int PARTNER_CONTACT = 117;
     static final int ARTWORK_LINK_THUMBNAIL = 118;
+    static final int ARTWORK_LINK_IMAGE = 119;
 
     /**
      * Static constants for app unique row identifies
@@ -73,6 +75,7 @@ public class DbProvider extends ContentProvider {
     private static final SQLiteQueryBuilder SLQB_ArtworkWithImageVersions;
     private static final SQLiteQueryBuilder SLQB_ArtworkWithLinks;
     private static final SQLiteQueryBuilder SLQB_ArtworkWithLinksToThumbnail;
+    private static final SQLiteQueryBuilder SLQB_ArtworkWithLinksToImage;
     private static final SQLiteQueryBuilder SLQB_FairWithLinks;
     private static final SQLiteQueryBuilder SLQB_GeneWithLinks;
     private static final SQLiteQueryBuilder SLQB_ShowWithImageVersions;
@@ -97,6 +100,7 @@ public class DbProvider extends ContentProvider {
         SLQB_ArtworkWithImageVersions = new SQLiteQueryBuilder();
         SLQB_ArtworkWithLinks = new SQLiteQueryBuilder();
         SLQB_ArtworkWithLinksToThumbnail = new SQLiteQueryBuilder();
+        SLQB_ArtworkWithLinksToImage = new SQLiteQueryBuilder();
         SLQB_FairWithLinks = new SQLiteQueryBuilder();
         SLQB_GeneWithLinks = new SQLiteQueryBuilder();
         SLQB_ShowWithImageVersions = new SQLiteQueryBuilder();
@@ -190,6 +194,25 @@ public class DbProvider extends ContentProvider {
                         " ON " + DbContract.ThumbnailEntry.TABLE_NAME + "." + DbContract.ThumbnailEntry.COLUMN_THUMBNAIL_ID + " = " +
                         DbContract.LinkEntry.TABLE_NAME + "." + DbContract.LinkEntry.COLUMN_THUMBNAIL_ID
 
+        );
+
+        /**
+         * This is an inner join which looks at
+         * link inner join artwork on link.link_id = artwork.link_id
+         *      inner join image on image.image_id = link.image_id
+         *      inner join image_version on image_version.image_version_id = artwork.image_version_id
+         */
+        SLQB_ArtworkWithLinksToImage.setTables(
+                DbContract.LinkEntry.TABLE_NAME + " INNER JOIN " +
+                        DbContract.ArtworkEntry.TABLE_NAME +
+                        " ON " + DbContract.ArtworkEntry.TABLE_NAME + "." + DbContract.ArtworkEntry.COLUMN_LINK_ID + " = " +
+                        DbContract.LinkEntry.TABLE_NAME + "." + DbContract.LinkEntry.COLUMN_LINK_ID +" "+
+                        " INNER JOIN " + DbContract.ImageEntry.TABLE_NAME
+                        + " ON " + DbContract.ImageEntry.TABLE_NAME + "." + DbContract.ImageEntry.COLUMN_IMAGE_ID + " = " +
+                        DbContract.LinkEntry.TABLE_NAME + "." + DbContract.LinkEntry.COLUMN_IMAGE_ID +" "+
+                        " INNER JOIN " + DbContract.ImageVersionEntry.TABLE_NAME
+                        + " ON " + DbContract.ImageVersionEntry.TABLE_NAME + "." + DbContract.ImageVersionEntry.COLUMN_IMAGE_VERSION_ID + " = " +
+                        DbContract.ArtworkEntry.TABLE_NAME + "." + DbContract.ArtworkEntry.COLUMN_IMAGE_VERSION_ID
         );
 
         /**
@@ -515,6 +538,21 @@ public class DbProvider extends ContentProvider {
         );
     }
 
+    public Cursor getAllImagesForArtwork(){
+	    Log.v("getAllImagesForArtwork", "I got here");
+	    Log.v("getAllImagesForArtwork", "Query: "+SLQB_ArtworkWithLinksToImage.getTables());
+        return SLQB_ArtworkWithLinksToImage.query(
+                dbHelper.getReadableDatabase(),
+                new String[]{"artwork._id, image_version.image_version_id, artwork.title, replace(image.href,'{image_version}',image_version.version_type) as href, image_version.version_type "},
+                null,
+                null,
+                null,
+                null,
+                null//"artwork.title, image_version.version_type"
+                
+        );
+    }
+
     /**
      * Uri Matcher that determine how the Uri is handling inputs
      * @return - Returns a UriMatcher
@@ -529,6 +567,7 @@ public class DbProvider extends ContentProvider {
         uriMatcher.addURI(authority, DbContract.PATH_TOKEN, TOKEN);
         uriMatcher.addURI(authority, DbContract.PATH_ARTIST, ARTIST);
         uriMatcher.addURI(authority, "artwork_link_thumbnail/*",ARTWORK_LINK_THUMBNAIL);
+        uriMatcher.addURI(authority, "artwork_link_image/*",ARTWORK_LINK_IMAGE);
         uriMatcher.addURI(authority, DbContract.PATH_ARTWORK, ARTWORK);
         uriMatcher.addURI(authority, DbContract.PATH_FAIR, FAIR);
         uriMatcher.addURI(authority, DbContract.PATH_GENE, GENE);
@@ -577,6 +616,8 @@ public class DbProvider extends ContentProvider {
             case ARTIST:
                 return DbContract.ArtistEntry.CONTENT_TYPE;
             case ARTWORK_LINK_THUMBNAIL:
+                return DbContract.ArtworkEntry.CONTENT_TYPE;
+            case ARTWORK_LINK_IMAGE:
                 return DbContract.ArtworkEntry.CONTENT_TYPE;
             case ARTWORK:
                 return DbContract.ArtworkEntry.CONTENT_TYPE;
@@ -667,6 +708,10 @@ public class DbProvider extends ContentProvider {
             }
             case ARTWORK_LINK_THUMBNAIL:{
                 retCursor = getThumbnailForArtwork();
+                break;
+            }
+            case ARTWORK_LINK_IMAGE:{
+                retCursor = getAllImagesForArtwork();
                 break;
             }
             case FAIR:{
@@ -850,8 +895,9 @@ public class DbProvider extends ContentProvider {
                 break;
             }
         }
-
-        retCursor.setNotificationUri(getContext().getContentResolver(),uri);
+	
+	    Log.v("DbProvider-query",String.valueOf(dbProviderUriMatcher.match(uri)));
+	    retCursor.setNotificationUri(getContext().getContentResolver(),uri);
         return retCursor;
     }
 

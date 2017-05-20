@@ -219,9 +219,9 @@ public class DbContract {
                     .appendPath(Integer.toString(ArtworkId)).build();
         }
 
-        public static Uri buildArtworkDThumbnailSection(int ArtworkId){
-            return BASE_CONTENT_URI.buildUpon().appendPath("artwork_link_thumbnail")
-                    .appendPath(Integer.toString(ArtworkId)).build();
+        public static Uri buildArtworkImagesSection(){
+            return BASE_CONTENT_URI.buildUpon().appendPath("artwork_link_image")
+                    .appendPath("*").build();
         }
 
         public static Uri buildAllArtworkThumbnailSection(){
