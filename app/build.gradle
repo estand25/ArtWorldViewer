@@ -25,6 +25,7 @@ android {
     buildTypes.each {
         it.buildConfigField 'String', 'AWV_Client_Secret', "\"AWV_Client_Secret_key\""
     }
+
 }
 
 dependencies {
