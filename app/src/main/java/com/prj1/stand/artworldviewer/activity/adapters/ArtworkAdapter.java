@@ -20,7 +20,6 @@ import com.prj1.stand.artworldviewer.R;
  * Created by Stand on 5/15/2017.
  */
 public class ArtworkAdapter extends CursorAdapter{
-	String image_version_id;
 	
     /**
      * ArtworkAdapter
@@ -74,53 +73,30 @@ public class ArtworkAdapter extends CursorAdapter{
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ArtworkViewHolder artworkViewHolder = (ArtworkViewHolder) view.getTag();
-	    Bundle slideNotes = new Bundle();
-	    artworkViewHolder.artworkTextSlider
+	    //Bundle slideNotes = new Bundle();
+	    /*artworkViewHolder.artworkTextSlider
 			    .description(cursor.getString(2)+" - "+cursor.getString(4))
 			    .image(cursor.getString(3))
-			    .setScaleType(BaseSliderView.ScaleType.CenterCrop);
-	    /*artworkViewHolder.artworkTextSlider
-			    .description(cursor.getString(1))
-			    .image(cursor.getString(2))
 			    .setScaleType(BaseSliderView.ScaleType.CenterCrop);*/
-	    
-	    Log.v("bindView", "cursor 0 " + cursor.getString(0));
-	    Log.v("bindView", "cursor 1 " + cursor.getString(1));
-	    Log.v("bindView", "cursor 2 " + cursor.getString(2));
-	    //Log.v("bindView", "cursor 3 " + cursor.getString(3));
-	    //Log.v("bindView", "cursor 4 " + cursor.getString(4));
-	    artworkViewHolder.artworkSlideShow.addSlider(artworkViewHolder.artworkTextSlider);
-	    
-	   /*if(artworkViewHolder.artworkSlideShow.){
-		    artworkViewHolder.artworkSlideShow.movePrevPosition();
-		    artworkViewHolder.artworkSlideShow.addSlider(artworkViewHolder.artworkTextSlider);
+	    if(cursor.getPosition() <= 2) {
+		    artworkViewHolder.artworkTextSlider
+				    .description(cursor.getString(1))
+				    .image(cursor.getString(2))
+				    .setScaleType(BaseSliderView.ScaleType.CenterCrop);
+		
+		    Log.v("bindView", "cursor 0 " + cursor.getString(0));
+		    Log.v("bindView", "cursor 1 " + cursor.getString(1));
+		    Log.v("bindView", "cursor 2 " + cursor.getString(2));
 	    }
 	    else {
+		    artworkViewHolder.artworkSlideShow.getCurrentSlider()
+				    .description(cursor.getString(1))
+				    .image(cursor.getString(2))
+				    .setScaleType(BaseSliderView.ScaleType.CenterCrop);
+		
+		    Log.v("bindView", "cursor 0 " + cursor.getString(0));
+		    Log.v("bindView", "cursor 1 " + cursor.getString(1));
+		    Log.v("bindView", "cursor 2 " + cursor.getString(2));
 	    }
-	    
-		
-		artworkViewHolder.artworkSlideShow.addSlider(artworkViewHolder.artworkTextSlider);
-	    
-	    Log.v("bindView", "Here "+artworkViewHolder.artworkSlideShow.getCurrentSlider().getDescription());
-	    Log.v("bindView", "Here "+String.valueOf(artworkViewHolder.artworkSlideShow.getCurrentPosition()));
-	    String currentDesc = artworkViewHolder.artworkSlideShow.getCurrentSlider().getDescription();
-	    
-	    if(!currentDesc.isEmpty()){
-		    artworkViewHolder.artworkSlideShow.movePrevPosition();
-		
-		    Log.v("bindView", "Here Preview "+artworkViewHolder.artworkSlideShow.getCurrentSlider().getDescription());
-		    Log.v("bindView", "Here Preview "+String.valueOf(artworkViewHolder.artworkSlideShow.getCurrentPosition()));
-		    String previewDesc = artworkViewHolder.artworkSlideShow.getCurrentSlider().getDescription();
-		    if(currentDesc.equals(previewDesc)){
-			    artworkViewHolder.artworkSlideShow.removeSliderAt(artworkViewHolder.artworkSlideShow.getCurrentPosition());
-			    artworkViewHolder.artworkSlideShow.addSlider(artworkViewHolder.artworkTextSlider);
-			    
-		    }
-		    else
-		    {
-			    artworkViewHolder.artworkSlideShow.moveNextPosition();
-			    artworkViewHolder.artworkSlideShow.addSlider(artworkViewHolder.artworkTextSlider);
-		    }
-	    }*/
     }
 }

@@ -153,7 +153,7 @@ public class ArtGalleryActivityFragment extends Fragment
                 // Sync the content provide data with internal SQL db's
                 onItemChanged();
 
-                // re-connect the adapter to the gridview
+                // re-connect the adapter to the grid view
                 setupAdapter();
 
                 // show the progress of the refresh per the color scheme above
@@ -173,11 +173,11 @@ public class ArtGalleryActivityFragment extends Fragment
         // so I add it as a reference just in case it can be used later
         // http://stackoverflow.com/questions/3674933/find-out-if-android-device-is-portrait-or-landscape-for-normal-usage
         if(Configuration.ORIENTATION_LANDSCAPE == getResources().getConfiguration().orientation) {
-            gridView.setNumColumns(3);
+            gridView.setNumColumns(1);
         }
         else
         {
-            gridView.setNumColumns(2);
+            gridView.setNumColumns(1);
         }
     }
 
@@ -204,8 +204,8 @@ public class ArtGalleryActivityFragment extends Fragment
 
         return new CursorLoader(
                 getActivity(),
-		        DbContract.ArtworkEntry.buildArtworkImagesSection(),
-		        //DbContract.ArtworkEntry.buildAllArtworkThumbnailSection(),
+		        //DbContract.ArtworkEntry.buildArtworkImagesSection(),
+		        DbContract.ArtworkEntry.buildAllArtworkThumbnailSection(),
                 null,
                 null,
                 null,
