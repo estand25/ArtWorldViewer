@@ -18,13 +18,12 @@ android {
         }
     }
 
-
     buildTypes.each {
-        it.buildConfigField 'String', 'AWV_Client_Id', "\"AWV_Client_Id_Key\""
+        it.buildConfigField 'String', 'AWV_Client_Id', "\"AWV_Client_Id\""
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'AWV_Client_Secret', "\"AWV_Client_Secret_key\""
+        it.buildConfigField 'String', 'AWV_Client_Secret', "\"AWV_Client_Secret\""
     }
 }
 
@@ -46,5 +45,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.slider:library:1.1.5@aar'
+    compile 'net.idik:slimadapter:2.0.6'
     testCompile 'junit:junit:4.12'
 }
