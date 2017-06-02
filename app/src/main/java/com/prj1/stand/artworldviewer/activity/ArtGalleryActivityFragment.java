@@ -2,6 +2,10 @@ package com.prj1.stand.artworldviewer.activity;
 
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -17,7 +21,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageView;
 
+import com.androidquery.AQuery;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.prj1.stand.artworldviewer.R;
@@ -28,12 +34,18 @@ import com.prj1.stand.artworldviewer.data.DbProvider;
 import com.prj1.stand.artworldviewer.model.artworks.Artwork;
 import com.prj1.stand.artworldviewer.model.display_object.ArtworkCard;
 import com.prj1.stand.artworldviewer.model.display_object.SectionHeader;
+import com.prj1.stand.artworldviewer.utilities.SanInputStream;
 
 import net.idik.lib.slimadapter.SlimAdapter;
 import net.idik.lib.slimadapter.SlimInjector;
 import net.idik.lib.slimadapter.ex.loadmore.SlimMoreLoader;
 import net.idik.lib.slimadapter.viewinjector.IViewInjector;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -67,6 +79,11 @@ public class ArtGalleryActivityFragment extends Fragment {
         try{
             if(artwork_cursor.getCount() >= 1){
                 while(artwork_cursor.moveToNext()){
+                    BitmapFactory.Options bmOptions;
+                    bmOptions = new BitmapFactory.Options();
+                    bmOptions.inSampleSize = 1;
+                    Bitmap bm = loadBitmap("https://d32dm0rphc51dk.cloudfront.net/urJNHDCBl7n_iQmKmYUN7w/medium.jpg", bmOptions);
+                    
                     data.add(new ArtworkCard(artwork_cursor.getString(1),artwork_cursor.getString(2)));
                     Log.v("ArtGActivityFragment","Des: "+artwork_cursor.getString(1)+" URL image: "+artwork_cursor.getString(2));
                 }
@@ -107,8 +124,8 @@ public class ArtGalleryActivityFragment extends Fragment {
                 .register(R.layout.item_artwork, new SlimInjector<ArtworkCard>() {
                     @Override
                     public void onInject(ArtworkCard data, IViewInjector injector) {
-                        injector.text(R.id.name, data.getAc_description())
-                                .image(R.id.cover, data.getAc_image());
+	                    injector.text(R.id.name, data.getAc_description());
+                                //.image(R.id.cover, data.getAc_imageDrawable());
                     }
                 })
                 .register(R.layout.item_section_header, new SlimInjector<SectionHeader>() {
@@ -127,5 +144,36 @@ public class ArtGalleryActivityFragment extends Fragment {
         // Set-up the SwipeRefreshLayout color order
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorBlack,R.color.colorGray,R.color.colorDarkGray);
         return rootView;
+    }
+    
+    public static Bitmap loadBitmap(String URL, BitmapFactory.Options options) {
+        Bitmap bitmap = null;
+        InputStream in = null;
+        try {
+            in = OpenHttpConnection(URL);
+            bitmap = BitmapFactory.decodeStream(in, null, options);
+            in.close();
+        } catch (IOException e1) {
+        }
+        return bitmap;
+    }
+    
+    private static InputStream OpenHttpConnection(String strURL)
+            throws IOException {
+        InputStream inputStream = null;
+        URL url = new URL(strURL);
+        URLConnection conn = url.openConnection();
+        
+        try {
+            HttpURLConnection httpConn = (HttpURLConnection) conn;
+            httpConn.setRequestMethod("GET");
+            httpConn.connect();
+            
+            if (httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                inputStream = httpConn.getInputStream();
+            }
+        } catch (Exception ex) {
+        }
+        return inputStream;
     }
 }

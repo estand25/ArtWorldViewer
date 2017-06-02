@@ -2,21 +2,16 @@ package com.prj1.stand.artworldviewer.model.display_object;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.util.Log;
 
-import com.androidquery.AQuery;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+
 
 /**
  * Display class used in the recycle view for display
@@ -37,33 +32,31 @@ public class ArtworkCard {
 		return ac_description;
 	}
 	
-	public Drawable getAc_image(){
-		Drawable dimage = null;
-		
-		try {
-		//	InputStream url = (InputStream) new URL(ac_image).getContent();
-		//	image = Drawable.createFromStream(url,ac_image);
-
-		
-		Bitmap image = drawable_from_url(ac_image);
-		//return image;
-		dimage = new BitmapDrawable(image);
-		} catch(IOException n){
-			n.printStackTrace();
-		}
-		return dimage;
+	public String getAc_image(){
+		return ac_image;
 	}
 	
-	Bitmap drawable_from_url(String url) throws java.net.MalformedURLException, java.io.IOException {
-		Bitmap x;
-		
-		HttpURLConnection connection = (HttpURLConnection)new URL(url) .openConnection();
-		//connection.setRequestProperty("User-agent","Mozilla/4.0");
-		
-		connection.connect();
-		InputStream input = connection.getInputStream();
-		
-		x = BitmapFactory.decodeStream(input);
-		return x;
+	//public Drawable getAc_imageDrawable(){
+	//	Bitmap b = getBitmapFromURL(ac_image);
+		//Drawable d = new BitmapDrawable(context.g, b);
+	//}
+	//Drawable d = (Drawable)new BitmapDrawable(getBitmapFromURL(ac_image));
+	//return d;
+	public static Bitmap getBitmapFromURL(String src) {
+		try {
+			Log.e("src",src);
+			URL url = new URL(src);
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setDoInput(true);
+			connection.connect();
+			InputStream input = connection.getInputStream();
+			Bitmap myBitmap = BitmapFactory.decodeStream(input);
+			Log.e("Bitmap","returned");
+			return myBitmap;
+		} catch (IOException e) {
+			e.printStackTrace();
+			Log.e("Exception",e.getMessage());
+			return null;
+		}
 	}
 }
