@@ -1,10 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.prj1.stand.artworldviewer.activity.GalleryActivity">
+    android:background="@color/colorBlack"
+    android:gravity="top"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:id="@+id/relativeLout">
 
-</android.support.constraint.ConstraintLayout>
+    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/image1"
+        android:layout_below="@+id/btn_close1"/>
+
+    <TextView
+        android:id="@+id/art_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/image1"
+        android:textColor="@color/colorLTGray"/>
+
+    <ImageButton
+        android:id="@+id/btn_close1"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_close_grey600_24dp"
+        android:scaleType="fitCenter"
+        style="@style/Widget.AppCompat.ActionButton" />
+</RelativeLayout>

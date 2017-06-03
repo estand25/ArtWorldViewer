@@ -23,12 +23,12 @@ import com.prj1.stand.artworldviewer.R;
 
 public class ImagePagerAdapter extends PagerAdapter{
 	private Context _context;
-	private LayoutInflater _layoutInflater;
+	//private LayoutInflater _layoutInflater;
 	private String _singleImage;
 	
 	public ImagePagerAdapter(Context context, String image){
 		_context = context;
-		_layoutInflater = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		//_layoutInflater = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		_singleImage = image;
 	}
 	
@@ -39,17 +39,17 @@ public class ImagePagerAdapter extends PagerAdapter{
 	
 	@Override
 	public boolean isViewFromObject(View view, Object object) {
-		//return((LinearLayout) object);
 		return  view == object;
 	}
 	
 	@Override
 	public Object instantiateItem(ViewGroup container, int position) {
-		View itemView = _layoutInflater.inflate(R.layout.pager_image_item, container, false);
+		LayoutInflater inflater = LayoutInflater.from(_context);
+		View itemView = inflater.inflate(R.layout.pager_image_item, container, false);
 		container.addView(itemView);
 		
-		//final SubsamplingScaleImageView subsamplingScaleImageView =
-		//		(SubsamplingScaleImageView) itemView.findViewById(R.id.image);
+		final SubsamplingScaleImageView subsamplingScaleImageView =
+				(SubsamplingScaleImageView) itemView.findViewById(R.id.image);
 		//Glide.with(_context)
 		//		.load(_singleImage)
 		//		.asBitmap()
@@ -65,6 +65,6 @@ public class ImagePagerAdapter extends PagerAdapter{
 	
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
-		container.removeView((LinearLayout) object);
+		container.removeView((View) object);
 	}
 }

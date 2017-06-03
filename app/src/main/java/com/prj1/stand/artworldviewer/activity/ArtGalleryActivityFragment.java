@@ -98,10 +98,21 @@ public class ArtGalleryActivityFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 Log.v("clicked","Title: "+data.getAc_description() +" URL Link: "+data.getAc_image());
-                                Intent singleImageIntent = new Intent(getContext(),ImageActivity.class);
-                                singleImageIntent.putExtra(ImageActivity.EXTRA_IMAGE, data.getAc_image());
-                                singleImageIntent.putExtra(ImageActivity.EXTRA_DESCRIPTION, data.getAc_description());
-                                startActivity(singleImageIntent);
+                                
+                                //ArrayList<String> image = new ArrayList<String>();
+                                //image.add("https://d32dm0rphc51dk.cloudfront.net/NOpIAwQa-3r51Cg9qXKbfA/medium.jpg");
+                                //image.add("https://d32dm0rphc51dk.cloudfront.net/NOpIAwQa-3r51Cg9qXKbfA/medium.jpg");
+                                
+                                //Intent singleImageIntent = new Intent(v.getContext(),ImageActivity.class);
+                                //singleImageIntent.putExtra(ImageActivity.EXTRA_IMAGE, data.getAc_image());
+                                //singleImageIntent.putExtra(ImageActivity.EXTRA_DESCRIPTION, data.getAc_description());
+                                //singleImageIntent.putStringArrayListExtra(ImageActivity.EXTRA_IMAGE,image);
+                                //v.getContext().startActivity(singleImageIntent);
+                                
+                                Intent sIntent = new Intent(v.getContext(),GalleryActivity.class);
+                                sIntent.putExtra(GalleryActivity.EXTRA_IMAGE2, data.getAc_image());
+                                sIntent.putExtra(GalleryActivity.EXTRA_TiTLE2, data.getAc_description());
+                                v.getContext().startActivity(sIntent);
                             }
                         });
                     }
