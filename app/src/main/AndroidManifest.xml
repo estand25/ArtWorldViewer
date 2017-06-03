@@ -28,6 +28,20 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activity.GalleryActivity"
+            android:parentActivityName=".activity.ArtGalleryActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.ArtGalleryActivity"/>
+        </activity>
+
+        <activity android:name=".activity.ImageActivity"
+            android:parentActivityName=".activity.ArtGalleryActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.ArtGalleryActivity"/>
+        </activity>
+
         <provider
             android:name=".data.DbProvider"
             android:authorities="com.prj1.stand.artworldviewer"
@@ -75,10 +89,6 @@
             android:name=".sync.StartReceiver"
             android:exported="false"/>
 
-        <activity android:name=".activity.GalleryActivity">
-        </activity>
-        <activity android:name=".activity.ImageActivity">
-        </activity>
     </application>
 
 </manifest>

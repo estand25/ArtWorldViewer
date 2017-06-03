@@ -24,20 +24,23 @@ import com.prj1.stand.artworldviewer.R;
 public class ImagePagerAdapter extends PagerAdapter{
 	private Context _context;
 	private LayoutInflater _layoutInflater;
+	private String _singleImage;
 	
-	public ImagePagerAdapter(Context context){
+	public ImagePagerAdapter(Context context, String image){
 		_context = context;
 		_layoutInflater = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		_singleImage = image;
 	}
 	
 	@Override
 	public int getCount() {
-		return 0;
+		return 1;
 	}
 	
 	@Override
 	public boolean isViewFromObject(View view, Object object) {
-		return view == ((LinearLayout) object);
+		//return((LinearLayout) object);
+		return  view == object;
 	}
 	
 	@Override
@@ -45,17 +48,17 @@ public class ImagePagerAdapter extends PagerAdapter{
 		View itemView = _layoutInflater.inflate(R.layout.pager_image_item, container, false);
 		container.addView(itemView);
 		
-		final SubsamplingScaleImageView subsamplingScaleImageView =
-				(SubsamplingScaleImageView) itemView.findViewById(R.id.image);
-		Glide.with(_context)
-				.load(0)
-				.asBitmap()
-				.into(new SimpleTarget<Bitmap>() {
-					@Override
-					public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-						subsamplingScaleImageView.setImage(ImageSource.bitmap(resource));
-					}
-				});
+		//final SubsamplingScaleImageView subsamplingScaleImageView =
+		//		(SubsamplingScaleImageView) itemView.findViewById(R.id.image);
+		//Glide.with(_context)
+		//		.load(_singleImage)
+		//		.asBitmap()
+		//		.into(new SimpleTarget<Bitmap>() {
+		//			@Override
+		//			public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+		//				subsamplingScaleImageView.setImage(ImageSource.bitmap(resource));
+		//			}
+		//		});
 		
 		return itemView;
 	}

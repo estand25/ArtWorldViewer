@@ -39,7 +39,7 @@ public class ImageActivity extends AppCompatActivity {
 		_imageString = getIntent().getStringExtra(EXTRA_IMAGE);
 		_imageTitle = getIntent().getStringExtra(EXTRA_DESCRIPTION);
 		
-		_imagePagerAdapter = new ImagePagerAdapter(this);
+		_imagePagerAdapter = new ImagePagerAdapter(this,_imageString);
 		
 		_pager.setAdapter(_imagePagerAdapter);
 		

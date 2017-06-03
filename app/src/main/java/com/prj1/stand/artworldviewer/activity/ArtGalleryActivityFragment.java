@@ -98,9 +98,8 @@ public class ArtGalleryActivityFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 Log.v("clicked","Title: "+data.getAc_description() +" URL Link: "+data.getAc_image());
-                                //startIndividualImageGallery();
                                 Intent singleImageIntent = new Intent(getContext(),ImageActivity.class);
-                                singleImageIntent.putExtra(ImageActivity.EXTRA_IMAGE,data.getAc_image());
+                                singleImageIntent.putExtra(ImageActivity.EXTRA_IMAGE, data.getAc_image());
                                 singleImageIntent.putExtra(ImageActivity.EXTRA_DESCRIPTION, data.getAc_description());
                                 startActivity(singleImageIntent);
                             }
