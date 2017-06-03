@@ -568,6 +568,7 @@ public class DbProvider extends ContentProvider {
         uriMatcher.addURI(authority, DbContract.PATH_ARTIST, ARTIST);
         uriMatcher.addURI(authority, "artwork_link_thumbnail/*",ARTWORK_LINK_THUMBNAIL);
         uriMatcher.addURI(authority, "artwork_link_image/*",ARTWORK_LINK_IMAGE);
+        uriMatcher.addURI(authority, DbContract.PATH_ARTWORK + "/*", ARTWORK_ID);
         uriMatcher.addURI(authority, DbContract.PATH_ARTWORK, ARTWORK);
         uriMatcher.addURI(authority, DbContract.PATH_FAIR, FAIR);
         uriMatcher.addURI(authority, DbContract.PATH_GENE, GENE);
@@ -618,6 +619,8 @@ public class DbProvider extends ContentProvider {
             case ARTWORK_LINK_THUMBNAIL:
                 return DbContract.ArtworkEntry.CONTENT_TYPE;
             case ARTWORK_LINK_IMAGE:
+                return DbContract.ArtworkEntry.CONTENT_TYPE;
+            case ARTWORK_ID:
                 return DbContract.ArtworkEntry.CONTENT_TYPE;
             case ARTWORK:
                 return DbContract.ArtworkEntry.CONTENT_TYPE;
@@ -704,6 +707,10 @@ public class DbProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
+                break;
+            }
+            case ARTWORK_ID:{
+                retCursor = getThumbnailForSpecificArtwork(uri);
                 break;
             }
             case ARTWORK_LINK_THUMBNAIL:{

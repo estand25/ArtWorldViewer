@@ -7,6 +7,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.daimajia.slider.library.SliderLayout;
@@ -19,7 +22,6 @@ import com.prj1.stand.artworldviewer.sync.StartReceiver;
 import java.util.concurrent.TimeUnit;
 
 public class ArtGalleryActivity extends AppCompatActivity {
-    private ArtGalleryActivityFragment artGalleryActivityFragment;
     StartReceiver starter = new StartReceiver();
 
     @Override
@@ -28,8 +30,8 @@ public class ArtGalleryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_art_gallery);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        artGalleryActivityFragment = ((ArtGalleryActivityFragment) getSupportFragmentManager()
+    
+        ArtGalleryActivityFragment artGalleryActivityFragment = ((ArtGalleryActivityFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -48,5 +50,26 @@ public class ArtGalleryActivity extends AppCompatActivity {
         starter.setAlarm(this);
 
         Constants.cConetext = getApplicationContext();
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_art_gallery,menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        
+        return super.onOptionsItemSelected(item);
     }
 }
