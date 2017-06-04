@@ -228,7 +228,12 @@ public class DbContract {
             return BASE_CONTENT_URI.buildUpon().appendPath("artwork_link_thumbnail")
                     .appendPath("*").build();
         }
-
+    
+        public static Uri buildArtworkThumbnail(String ArtworkId){
+            return BASE_CONTENT_URI.buildUpon().appendPath("specific_artwork_link_thumbnail")
+                    .appendPath(ArtworkId).build();
+        }
+        
         /**
          * URI for the specific Artwork row in the Artwork table
          * @param id
@@ -556,7 +561,15 @@ public class DbContract {
         public static Uri buildLinkUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
-
+    
+        /**
+         * Link details for the URI for the specific link id
+         */
+        public static Uri buildLinkDetailUri(String LinkId){
+            return CONTENT_URI.buildUpon().appendPath("link_detail")
+                    .appendPath(LinkId).build();
+        }
+        
         /**
          * URI for the specific Link Id in the Link Table
          */

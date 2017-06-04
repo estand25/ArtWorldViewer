@@ -45,6 +45,7 @@ public class DbProvider extends ContentProvider {
     static final int PARTNER_CONTACT = 117;
     static final int ARTWORK_LINK_THUMBNAIL = 118;
     static final int ARTWORK_LINK_IMAGE = 119;
+    static final int SPECIFIC_ARTWORK_LINK_THUMBNAIL = 120;
 
     /**
      * Static constants for app unique row identifies
@@ -545,7 +546,7 @@ public class DbProvider extends ContentProvider {
     public final Cursor getThumbnailForSpecificArtwork(Uri uri){
         return SLQB_ArtworkWithLinksToThumbnail.query(
                 dbHelper.getReadableDatabase(),
-                new String[]{"artwork._id,artwork.title, thumbnail.href "},
+                new String[]{"artwork._id, thumbnail.href "},
                 SQL_ArtworkIdSettingSelection,
                 new String[]{DbContract.ArtworkEntry.getArtworkId(uri)},
                 null,
@@ -593,12 +594,12 @@ public class DbProvider extends ContentProvider {
         );
     }
     
-    public Cursor getImageVersionForArtwork(String link_id){
+    public Cursor getImageVersionForArtwork(Uri uri){
         return SLQB_ArtworkWithLinksToImage.query(
                 dbHelper.getReadableDatabase(),
-                new String[]{"artwork._id, image_version.image_version_id, artwork.title, replace(image.href,'{image_version}',image_version.version_type) as href, image_version.version_type, image.href  "},
+                new String[]{"artwork._id, image_version.image_version_id, artwork.title, replace(image.href,'{image_version}',image_version.version_type) as href, image_version.version_type, image.href "},
                 SQL_LinkIdSettingSelection,
-                new String[]{link_id},
+                new String[]{DbContract.LinkEntry.getLinkID(uri)},
                 null,
                 null,
                 null
@@ -606,6 +607,8 @@ public class DbProvider extends ContentProvider {
     }
     
     public Cursor getDimensionInfo(String dimension_id){
+        Log.v("getDimensionInfo",SLQB_DimensionWithCM_IN.toString());
+        Log.v("getDimensionInfo",dimension_id);
         return SLQB_DimensionWithCM_IN.query(
                 dbHelper.getReadableDatabase(),
                 new String[]{"dimension._id, cm.text, cm.height, cm.width, cm.depth, cm.diameter, in_.text, in_.height, in_.width, in_.depth, in_.diameter "},
@@ -643,6 +646,7 @@ public class DbProvider extends ContentProvider {
          */
         uriMatcher.addURI(authority, DbContract.PATH_TOKEN, TOKEN);
         uriMatcher.addURI(authority, DbContract.PATH_ARTIST, ARTIST);
+        uriMatcher.addURI(authority, "specific_artwork_link_thumbnail/*",SPECIFIC_ARTWORK_LINK_THUMBNAIL);
         uriMatcher.addURI(authority, "artwork_link_thumbnail/*",ARTWORK_LINK_THUMBNAIL);
         uriMatcher.addURI(authority, "artwork_link_image/*",ARTWORK_LINK_IMAGE);
         uriMatcher.addURI(authority, DbContract.PATH_ARTWORK + "/*", ARTWORK_ID);
@@ -656,6 +660,7 @@ public class DbProvider extends ContentProvider {
         uriMatcher.addURI(authority, DbContract.PATH_IMAGE, IMAGE);
         uriMatcher.addURI(authority, DbContract.PATH_IMAGE_VERSION, IMAGE_VERSION);
         uriMatcher.addURI(authority, DbContract.PATH_LINK, LINK);
+        uriMatcher.addURI(authority, DbContract.PATH_LINK + "/*", LINK_ID);
         uriMatcher.addURI(authority, DbContract.PATH_PARTNER, PARTNER);
         uriMatcher.addURI(authority, DbContract.PATH_PERMALINK, PERMALINK);
         uriMatcher.addURI(authority, DbContract.PATH_PROFILE, PROFILE);
@@ -695,6 +700,8 @@ public class DbProvider extends ContentProvider {
                 return DbContract.ArtistEntry.CONTENT_TYPE;
             case ARTWORK_LINK_THUMBNAIL:
                 return DbContract.ArtworkEntry.CONTENT_TYPE;
+            case SPECIFIC_ARTWORK_LINK_THUMBNAIL:
+                return DbContract.ArtworkEntry.CONTENT_TYPE;
             case ARTWORK_LINK_IMAGE:
                 return DbContract.ArtworkEntry.CONTENT_TYPE;
             case ARTWORK_ID:
@@ -719,6 +726,8 @@ public class DbProvider extends ContentProvider {
                 return DbContract.ImageVersionEntry.CONTENT_TYPE;
             case LINK:
                 return DbContract.LinkEntry.CONTENT_TYPE;
+            case LINK_ID:
+                return DbContract.LinkEntry.CONTENT_TYPE;
             case PARTNER:
                 return DbContract.PartnerEntry.CONTENT_TYPE;
             case PERMALINK:
@@ -731,67 +740,71 @@ public class DbProvider extends ContentProvider {
                 return DbContract.SelfEntry.CONTENT_TYPE;
             case PARTNER_CONTACT:
                 return DbContract.PartnerContactEntry.CONTENT_TYPE;
-            default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+                default:
+                    throw new UnsupportedOperationException("Unknown uri: " + uri);
+            }
         }
-    }
-
-    /**
-     *  Query the specified table using specific project, selection, selectionArgs, and SortOrder
-     * @param uri - Uri that content the path of the table
-     * @param projection - The individual column to select
-     * @param selection - The fields that should be included in the Where criteria
-     * @param selectionArgs - The field value that should be included in the Where criteria
-     * @param sortOrder - The sort order for the query
-     * @return - Returns the Cursor of the specified table
-     */
-    @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-                        String sortOrder){
-        Cursor retCursor = null;
-        switch(dbProviderUriMatcher.match(uri)){
-            case TOKEN: {
-                retCursor = dbHelper.getReadableDatabase().query(
-                        DbContract.TokenEntry.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
-                break;
-            }
+    
+        /**
+         *  Query the specified table using specific project, selection, selectionArgs, and SortOrder
+         * @param uri - Uri that content the path of the table
+         * @param projection - The individual column to select
+         * @param selection - The fields that should be included in the Where criteria
+         * @param selectionArgs - The field value that should be included in the Where criteria
+         * @param sortOrder - The sort order for the query
+         * @return - Returns the Cursor of the specified table
+         */
+        @Override
+        public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+                String sortOrder){
+            Cursor retCursor = null;
+            switch(dbProviderUriMatcher.match(uri)){
+                case TOKEN: {
+                    retCursor = dbHelper.getReadableDatabase().query(
+                            DbContract.TokenEntry.TABLE_NAME,
+                            projection,
+                            selection,
+                            selectionArgs,
+                            null,
+                            null,
+                            sortOrder
+                    );
+                    break;
+                }
             case ARTIST: {
-                retCursor = dbHelper.getReadableDatabase().query(
-                        DbContract.ArtistEntry.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
-                break;
-            }
+                    retCursor = dbHelper.getReadableDatabase().query(
+                            DbContract.ArtistEntry.TABLE_NAME,
+                            projection,
+                            selection,
+                            selectionArgs,
+                            null,
+                            null,
+                            sortOrder
+                    );
+                    break;
+                }
             case ARTWORK:{
-                retCursor = dbHelper.getReadableDatabase().query(
-                        DbContract.ArtworkEntry.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
-                break;
-            }
+                    retCursor = dbHelper.getReadableDatabase().query(
+                            DbContract.ArtworkEntry.TABLE_NAME,
+                            projection,
+                            selection,
+                            selectionArgs,
+                            null,
+                            null,
+                            sortOrder
+                    );
+                    break;
+                }
             case ARTWORK_ID:{
-                retCursor = getThumbnailForSpecificArtwork(uri);
-                break;
+                    retCursor = getThumbnailForSpecificArtwork(uri);
+                    break;
             }
             case ARTWORK_LINK_THUMBNAIL:{
                 retCursor = getThumbnailForArtwork();
+                break;
+            }
+            case SPECIFIC_ARTWORK_LINK_THUMBNAIL:{
+                retCursor = getThumbnailForSpecificArtwork(uri);
                 break;
             }
             case ARTWORK_LINK_IMAGE:{
@@ -904,6 +917,10 @@ public class DbProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
+                break;
+            }
+            case LINK_ID: {
+                retCursor = getImageVersionForArtwork(uri);
                 break;
             }
             case PARTNER:{

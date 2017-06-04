@@ -105,8 +105,7 @@ public class Artwork implements Parcelable
     @Expose
     private Embedded_ embedded;
     public final static Parcelable.Creator<Artwork> CREATOR = new Creator<Artwork>() {
-
-
+        
         @SuppressWarnings({
             "unchecked"
         })
