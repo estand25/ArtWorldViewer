@@ -34,12 +34,9 @@ public class ArtTokenService extends IntentService{
 
     // Define a variable to contain a content resolver instance
     ContentResolver contentResolver;
-
-    private String token0;
-    private String token1;
-    private String token2;
-    private String token3;
-    private String token4;
+     
+    // Boolean to get new Art information
+     private boolean ArtInfo = false;
 
     /**
       An IntentService must always have a constructor that calls super
@@ -105,6 +102,7 @@ public class ArtTokenService extends IntentService{
                                 Log.v("ArtTokenService","currentTokenExpiry: "+currentTokenExpiry.toString());
                                 if(currentCalDate.getTime().compareTo(currentTokenExpiry) > 2)
                                 {
+                                    Log.v("ArtTokenService","New Token compare to Existing Token");
                                     // Delete the current system token to insert new one
                                     contentResolver.delete(DbContract.TokenEntry.CONTENT_URI, "", new String[]{});
 
@@ -113,12 +111,12 @@ public class ArtTokenService extends IntentService{
                                             response.body().getToken(),
                                             response.body().getExpiresAt(),
                                             response.body().getLinks()));
+    
+                                    ArtInfo = true;
                                 }
                                 else
                                 {
-                                    // Delete the current system token to insert new one
-                                    contentResolver.delete(DbContract.TokenEntry.CONTENT_URI, "", new String[]{});
-
+                                    Log.v("ArtTokenService","Using Existing Token");
                                     // Set the System token to the data token
                                     TokenUtility.getInstance().setToken(new Token(cursor.getString(1),
                                             cursor.getString(2),
@@ -131,6 +129,8 @@ public class ArtTokenService extends IntentService{
                             }
                         }
                         else {
+                            Log.v("ArtTokenService","New Token");
+                            
                             // Set the response token to the system current token
                             TokenUtility.getInstance().setToken(new Token(response.body().getType(),
                                     response.body().getToken(),
@@ -147,11 +147,18 @@ public class ArtTokenService extends IntentService{
 
                             // Populate the current system token into the token table
                             contentResolver.insert(DbContract.TokenEntry.CONTENT_URI,tokenContentValue);
+    
+                            ArtInfo = true;
                         }
                         cursor.close();
 
-                        Log.v("ArtTokenService", "OnResponse - Got the Token " + TokenUtility.getInstance().getOurToken());
-                        startService(new Intent(getApplicationContext(), AllModelService.class));
+                        // Only if token is expired will I call this
+                        // I will create something else to update the db
+                        if(ArtInfo) {
+                            Log.v("ArtTokenService", "OnResponse - Got the Token " + TokenUtility.getInstance().getOurToken());
+                            Log.v("ArtTokenService", "New Token get ArtInfo ");
+                            startService(new Intent(getApplicationContext(), AllModelService.class));
+                        }
                     }
 
                     @Override

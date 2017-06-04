@@ -89,6 +89,7 @@ public class DbProvider extends ContentProvider {
     private static final SQLiteQueryBuilder SLQB_LinkWithProfile;
     private static final SQLiteQueryBuilder SLQB_DimensionWithCM;
     private static final SQLiteQueryBuilder SLQB_DimensionWithIN;
+    private static final SQLiteQueryBuilder SLQB_DimensionWithCM_IN;
 
     /**
      * Defining the query objects and its inner join
@@ -114,6 +115,7 @@ public class DbProvider extends ContentProvider {
         SLQB_LinkWithProfile = new SQLiteQueryBuilder();
         SLQB_DimensionWithCM = new SQLiteQueryBuilder();
         SLQB_DimensionWithIN = new SQLiteQueryBuilder();
+        SLQB_DimensionWithCM_IN = new SQLiteQueryBuilder();
 
         /**
          * This is an inner join which looks at
@@ -205,14 +207,20 @@ public class DbProvider extends ContentProvider {
         SLQB_ArtworkWithLinksToImage.setTables(
                 DbContract.LinkEntry.TABLE_NAME + " INNER JOIN " +
                         DbContract.ArtworkEntry.TABLE_NAME +
-                        " ON " + DbContract.ArtworkEntry.TABLE_NAME + "." + DbContract.ArtworkEntry.COLUMN_LINK_ID + " = " +
-                        DbContract.LinkEntry.TABLE_NAME + "." + DbContract.LinkEntry.COLUMN_LINK_ID +" "+
+                        " ON " + DbContract.ArtworkEntry.TABLE_NAME + "." +
+                        DbContract.ArtworkEntry.COLUMN_LINK_ID + " = " +
+                        DbContract.LinkEntry.TABLE_NAME + "." +
+                        DbContract.LinkEntry.COLUMN_LINK_ID +" "+
                         " INNER JOIN " + DbContract.ImageEntry.TABLE_NAME
-                        + " ON " + DbContract.ImageEntry.TABLE_NAME + "." + DbContract.ImageEntry.COLUMN_IMAGE_ID + " = " +
-                        DbContract.LinkEntry.TABLE_NAME + "." + DbContract.LinkEntry.COLUMN_IMAGE_ID +" "+
+                        + " ON " + DbContract.ImageEntry.TABLE_NAME + "." +
+                        DbContract.ImageEntry.COLUMN_IMAGE_ID + " = " +
+                        DbContract.LinkEntry.TABLE_NAME + "." +
+                        DbContract.LinkEntry.COLUMN_IMAGE_ID +" "+
                         " INNER JOIN " + DbContract.ImageVersionEntry.TABLE_NAME
-                        + " ON " + DbContract.ImageVersionEntry.TABLE_NAME + "." + DbContract.ImageVersionEntry.COLUMN_IMAGE_VERSION_ID + " = " +
-                        DbContract.ArtworkEntry.TABLE_NAME + "." + DbContract.ArtworkEntry.COLUMN_IMAGE_VERSION_ID
+                        + " ON " + DbContract.ImageVersionEntry.TABLE_NAME + "." +
+                        DbContract.ImageVersionEntry.COLUMN_IMAGE_VERSION_ID + " = " +
+                        DbContract.ArtworkEntry.TABLE_NAME + "." +
+                        DbContract.ArtworkEntry.COLUMN_IMAGE_VERSION_ID
         );
 
         /**
@@ -383,6 +391,26 @@ public class DbProvider extends ContentProvider {
                         " = " + DbContract.INEntry.TABLE_NAME +
                         "." + DbContract.INEntry.COLUMN_IN_ID
         );
+        
+        /**
+         * This is an inner join which looks at
+         * dimension inner join in_ on in_.in_id = dimension.in_id
+         *           inner join cm on cm.cm_id = dimension.cm_id
+         */
+        SLQB_DimensionWithCM_IN.setTables(
+                DbContract.DimensionEntry.TABLE_NAME + " INNER JOIN " +
+                        DbContract.INEntry.TABLE_NAME +
+                        " ON " + DbContract.INEntry.TABLE_NAME + "." +
+                        DbContract.INEntry.COLUMN_IN_ID + " = " +
+                        DbContract.DimensionEntry.TABLE_NAME + "." +
+                        DbContract.DimensionEntry.COLUMN_IN_ID + " "+
+                        " INNER JOIN " + DbContract.CMEntry.TABLE_NAME
+                        + " ON " + DbContract.CMEntry.TABLE_NAME + "." +
+                        DbContract.CMEntry.COLUMN_CM_ID + " = " +
+                        DbContract.DimensionEntry.TABLE_NAME + "." +
+                        DbContract.DimensionEntry.COLUMN_IN_ID + " "
+                        
+        );
     }
 
     /**
@@ -514,7 +542,7 @@ public class DbProvider extends ContentProvider {
     /**
      * Create private cursor for the above table
      */
-    public Cursor getThumbnailForSpecificArtwork(Uri uri){
+    public final Cursor getThumbnailForSpecificArtwork(Uri uri){
         return SLQB_ArtworkWithLinksToThumbnail.query(
                 dbHelper.getReadableDatabase(),
                 new String[]{"artwork._id,artwork.title, thumbnail.href "},
@@ -525,7 +553,19 @@ public class DbProvider extends ContentProvider {
                 null
         );
     }
-
+    
+    public final Cursor getThumbnailForArtwork(String link_id){
+        return SLQB_LinkWithThumbnail.query(
+                dbHelper.getReadableDatabase(),
+                new String[]{"thumbnail._id, thumbnail.href "},
+                SQL_LinkIdSettingSelection,
+                new String[]{link_id},
+                null,
+                null,
+                null
+        );
+    }
+    
     public Cursor getThumbnailForArtwork(){
         return SLQB_ArtworkWithLinksToThumbnail.query(
                 dbHelper.getReadableDatabase(),
@@ -543,7 +583,7 @@ public class DbProvider extends ContentProvider {
 	    Log.v("getAllImagesForArtwork", "Query: "+SLQB_ArtworkWithLinksToImage.getTables());
         return SLQB_ArtworkWithLinksToImage.query(
                 dbHelper.getReadableDatabase(),
-                new String[]{"artwork._id, image_version.image_version_id, artwork.title, replace(image.href,'{image_version}',image_version.version_type) as href, image_version.version_type "},
+                new String[]{"artwork._id, image_version.image_version_id, artwork.title, replace(image.href,'{image_version}',image_version.version_type) as href, image_version.version_type"},
                 null,
                 null,
                 null,
@@ -552,7 +592,44 @@ public class DbProvider extends ContentProvider {
                 
         );
     }
+    
+    public Cursor getImageVersionForArtwork(String link_id){
+        return SLQB_ArtworkWithLinksToImage.query(
+                dbHelper.getReadableDatabase(),
+                new String[]{"artwork._id, image_version.image_version_id, artwork.title, replace(image.href,'{image_version}',image_version.version_type) as href, image_version.version_type, image.href  "},
+                SQL_LinkIdSettingSelection,
+                new String[]{link_id},
+                null,
+                null,
+                null
+        );
+    }
+    
+    public Cursor getDimensionInfo(String dimension_id){
+        return SLQB_DimensionWithCM_IN.query(
+                dbHelper.getReadableDatabase(),
+                new String[]{"dimension._id, cm.text, cm.height, cm.width, cm.depth, cm.diameter, in_.text, in_.height, in_.width, in_.depth, in_.diameter "},
+                SQL_DimensionIdSettingSelection,
+                new String[]{dimension_id},
+                null,
+                null,
+                null
+        );
+    }
 
+    public Cursor getPermalinkForArtwrok(String link_id){
+        return SLQB_LinkWithPermalink.query(
+                dbHelper.getReadableDatabase(),
+                new String[] {"permalink._id, permalink.href"},
+                SQL_PermalinkIdSettingSelection,
+                new String[]{link_id},
+                null,
+                null,
+                null
+        );
+    }
+    
+    
     /**
      * Uri Matcher that determine how the Uri is handling inputs
      * @return - Returns a UriMatcher

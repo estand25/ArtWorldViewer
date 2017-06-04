@@ -37,11 +37,6 @@ public class StartReceiver extends WakefulBroadcastReceiver{
         // Go fetch Art API token
         Intent artToken = new Intent(context, ArtTokenService.class);
         startWakefulService(context,artToken);
-
-        //Intent allModel = new Intent(context, AllModelService.class);
-        //startWakefulService(context,allModel);
-
-        //setAlarm(context);
     }
 
     public void setAlarm(Context context){

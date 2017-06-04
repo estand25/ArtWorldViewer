@@ -38,10 +38,6 @@ public class GalleryActivity extends AppCompatActivity {
 		
 		String image = getIntent().getStringExtra(EXTRA_IMAGE2);
 		String title = getIntent().getStringExtra(EXTRA_TiTLE2);
-		Log.v("GalleryActivity","Title: "+title+" Link: "+image);
-		
-		//AQuery aq = new AQuery(subsamplingScaleImageView);
-		//aq.id(subsamplingScaleImageView).image(image).visible();
 		
 		Glide.with(GalleryActivity.this)
 				.load(image)

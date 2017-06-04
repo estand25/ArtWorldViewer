@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.support.annotation.Dimension;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,6 +24,21 @@ import android.widget.Spinner;
 import com.androidquery.AQuery;
 import com.prj1.stand.artworldviewer.R;
 import com.prj1.stand.artworldviewer.data.DbContract;
+import com.prj1.stand.artworldviewer.data.DbProvider;
+import com.prj1.stand.artworldviewer.model.artworks.Artists;
+import com.prj1.stand.artworldviewer.model.artworks.Cm;
+import com.prj1.stand.artworldviewer.model.artworks.Dimensions;
+import com.prj1.stand.artworldviewer.model.artworks.Embedded;
+import com.prj1.stand.artworldviewer.model.artworks.Genes;
+import com.prj1.stand.artworldviewer.model.artworks.Image;
+import com.prj1.stand.artworldviewer.model.artworks.In;
+import com.prj1.stand.artworldviewer.model.artworks.Links;
+import com.prj1.stand.artworldviewer.model.artworks.Links_;
+import com.prj1.stand.artworldviewer.model.artworks.Partner;
+import com.prj1.stand.artworldviewer.model.artworks.Permalink;
+import com.prj1.stand.artworldviewer.model.artworks.Self_;
+import com.prj1.stand.artworldviewer.model.artworks.SimilarArtworks;
+import com.prj1.stand.artworldviewer.model.artworks.Thumbnail;
 import com.prj1.stand.artworldviewer.model.display_object.ArtworkCard;
 import com.prj1.stand.artworldviewer.model.display_object.SectionHeader;
 
@@ -30,11 +46,7 @@ import net.idik.lib.slimadapter.SlimAdapter;
 import net.idik.lib.slimadapter.SlimInjector;
 import net.idik.lib.slimadapter.viewinjector.IViewInjector;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
+import com.prj1.stand.artworldviewer.model.artworks.Artwork;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,19 +97,19 @@ public class ArtGalleryActivityFragment extends Fragment {
         recyclerView.setLayoutManager(gridLayoutManager);
         
         slimAdapter = SlimAdapter.createEx()
-                .register(R.layout.item_artwork, new SlimInjector<ArtworkCard>() {
+                .register(R.layout.item_artwork, new SlimInjector<Artwork>() {
                     @Override
-                    public void onInject(final ArtworkCard data, IViewInjector injector) {
+                    public void onInject(final Artwork data, IViewInjector injector) {
                         injector.with(R.id.cover, new IViewInjector.Action() {
                             @Override
                             public void action(View view) {
                                 AQuery aq = new AQuery(view);
-                                aq.id(view.getId()).image(data.getAc_image()).visible();
+                                aq.id(view.getId()).image(data.getLinks().getImage().getHref()).visible();
                             }
                         }).clicked(R.id.cover, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Log.v("clicked","Title: "+data.getAc_description() +" URL Link: "+data.getAc_image());
+                                Log.v("clicked","Title: "+data.getTitle() +" URL Link: "+data.getLinks().getImage().getHref());
                                 
                                 //ArrayList<String> image = new ArrayList<String>();
                                 //image.add("https://d32dm0rphc51dk.cloudfront.net/NOpIAwQa-3r51Cg9qXKbfA/medium.jpg");
@@ -110,8 +122,8 @@ public class ArtGalleryActivityFragment extends Fragment {
                                 //v.getContext().startActivity(singleImageIntent);
                                 
                                 Intent sIntent = new Intent(v.getContext(),GalleryActivity.class);
-                                sIntent.putExtra(GalleryActivity.EXTRA_IMAGE2, data.getAc_image());
-                                sIntent.putExtra(GalleryActivity.EXTRA_TiTLE2, data.getAc_description());
+                                sIntent.putExtra(GalleryActivity.EXTRA_IMAGE2, data.getLinks().getImage().getHref());
+                                sIntent.putExtra(GalleryActivity.EXTRA_TiTLE2, data.getTitle());
                                 v.getContext().startActivity(sIntent);
                             }
                         });
@@ -165,7 +177,7 @@ public class ArtGalleryActivityFragment extends Fragment {
             public void run() {
                 data.clear();
                 data.add(new SectionHeader("Artwork"));
-                Cursor artwork_cursor= getContext().getContentResolver().query(DbContract.ArtworkEntry.buildAllArtworkThumbnailSection(),
+                Cursor artwork_cursor= getContext().getContentResolver().query(DbContract.ArtworkEntry.CONTENT_URI,
                         null,
                         null,
                         null,
@@ -173,8 +185,112 @@ public class ArtGalleryActivityFragment extends Fragment {
     
                 if(artwork_cursor.getCount() >= 1){
                     while(artwork_cursor.moveToNext()){
-                        data.add(new ArtworkCard(artwork_cursor.getString(1),artwork_cursor.getString(2)));
-                        //Log.v("ArtGActivityFragment","Des: "+artwork_cursor.getString(1)+" URL image: "+artwork_cursor.getString(2));
+                        //data.add(new ArtworkCard(artwork_cursor.getString(1),artwork_cursor.getString(2)));
+                        Log.v("ArtGActivityFragment","refresh");
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(0));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(1));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(2));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(3));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(4));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(5));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(6));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(7));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(8));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(9));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(10));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(11));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(12));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(13));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(14));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(15));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(16));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(17));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(18));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(19));
+                        Log.v("ArtGActivityFragment","null");
+                        Log.v("ArtGActivityFragment","null");
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(22));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(23));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(24));
+                        Log.v("ArtGActivityFragment","null");
+                        Log.v("ArtGActivityFragment","null");
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(27));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(28));
+                        Log.v("ArtGActivityFragment",artwork_cursor.getString(29));
+                        //data.add(new Artwork())
+    
+                        DbProvider dbProvider = new DbProvider();
+                        
+                        Cursor dimension_cursor = dbProvider.getDimensionInfo(artwork_cursor.getString(9));
+                        Cm cm_;
+                        In in_;
+                        Dimensions dimensions;
+                        if(dimension_cursor.getCount() >= 1) {
+                            while (dimension_cursor.moveToNext()) {
+                                cm_ = new Cm(dimension_cursor.getString(1),
+                                                Double.valueOf(dimension_cursor.getString(2)),
+                                                Double.valueOf(dimension_cursor.getString(3)),
+                                                (Object) dimension_cursor.getString(4),
+                                                (Object) dimension_cursor.getString(5));
+                                in_ = new In(dimension_cursor.getString(6),
+                                                Double.valueOf(dimension_cursor.getString(7)),
+                                                Double.valueOf(dimension_cursor.getString(8)),
+                                                (Object) dimension_cursor.getString(9),
+                                                (Object) dimension_cursor.getString(10));
+                                dimensions = new Dimensions(in_,cm_);
+                            }
+                        }
+                        dimension_cursor.close();
+                        
+                        Cursor image_version_Cursor = dbProvider.getImageVersionForArtwork(artwork_cursor.getString(29));
+                        List<String> image_version_list = new ArrayList<String>();
+                        List<String> image_list = new ArrayList<String>();
+                        Image image;
+                        
+                        if(image_version_Cursor.getCount() >= 1) {
+                            while (image_version_Cursor.moveToNext()) {
+                                image_version_list.add(1, image_version_Cursor.getString(4));
+                                image_list.add(1, image_version_Cursor.getString(3));
+                                
+                                if(image_version_Cursor.getPosition() == 1) {
+                                    image = new Image(image_version_Cursor.getString(5), false);
+                                }
+                            }
+                        }
+                        image_version_Cursor.close();
+                        
+                        Cursor thumbnail_cursor = dbProvider.getThumbnailForArtwork(artwork_cursor.getString(29));
+                        Thumbnail thumbnail;
+                        
+                        if(thumbnail_cursor.getCount() >= 1){
+                            while(thumbnail_cursor.moveToNext()){
+                                thumbnail = new Thumbnail(thumbnail_cursor.getString(1));
+                            }
+                        }
+                        thumbnail_cursor.close();
+                        
+                        Cursor permalink_cursor = dbProvider.getPermalinkForArtwrok(artwork_cursor.getString(29));
+                        Permalink permalink;
+                        
+                        if(permalink_cursor.getCount() >= 1){
+                            while(permalink_cursor.moveToNext()){
+                                permalink = new Permalink(permalink_cursor.getString(1))
+                            }
+                        }
+                        permalink_cursor.close();
+                        
+                        
+                        Links_ links_ = new Links_(thumbnail,image,new Partner("null"),new Self_("null"),
+                                permalink, new Genes("null"), new Artists("null"), new SimilarArtworks("null"));
+                        //dbProvider.get
+                        //Partner partner = new Partner()
+                        //Self_ self_ = new Self_()
+                        //Permalink permalink = new Permalink()
+                        //Genes genes = new Genes()
+                        //Artists artists = new Artists()
+                        //SimilarArtworks similarArtworks = new SimilarArtworks()
+                        //Links_ links_ = new Links_()
+                        Embedded embedded = new Embedded()
                     }
                     artwork_cursor.close();
                 }
