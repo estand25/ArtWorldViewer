@@ -111,20 +111,16 @@ public class ArtGalleryActivityFragment extends Fragment {
                             public void onClick(View v) {
                                 Log.v("clicked","Title: "+data.getAc_title() +" URL Link: "+data.getAc_thumbnail());
                                 
-                                //ArrayList<String> image = new ArrayList<String>();
-                                //image.add("https://d32dm0rphc51dk.cloudfront.net/NOpIAwQa-3r51Cg9qXKbfA/medium.jpg");
-                                //image.add("https://d32dm0rphc51dk.cloudfront.net/NOpIAwQa-3r51Cg9qXKbfA/medium.jpg");
-                                
-                                //Intent singleImageIntent = new Intent(v.getContext(),ImageActivity.class);
+                                Intent singleImageIntent = new Intent(v.getContext(),ImageActivity.class);
                                 //singleImageIntent.putExtra(ImageActivity.EXTRA_IMAGE, data.getAc_image());
                                 //singleImageIntent.putExtra(ImageActivity.EXTRA_DESCRIPTION, data.getAc_description());
-                                //singleImageIntent.putStringArrayListExtra(ImageActivity.EXTRA_IMAGE,image);
-                                //v.getContext().startActivity(singleImageIntent);
+                                singleImageIntent.putStringArrayListExtra(ImageActivity.EXTRA_IMAGE, data.getAc_imageHref());
+                                v.getContext().startActivity(singleImageIntent);
                                 
-                                Intent sIntent = new Intent(v.getContext(),GalleryActivity.class);
-                                sIntent.putExtra(GalleryActivity.EXTRA_IMAGE2, data.getAc_thumbnail());
-                                sIntent.putExtra(GalleryActivity.EXTRA_TiTLE2, data.getAc_title());
-                                v.getContext().startActivity(sIntent);
+                                //Intent sIntent = new Intent(v.getContext(),GalleryActivity.class);
+                                //sIntent.putExtra(GalleryActivity.EXTRA_IMAGE2, data.getAc_thumbnail());
+                                //sIntent.putExtra(GalleryActivity.EXTRA_TiTLE2, data.getAc_title());
+                                //v.getContext().startActivity(sIntent);
                             }
                         });
                     }
@@ -186,37 +182,37 @@ public class ArtGalleryActivityFragment extends Fragment {
     
                 if(artwork_cursor.getCount() >= 1){
                     while(artwork_cursor.moveToNext()){
-                        Log.v("ArtGActivityFragment","refresh");
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(0));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(1));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(2));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(3));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(4));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(5));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(6));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(7));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(8));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(9));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(10));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(11));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(12));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(13));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(14));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(15));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(16));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(17));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(18));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(19));
-                        Log.v("ArtGActivityFragment","null");
-                        Log.v("ArtGActivityFragment","null");
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(22));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(23));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(24));
-                        Log.v("ArtGActivityFragment","null");
-                        Log.v("ArtGActivityFragment","null");
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(27));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(28));
-                        Log.v("ArtGActivityFragment",artwork_cursor.getString(29));
+                        //Log.v("ArtGActivityFragment","refresh");
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(0));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(1));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(2));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(3));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(4));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(5));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(6));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(7));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(8));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(9));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(10));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(11));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(12));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(13));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(14));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(15));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(16));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(17));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(18));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(19));
+                        //Log.v("ArtGActivityFragment","null");
+                        //Log.v("ArtGActivityFragment","null");
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(22));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(23));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(24));
+                        //Log.v("ArtGActivityFragment","null");
+                        //Log.v("ArtGActivityFragment","null");
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(27));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(28));
+                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(29));
                         
                         Cursor image_version_Cursor = getContext().getContentResolver().query(
                                 DbContract.LinkEntry.buildLinkDetailUri(artwork_cursor.getString(29)),
@@ -224,19 +220,24 @@ public class ArtGalleryActivityFragment extends Fragment {
                                 null,
                                 null,
                                 null);
-                        
-                        List<String> image_version_list = new ArrayList<String>();
-                        List<String> image_list = new ArrayList<String>();
+    
+                        ArrayList<String>  image_version_list = new ArrayList<String>();
+                        ArrayList<String>  image_list = new ArrayList<String>();
                         Image image = new Image("",false);
                         
                         if(image_version_Cursor.getCount() >= 1) {
                             while (image_version_Cursor.moveToNext()) {
-                                image_version_list.add(1, image_version_Cursor.getString(4));
-                                image_list.add(1, image_version_Cursor.getString(3));
+                                image_version_list.add(image_version_Cursor.getPosition(), image_version_Cursor.getString(4));
+                                image_list.add(image_version_Cursor.getPosition(), image_version_Cursor.getString(3));
                                 
                                 if(image_version_Cursor.getPosition() == 1) {
                                     image = new Image(image_version_Cursor.getString(5), false);
                                 }
+    
+    
+                                Log.v("image_list",image_version_Cursor.getString(3));
+                                Log.v("image_version_list",image_version_Cursor.getString(4));
+                                Log.v("image",image_version_Cursor.getString(5));
                             }
                         }
                         image_version_Cursor.close();

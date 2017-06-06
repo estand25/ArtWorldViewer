@@ -18,5 +18,6 @@
         android:padding="3dp"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/ArtworkImage"/>
+        android:contentDescription="@string/ArtworkImage"
+        android:layout_gravity="center"/>
 </android.support.v7.widget.CardView>

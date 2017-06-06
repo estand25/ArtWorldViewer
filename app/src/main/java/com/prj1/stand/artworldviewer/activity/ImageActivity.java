@@ -6,6 +6,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,9 +51,8 @@ public class ImageActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_image);
 		ButterKnife.bind(this);
 		
-		//_imageString = getIntent().getStringExtra(EXTRA_IMAGE);
-		//_imageTitle = getIntent().getStringExtra(EXTRA_DESCRIPTION);
 		_images = (ArrayList<String>) getIntent().getSerializableExtra(EXTRA_IMAGE);
+		Log.v("onCreate", _images.get(1));
 		Assert.assertNotNull(_images);
 		
 		_imagePagerAdapter = new ImagePagerAdapter1(this);
@@ -85,19 +85,15 @@ public class ImageActivity extends AppCompatActivity {
 		@Override
 		public boolean isViewFromObject(View view, Object object) {
 			return  view == object;
-			//return view == ((LinearLayout) object);
 		}
 		
 		@Override
 		public Object instantiateItem(ViewGroup container, final int position) {
 			View itemView = _layoutInflater.inflate(R.layout.pager_image_item, container, false);
 			container.addView(itemView);
-			
+			Log.v("instantiateItem","1");
 			final SubsamplingScaleImageView subsamplingScaleImageView =
 					(SubsamplingScaleImageView) itemView.findViewById(R.id.image);
-			
-			//AQuery aq = new AQuery(itemView);
-			//aq.id(R.id.image).image(_images.get(position)).visible();
 			
 			Glide.with(_context)
 					.load(_images.get(position))
@@ -106,7 +102,6 @@ public class ImageActivity extends AppCompatActivity {
 						@Override
 						public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
 							subsamplingScaleImageView.setImage(ImageSource.bitmap(resource));
-							//thumbView.setImageBitmap(resource);
 						}
 					});
 			

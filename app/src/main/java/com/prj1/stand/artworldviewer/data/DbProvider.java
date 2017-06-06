@@ -660,7 +660,7 @@ public class DbProvider extends ContentProvider {
         uriMatcher.addURI(authority, DbContract.PATH_IMAGE, IMAGE);
         uriMatcher.addURI(authority, DbContract.PATH_IMAGE_VERSION, IMAGE_VERSION);
         uriMatcher.addURI(authority, DbContract.PATH_LINK, LINK);
-        uriMatcher.addURI(authority, DbContract.PATH_LINK + "/*", LINK_ID);
+        uriMatcher.addURI(authority, "link_detail/*", LINK_ID);
         uriMatcher.addURI(authority, DbContract.PATH_PARTNER, PARTNER);
         uriMatcher.addURI(authority, DbContract.PATH_PERMALINK, PERMALINK);
         uriMatcher.addURI(authority, DbContract.PATH_PROFILE, PROFILE);
@@ -668,7 +668,7 @@ public class DbProvider extends ContentProvider {
         uriMatcher.addURI(authority, DbContract.PATH_WEBSITE, WEBSITE);
         uriMatcher.addURI(authority, DbContract.PATH_SELF, SELF);
         uriMatcher.addURI(authority, DbContract.PATH_PARTNER_CONTACT, PARTNER_CONTACT);
-
+        
         return uriMatcher;
     }
 
@@ -692,7 +692,7 @@ public class DbProvider extends ContentProvider {
 
         // User the Uri Matcher to determine what kind of URI this is
         final int match = dbProviderUriMatcher.match(uri);
-
+        Log.v("DbProvider-getType", String.valueOf(dbProviderUriMatcher.match(uri)));
         switch(match){
             case TOKEN:
                 return DbContract.TokenEntry.CONTENT_TYPE;

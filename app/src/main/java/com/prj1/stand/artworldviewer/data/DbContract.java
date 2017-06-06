@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 /**
  * Art World Viewer classes that handles the individual table defines
@@ -566,7 +567,7 @@ public class DbContract {
          * Link details for the URI for the specific link id
          */
         public static Uri buildLinkDetailUri(String LinkId){
-            return CONTENT_URI.buildUpon().appendPath("link_detail")
+            return BASE_CONTENT_URI.buildUpon().appendPath("link_detail")
                     .appendPath(LinkId).build();
         }
         

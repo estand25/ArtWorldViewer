@@ -19,6 +19,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/colorBlack"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 </android.support.constraint.ConstraintLayout>

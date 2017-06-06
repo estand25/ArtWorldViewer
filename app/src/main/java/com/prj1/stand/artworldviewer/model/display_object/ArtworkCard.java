@@ -13,7 +13,7 @@ import android.os.Parcel;
 
 public class ArtworkCard implements Parcelable {
 	private String ac_title;
-	private List<String>  ac_imageHref;
+	private ArrayList<String>   ac_imageHref;
 	private String ac_slug;
 	private String ac_category;
 	private String ac_medium;
@@ -22,13 +22,13 @@ public class ArtworkCard implements Parcelable {
 	private String ac_collective_institution;
 	private String ac_additional_information;
 	private String ac_image_rights;
-	private List<String> ac_image_version;
+	private ArrayList<String>  ac_image_version;
 	private String ac_thumbnail;
 	
 	
-	public ArtworkCard(String title, List<String>  image, String slug, String category, String medium, String date,
+	public ArtworkCard(String title, ArrayList<String> image, String slug, String category, String medium, String date,
 	                   String website, String collective_institution, String additional_information, String image_right,
-	                   List<String> image_version, String thumbnail){
+	                   ArrayList<String> image_version, String thumbnail){
 		ac_title = title;
 		ac_imageHref = image;
 		ac_slug = slug;
@@ -47,7 +47,7 @@ public class ArtworkCard implements Parcelable {
 		return ac_title;
 	}
 	
-	public List<String> getAc_imageHref() {
+	public ArrayList<String>  getAc_imageHref() {
 		return ac_imageHref;
 	}
 	
@@ -83,7 +83,7 @@ public class ArtworkCard implements Parcelable {
 		return ac_image_rights;
 	}
 	
-	public List<String> getAc_image_version() {
+	public ArrayList<String>  getAc_image_version() {
 		return ac_image_version;
 	}
 	
