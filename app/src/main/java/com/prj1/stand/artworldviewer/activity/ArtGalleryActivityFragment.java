@@ -111,16 +111,11 @@ public class ArtGalleryActivityFragment extends Fragment {
                             public void onClick(View v) {
                                 Log.v("clicked","Title: "+data.getAc_title() +" URL Link: "+data.getAc_thumbnail());
                                 
-                                Intent singleImageIntent = new Intent(v.getContext(),ImageActivity.class);
-                                //singleImageIntent.putExtra(ImageActivity.EXTRA_IMAGE, data.getAc_image());
-                                //singleImageIntent.putExtra(ImageActivity.EXTRA_DESCRIPTION, data.getAc_description());
-                                singleImageIntent.putStringArrayListExtra(ImageActivity.EXTRA_IMAGE, data.getAc_imageHref());
-                                v.getContext().startActivity(singleImageIntent);
-                                
-                                //Intent sIntent = new Intent(v.getContext(),GalleryActivity.class);
-                                //sIntent.putExtra(GalleryActivity.EXTRA_IMAGE2, data.getAc_thumbnail());
-                                //sIntent.putExtra(GalleryActivity.EXTRA_TiTLE2, data.getAc_title());
-                                //v.getContext().startActivity(sIntent);
+                                //Intent singleImageIntent = new Intent(v.getContext(),ImageActivity.class);
+                                //singleImageIntent.putExtra(ImageActivity.EXTRA_IMAGE,data);
+                                Intent singleImageIntent = new Intent(v.getContext(),GalleryActivity.class);
+                                singleImageIntent.putExtra(GalleryActivity.EXTRA_GALLERY,data);
+                                startActivity(singleImageIntent);
                             }
                         });
                     }
@@ -233,11 +228,6 @@ public class ArtGalleryActivityFragment extends Fragment {
                                 if(image_version_Cursor.getPosition() == 1) {
                                     image = new Image(image_version_Cursor.getString(5), false);
                                 }
-    
-    
-                                Log.v("image_list",image_version_Cursor.getString(3));
-                                Log.v("image_version_list",image_version_Cursor.getString(4));
-                                Log.v("image",image_version_Cursor.getString(5));
                             }
                         }
                         image_version_Cursor.close();

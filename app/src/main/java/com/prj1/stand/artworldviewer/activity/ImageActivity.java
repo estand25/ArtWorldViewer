@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.androidquery.AQuery;
 import com.bumptech.glide.Glide;
@@ -23,6 +24,7 @@ import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.prj1.stand.artworldviewer.R;
 import com.prj1.stand.artworldviewer.activity.adapter.ImagePagerAdapter;
+import com.prj1.stand.artworldviewer.model.display_object.ArtworkCard;
 
 import junit.framework.Assert;
 
@@ -35,83 +37,40 @@ import butterknife.ButterKnife;
 public class ImageActivity extends AppCompatActivity {
 	public static final String TAG = "ImageActivity";
 	public static final String EXTRA_IMAGE = "image";
-	public static final String EXTRA_DESCRIPTION = "name";
 	
-	private String _imageString;
-	private String _imageTitle;
-	private ImagePagerAdapter1 _imagePagerAdapter;
-	private ArrayList<String> _images;
 	
-	@BindView(R.id.pager) ViewPager _pager;
-	@BindView(R.id.btn_close) ImageButton _closeButton;
+	SubsamplingScaleImageView subsamplingScaleImageView;
+	TextView titleView;
+	ImageButton closeButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_image);
-		ButterKnife.bind(this);
 		
-		_images = (ArrayList<String>) getIntent().getSerializableExtra(EXTRA_IMAGE);
-		Log.v("onCreate", _images.get(1));
-		Assert.assertNotNull(_images);
+		closeButton = (ImageButton) findViewById(R.id.btn_close1);
+		subsamplingScaleImageView = (SubsamplingScaleImageView) findViewById(R.id.image1);
+		titleView = (TextView) findViewById(R.id.art_title);
 		
-		_imagePagerAdapter = new ImagePagerAdapter1(this);
-		_pager.setAdapter(_imagePagerAdapter);
-		_pager.setOffscreenPageLimit(6);
+		ArtworkCard artworkCard = getIntent().getParcelableExtra(EXTRA_IMAGE);
 		
-		_closeButton.setOnClickListener(new View.OnClickListener() {
+		Glide.with(ImageActivity.this)
+				.load(artworkCard.getAc_thumbnail())
+				.asBitmap()
+				.into(new SimpleTarget<Bitmap>() {
+					@Override
+					public void onResourceReady(Bitmap  bitmap, GlideAnimation anim) {
+						subsamplingScaleImageView.setImage(ImageSource.bitmap(bitmap));
+					}
+				});
+		
+		titleView.setText(artworkCard.getAc_title());
+		
+		closeButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				finish();
-				
 			}
 		});
 	}
-	
-	public class ImagePagerAdapter1 extends PagerAdapter {
-		private Context _context;
-		private LayoutInflater _layoutInflater;
-		
-		public ImagePagerAdapter1(Context context){
-			_context = context;
-			_layoutInflater = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		}
-		
-		@Override
-		public int getCount() {
-			return _images.size();
-		}
-		
-		@Override
-		public boolean isViewFromObject(View view, Object object) {
-			return  view == object;
-		}
-		
-		@Override
-		public Object instantiateItem(ViewGroup container, final int position) {
-			View itemView = _layoutInflater.inflate(R.layout.pager_image_item, container, false);
-			container.addView(itemView);
-			Log.v("instantiateItem","1");
-			final SubsamplingScaleImageView subsamplingScaleImageView =
-					(SubsamplingScaleImageView) itemView.findViewById(R.id.image);
-			
-			Glide.with(_context)
-					.load(_images.get(position))
-					.asBitmap()
-					.into(new SimpleTarget<Bitmap>() {
-						@Override
-						public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-							subsamplingScaleImageView.setImage(ImageSource.bitmap(resource));
-						}
-					});
-			
-			return itemView;
-		}
-		
-		@Override
-		public void destroyItem(ViewGroup container, int position, Object object) {
-			container.removeView((View) object);
-		}
-	}
-	
 }

@@ -9,7 +9,12 @@
     android:padding="8dp"
     android:id="@+id/relativeLout">
 
-    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+    <!--<com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/image1"
+        android:layout_below="@+id/btn_close1"/>-->
+    <com.daimajia.slider.library.SliderLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/image1"
