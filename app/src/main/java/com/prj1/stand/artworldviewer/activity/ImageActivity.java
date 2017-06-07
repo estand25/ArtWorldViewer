@@ -48,9 +48,9 @@ public class ImageActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_image);
 		
-		closeButton = (ImageButton) findViewById(R.id.btn_close1);
-		subsamplingScaleImageView = (SubsamplingScaleImageView) findViewById(R.id.image1);
-		titleView = (TextView) findViewById(R.id.art_title);
+		closeButton = (ImageButton) findViewById(R.id.btnImage_close);
+		subsamplingScaleImageView = (SubsamplingScaleImageView) findViewById(R.id.image);
+		titleView = (TextView) findViewById(R.id.image_title);
 		
 		ArtworkCard artworkCard = getIntent().getParcelableExtra(EXTRA_IMAGE);
 		

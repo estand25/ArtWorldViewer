@@ -35,9 +35,9 @@ public class GalleryActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gallery);
 		
-		closeButton = (ImageButton) findViewById(R.id.btn_close1);
-		titleView = (TextView) findViewById(R.id.art_title);
-		sliderLayout = (SliderLayout) findViewById(R.id.image1);
+		closeButton = (ImageButton) findViewById(R.id.btnGallery_close);
+		titleView = (TextView) findViewById(R.id.gallery_title);
+		sliderLayout = (SliderLayout) findViewById(R.id.gallery_image);
 		
 		ArtworkCard artworkCard = getIntent().getParcelableExtra(EXTRA_GALLERY);
 

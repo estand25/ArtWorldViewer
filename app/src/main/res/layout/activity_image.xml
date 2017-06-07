@@ -12,18 +12,18 @@
     <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/image1"
-        android:layout_below="@+id/btn_close1"/>
+        android:id="@+id/image"
+        android:layout_below="@+id/image_title"/>
 
     <TextView
-        android:id="@+id/art_title"
+        android:id="@+id/image_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_close1"
+        android:layout_below="@+id/btnImage_close"
         android:textColor="@color/colorLTGray"/>
 
     <ImageButton
-        android:id="@+id/btn_close1"
+        android:id="@+id/btnImage_close"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentTop="true"

@@ -9,26 +9,21 @@
     android:padding="8dp"
     android:id="@+id/relativeLout">
 
-    <!--<com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/image1"
-        android:layout_below="@+id/btn_close1"/>-->
     <com.daimajia.slider.library.SliderLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/image1"
-        android:layout_below="@+id/btn_close1"/>
-
-    <TextView
-        android:id="@+id/art_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_close1"
+        android:id="@+id/gallery_image"
+        android:layout_below="@+id/gallery_title"/>
+
+    <TextView
+        android:id="@+id/gallery_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnGallery_close"
         android:textColor="@color/colorLTGray"/>
 
     <ImageButton
-        android:id="@+id/btn_close1"
+        android:id="@+id/btnGallery_close"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentTop="true"
