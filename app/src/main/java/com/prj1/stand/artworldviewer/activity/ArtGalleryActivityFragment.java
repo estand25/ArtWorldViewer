@@ -177,38 +177,6 @@ public class ArtGalleryActivityFragment extends Fragment {
     
                 if(artwork_cursor.getCount() >= 1){
                     while(artwork_cursor.moveToNext()){
-                        //Log.v("ArtGActivityFragment","refresh");
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(0));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(1));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(2));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(3));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(4));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(5));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(6));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(7));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(8));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(9));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(10));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(11));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(12));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(13));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(14));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(15));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(16));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(17));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(18));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(19));
-                        //Log.v("ArtGActivityFragment","null");
-                        //Log.v("ArtGActivityFragment","null");
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(22));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(23));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(24));
-                        //Log.v("ArtGActivityFragment","null");
-                        //Log.v("ArtGActivityFragment","null");
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(27));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(28));
-                        //Log.v("ArtGActivityFragment",artwork_cursor.getString(29));
-                        
                         Cursor image_version_Cursor = getContext().getContentResolver().query(
                                 DbContract.LinkEntry.buildLinkDetailUri(artwork_cursor.getString(29)),
                                 null,

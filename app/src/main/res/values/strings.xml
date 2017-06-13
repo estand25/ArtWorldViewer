@@ -3,4 +3,25 @@
     <string name="title_activity_art_gallery">Art Gallery Activity</string>
     <string name="action_settings">Settings</string>
     <string name="ArtworkImage">Artwork</string>
+
+    <string name="pref_gallery_option_key" translatable="false">gallery_option</string>
+    <string name="pref_gallery_option_default" translatable="false">gallery</string>
+
+
+    <string name="pref_gallery_option_gGallery_label">Gallery</string>
+    <string name="pref_gallery_option_gGalleryPlus_label">Gallery+</string>
+
+    <string name="pref_gallery_option_gGallery">gallery</string>
+    <string name="pref_gallery_option_gGalleryPlus">gallery+</string>
+
+    <string-array name="pref_gallery_option">
+        <item>@string/pref_gallery_option_gGallery_label</item>
+        <item>@string/pref_gallery_option_gGalleryPlus_label</item>
+    </string-array>
+
+
+    <string-array name="pref_gallery_option_value">
+        <item>@string/pref_gallery_option_gGallery</item>
+        <item>@string/pref_gallery_option_gGalleryPlus</item>
+    </string-array>
 </resources>
