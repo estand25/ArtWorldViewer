@@ -19,7 +19,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.prj1.stand.artworldviewer.R;
@@ -59,6 +62,9 @@ public class ArtGalleryActivityFragment extends Fragment {
     RecyclerView recyclerView;
     private SlimAdapter slimAdapter;
     private Spinner spinner;
+    private ImageButton rightButton;
+    private ImageButton leftButton;
+    private EditText pageNumber;
     
     public ArtGalleryActivityFragment() {
     }
@@ -137,6 +143,28 @@ public class ArtGalleryActivityFragment extends Fragment {
                                         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                         spinner = (Spinner) view.findViewById(R.id.displaySpinner);
                                         spinner.setAdapter(spinnerAdapter);
+                                    }
+                                })
+                                .clicked(R.id.right_imageButton, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        //pageNumber = (EditText) v.findViewById(R.id.page_number);
+                                        //pageNumber.setText("1");
+                                        Toast toast = new Toast(getContext());
+                                        toast.setText("Right Arrow");
+                                    }
+                                })
+                                .with(R.id.left_imageButton, new IViewInjector.Action() {
+                                    @Override
+                                    public void action(View view) {
+                                        leftButton = (ImageButton) view.findViewById(R.id.left_imageButton);
+                                    }
+                                })
+                                .with(R.id.page_number, new IViewInjector.Action() {
+                                    @Override
+                                    public void action(View view) {
+                                        pageNumber = (EditText) view.findViewById(R.id.page_number);
+                                        pageNumber.setText("0");
                                     }
                                 });
                     }
@@ -238,9 +266,4 @@ public class ArtGalleryActivityFragment extends Fragment {
         },150);
     }
     
-    public void startIndividualImageGallery(){
-        ArrayList<String> imageIndividual = new ArrayList<String>();
-        
-        //Cursor image_cursor = getContext().getContentResolver().query(DbContract.ArtworkEntry.)
-    }
-}
+ }
