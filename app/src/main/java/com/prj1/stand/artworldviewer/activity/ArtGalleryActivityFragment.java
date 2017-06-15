@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -128,7 +129,7 @@ public class ArtGalleryActivityFragment extends Fragment {
                 })
                 .register(R.layout.item_section_header, new SlimInjector<SectionHeader>() {
                     @Override
-                    public void onInject(SectionHeader data, IViewInjector injector) {
+                    public void onInject(SectionHeader data, final IViewInjector injector) {
                         injector.text(R.id.section_title, data.getTitle())
                                 .with(R.id.displaySpinner, new IViewInjector.Action() {
                                     @Override
@@ -145,26 +146,38 @@ public class ArtGalleryActivityFragment extends Fragment {
                                         spinner.setAdapter(spinnerAdapter);
                                     }
                                 })
-                                .clicked(R.id.right_imageButton, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        //pageNumber = (EditText) v.findViewById(R.id.page_number);
-                                        //pageNumber.setText("1");
-                                        Toast toast = new Toast(getContext());
-                                        toast.setText("Right Arrow");
-                                    }
-                                })
-                                .with(R.id.left_imageButton, new IViewInjector.Action() {
-                                    @Override
-                                    public void action(View view) {
-                                        leftButton = (ImageButton) view.findViewById(R.id.left_imageButton);
-                                    }
-                                })
                                 .with(R.id.page_number, new IViewInjector.Action() {
                                     @Override
                                     public void action(View view) {
-                                        pageNumber = (EditText) view.findViewById(R.id.page_number);
-                                        pageNumber.setText("0");
+                                        pageNumber = (EditText) injector.findViewById(R.id.page_number);
+                                        pageNumber.setShowSoftInputOnFocus(false);
+                                        pageNumber.setClickable(false);
+                                        pageNumber.setText(Integer.toString(0));
+                                    }
+                                })
+                                .clicked(R.id.left_imageButton, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        pageNumber = (EditText) injector.findViewById(R.id.page_number); //v.findViewById(R.id.page_number);
+                                        int currentNum = Integer.parseInt(pageNumber.getText().toString());
+                                        int addNum;
+                                        if(currentNum <= 0)
+                                        {
+                                            addNum = 0;
+                                        }
+                                        else {
+                                            addNum = currentNum-1;
+                                        }
+                                        pageNumber.setText(Integer.toString(addNum));
+                                    }
+                                })
+                                .clicked(R.id.right_imageButton, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        pageNumber = (EditText) injector.findViewById(R.id.page_number); //v.findViewById(R.id.page_number);
+                                        int currentNum = Integer.parseInt(pageNumber.getText().toString());
+                                        int addNum = currentNum+1;
+                                        pageNumber.setText(Integer.toString(addNum));
                                     }
                                 });
                     }

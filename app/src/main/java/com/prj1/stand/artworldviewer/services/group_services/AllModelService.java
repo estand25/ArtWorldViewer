@@ -4,6 +4,10 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
+import com.prj1.stand.artworldviewer.constants.Constants;
+import com.prj1.stand.artworldviewer.utilities.ArtPage;
+import com.prj1.stand.artworldviewer.utilities.TokenUtility;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,11 +41,12 @@ public class AllModelService extends IntentService{
     protected void onHandleIntent(Intent intent) {
         Log.v("AllModuleService","Starting All Services ...");
 
-        startService(new Intent(getApplicationContext(), ArtistsService.class));
-        startService(new Intent(getApplicationContext(), ArtworksService.class));
-        startService(new Intent(getApplicationContext(), GenesService.class));
-        startService(new Intent(getApplicationContext(), ShowsService.class));
-        startService(new Intent(getApplicationContext(), FairsService.class));
+        getApplicationContext().startService(new Intent(getApplicationContext(), ArtistsService.class));
+        getApplicationContext().startService(new Intent(getApplicationContext(), ArtworksService.class)
+        .putExtra(Constants.ARTPAGE,new ArtPage(0,"27", TokenUtility.getInstance().getOurToken())));
+        getApplicationContext().startService(new Intent(getApplicationContext(), GenesService.class));
+        getApplicationContext().startService(new Intent(getApplicationContext(), ShowsService.class));
+        getApplicationContext().startService(new Intent(getApplicationContext(), FairsService.class));
 
         Log.v("AllModuleService","Ending All Services ...");
     }

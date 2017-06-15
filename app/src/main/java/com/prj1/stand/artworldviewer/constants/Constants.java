@@ -19,5 +19,7 @@ public final class Constants {
     public static final String TABLE_LOADER = "TABLE_LOADER";
 
     public static final String SELECTED_KEY = "selected_position";
+    
+    public static final String ARTPAGE= "artpage";
 
 }

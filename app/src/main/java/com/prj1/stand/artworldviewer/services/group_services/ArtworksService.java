@@ -6,7 +6,9 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.util.Log;
 
+import com.prj1.stand.artworldviewer.constants.Constants;
 import com.prj1.stand.artworldviewer.utilities.ApiUtility;
+import com.prj1.stand.artworldviewer.utilities.ArtPage;
 import com.prj1.stand.artworldviewer.utilities.TokenUtility;
 import com.prj1.stand.artworldviewer.data.DbContract;
 import com.prj1.stand.artworldviewer.model.artworks.Artwork;
@@ -56,8 +58,10 @@ public class ArtworksService extends IntentService{
 
     @Override
     protected void onHandleIntent(Intent artworkIntent) {
+        ArtPage artPage = artworkIntent.getParcelableExtra(Constants.ARTPAGE);
+        
         apiFetchingService = ApiUtility.getApiService();
-        apiFetchingService.getArtworksInRangeBySize(0,"25", TokenUtility.getInstance().getOurToken())
+        apiFetchingService.getArtworksInRangeBySize(artPage.getpageOffset(),artPage.getPageSize(), artPage.getToken())
                 .enqueue(new Callback<Artworks>() {
                     @Override
                     public void onResponse(Call<Artworks> call, Response<Artworks> response) {
