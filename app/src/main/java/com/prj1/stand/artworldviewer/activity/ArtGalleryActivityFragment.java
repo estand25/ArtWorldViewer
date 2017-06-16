@@ -51,6 +51,9 @@ import net.idik.lib.slimadapter.SlimInjector;
 import net.idik.lib.slimadapter.viewinjector.IViewInjector;
 
 import com.prj1.stand.artworldviewer.model.artworks.Artwork;
+import com.prj1.stand.artworldviewer.utilities.LastSelectionGalleryType;
+import com.prj1.stand.artworldviewer.utilities.Utility;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +85,16 @@ public class ArtGalleryActivityFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.v("ArtGActivityFragment", "onSaveInstanceState");
-	    
+        
+        // Check if LastActivity is SettingActivity then refresh
+        if(LastSelectionGalleryType.getInstance().getStringKey().equals(Utility.getPreferredGalleryType(getContext()))){
+            
+            //  Set the Last Gallery Type String
+            LastSelectionGalleryType.getInstance().setStringKey(Utility.getPreferredGalleryType(getContext()));
+            
+            //  Refresh
+            onArtworkChanged();
+        }
 	}
 
     @Override
@@ -131,21 +143,6 @@ public class ArtGalleryActivityFragment extends Fragment {
                     @Override
                     public void onInject(SectionHeader data, final IViewInjector injector) {
                         injector.text(R.id.section_title, data.getTitle())
-                                .with(R.id.displaySpinner, new IViewInjector.Action() {
-                                    @Override
-                                    public void action(View view) {
-                                        List<String> list = new ArrayList<>();
-                                        list.add("Gallery");
-                                        list.add("Gallery+");
-                                
-                                        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(view.getContext(),
-                                                android.R.layout.simple_spinner_item,list);
-                                
-                                        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                        spinner = (Spinner) view.findViewById(R.id.displaySpinner);
-                                        spinner.setAdapter(spinnerAdapter);
-                                    }
-                                })
                                 .with(R.id.page_number, new IViewInjector.Action() {
                                     @Override
                                     public void action(View view) {
@@ -279,4 +276,8 @@ public class ArtGalleryActivityFragment extends Fragment {
         },150);
     }
     
- }
+    public void onArtworkChanged(){
+        refresh();
+        slimAdapter.updateData(data).attachTo(recyclerView);
+    }
+}

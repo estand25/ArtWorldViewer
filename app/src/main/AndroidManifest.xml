@@ -27,15 +27,15 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity android:name=".activity.GalleryActivity"
+        <activity
+            android:name=".activity.GalleryActivity"
             android:parentActivityName=".activity.ArtGalleryActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ArtGalleryActivity"/>
         </activity>
-
-        <activity android:name=".activity.ImageActivity"
+        <activity
+            android:name=".activity.ImageActivity"
             android:parentActivityName=".activity.ArtGalleryActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -89,6 +89,14 @@
             android:name=".sync.StartReceiver"
             android:exported="false"/>
 
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".activity.ArtGalleryActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.prj1.stand.artworldviewer.activity.ArtGalleryActivity"/>
+        </activity>
     </application>
 
 </manifest>

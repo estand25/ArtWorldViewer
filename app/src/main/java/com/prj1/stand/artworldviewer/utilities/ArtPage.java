@@ -3,8 +3,6 @@ package com.prj1.stand.artworldviewer.utilities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.prj1.stand.artworldviewer.model.authorization.Token;
-
 /**
  * Handles the individual pages of the display item
  *

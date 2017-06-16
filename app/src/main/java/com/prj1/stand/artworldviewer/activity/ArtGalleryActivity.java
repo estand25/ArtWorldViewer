@@ -18,15 +18,21 @@ import com.prj1.stand.artworldviewer.R;
 import com.prj1.stand.artworldviewer.constants.Constants;
 import com.prj1.stand.artworldviewer.services.group_services.ArtTokenService;
 import com.prj1.stand.artworldviewer.sync.StartReceiver;
+import com.prj1.stand.artworldviewer.utilities.ArtPage;
+import com.prj1.stand.artworldviewer.utilities.LastSelectedPage;
+import com.prj1.stand.artworldviewer.utilities.Utility;
 
 import java.util.concurrent.TimeUnit;
 
 public class ArtGalleryActivity extends AppCompatActivity {
+    private String agArtType;
     StartReceiver starter = new StartReceiver();
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        agArtType = Utility.getPreferredGalleryType(this);
+        
         setContentView(R.layout.activity_art_gallery);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,9 +73,27 @@ public class ArtGalleryActivity extends AppCompatActivity {
         
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
         
         return super.onOptionsItemSelected(item);
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+    
+        String galleryType = Utility.getPreferredGalleryType(this);
+        
+        if(galleryType != null && !galleryType.equals(agArtType)){
+            ArtGalleryActivityFragment artGalleryActivityFragment =
+                    (ArtGalleryActivityFragment) getSupportFragmentManager()
+                            .findFragmentById(R.id.container);
+            
+            if(null != artGalleryActivityFragment) {
+                artGalleryActivityFragment.onArtworkChanged();
+            }
+        }
     }
 }

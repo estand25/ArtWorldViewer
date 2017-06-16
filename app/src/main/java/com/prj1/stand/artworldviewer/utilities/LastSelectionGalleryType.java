@@ -15,7 +15,7 @@ import com.prj1.stand.artworldviewer.constants.Constants;
 public class LastSelectionGalleryType {
 	private static final String LAST_SESLECTED_GALLERY_TYPE_KEY = "LAST_SESLECTED_GALLERY_TYPE_KEY";
 	private static SharedPreferences gSharedPreferences;
-	private static LastSelectionGalleryType gInstance;
+	private static LastSelectionGalleryType ourInstance;
 	private static Editor gEditor;
 	
 	private LastSelectionGalleryType(){
@@ -26,14 +26,14 @@ public class LastSelectionGalleryType {
 	 * @return - Return the instance for this class
 	 */
 	public static LastSelectionGalleryType getInstance(){
-		if(gInstance == null)
+		if(ourInstance == null)
 		{
 			Context context = Constants.cConetext;
-			gInstance = new LastSelectionGalleryType();
+			ourInstance = new LastSelectionGalleryType();
 			gSharedPreferences = context.getSharedPreferences("myapp", Context.MODE_PRIVATE);
 			gEditor = gSharedPreferences.edit();
 		}
-		return gInstance;
+		return ourInstance;
 	}
 	
 	/**

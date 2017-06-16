@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.prj1.stand.artworldviewer.constants.Constants;
 import com.prj1.stand.artworldviewer.utilities.ArtPage;
+import com.prj1.stand.artworldviewer.utilities.LastSelectedPage;
 import com.prj1.stand.artworldviewer.utilities.TokenUtility;
 
 import java.util.concurrent.TimeUnit;
@@ -15,7 +16,6 @@ import java.util.concurrent.TimeUnit;
  * extends IntentService
  * Created by Stand on 5/6/2017.
  */
-
 
 public class AllModelService extends IntentService{
     /**
@@ -40,13 +40,15 @@ public class AllModelService extends IntentService{
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.v("AllModuleService","Starting All Services ...");
-
-        getApplicationContext().startService(new Intent(getApplicationContext(), ArtistsService.class));
+        
+        LastSelectedPage.getInstance().setArtPage(new ArtPage(0,"27", TokenUtility.getInstance().getOurToken()));
+        
+        //getApplicationContext().startService(new Intent(getApplicationContext(), ArtistsService.class));
         getApplicationContext().startService(new Intent(getApplicationContext(), ArtworksService.class)
-        .putExtra(Constants.ARTPAGE,new ArtPage(0,"27", TokenUtility.getInstance().getOurToken())));
-        getApplicationContext().startService(new Intent(getApplicationContext(), GenesService.class));
-        getApplicationContext().startService(new Intent(getApplicationContext(), ShowsService.class));
-        getApplicationContext().startService(new Intent(getApplicationContext(), FairsService.class));
+        .putExtra(Constants.ARTPAGE, LastSelectedPage.getInstance().getArtPage()));
+        //getApplicationContext().startService(new Intent(getApplicationContext(), GenesService.class));
+        //getApplicationContext().startService(new Intent(getApplicationContext(), ShowsService.class));
+        //getApplicationContext().startService(new Intent(getApplicationContext(), FairsService.class));
 
         Log.v("AllModuleService","Ending All Services ...");
     }
