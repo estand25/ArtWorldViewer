@@ -21,5 +21,7 @@ public final class Constants {
     public static final String SELECTED_KEY = "selected_position";
     
     public static final String ARTPAGE= "artpage";
+    
+    public static final String IMAGE_LOADER = "image_loader";
 
 }

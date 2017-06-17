@@ -241,9 +241,16 @@ public class ArtworksService extends IntentService{
                             // Increment index
                             i++;
                         }
-
+                        
                         // Insert the content array to our local DB
                         contentResolver.bulkInsert(DbContract.ArtworkEntry.CONTENT_URI, bulkArtwork);
+                        
+                        Log.v("ArtworksService", "OnResponse - Completed and updated to db");
+                        
+                        Intent refreshRecycleView = new Intent("android.intent.action.MAIN")
+                                .putExtra(Constants.IMAGE_LOADER, Constants.IMAGE_LOADER);
+                        
+                        sendBroadcast(refreshRecycleView);
                     }
 
                     @Override

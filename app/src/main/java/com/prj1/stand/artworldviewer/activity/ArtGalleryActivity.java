@@ -86,8 +86,11 @@ public class ArtGalleryActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
     
+        // Get the current Gallery type from the setting page
         String galleryType = Utility.getPreferredGalleryType(this);
         
+        // Check if the gallery type exist and if it doesn't equal the gallery
+        // type at the start on the app
         if(galleryType != null && !galleryType.equals(agArtType)){
             ArtGalleryActivityFragment artGalleryActivityFragment =
                     (ArtGalleryActivityFragment) getSupportFragmentManager()

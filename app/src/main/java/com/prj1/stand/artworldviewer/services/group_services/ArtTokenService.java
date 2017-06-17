@@ -150,8 +150,8 @@ public class ArtTokenService extends IntentService{
     
                             ArtInfo = true;
                         }
+    
                         cursor.close();
-
                         // Only if token is expired will I call this
                         // I will create something else to update the db
                         if(ArtInfo) {

@@ -1,10 +1,14 @@
 package com.prj1.stand.artworldviewer.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.Dimension;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -27,6 +31,7 @@ import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.prj1.stand.artworldviewer.R;
+import com.prj1.stand.artworldviewer.constants.Constants;
 import com.prj1.stand.artworldviewer.data.DbContract;
 import com.prj1.stand.artworldviewer.data.DbProvider;
 import com.prj1.stand.artworldviewer.model.artworks.Artists;
@@ -70,16 +75,15 @@ public class ArtGalleryActivityFragment extends Fragment {
     private ImageButton leftButton;
     private EditText pageNumber;
     
+    private BroadcastReceiver imageReceiver;
+    
     public ArtGalleryActivityFragment() {
     }
-
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v("ArtGActivityFragment", "OnCreate");
-        refresh();
-        //slimAdapter.updateData(data);
     }
 
     @Override
@@ -95,21 +99,29 @@ public class ArtGalleryActivityFragment extends Fragment {
             //  Set the Last Gallery Type String
             LastSelectionGalleryType.getInstance().setStringKey(Utility.getPreferredGalleryType(getContext()));
             
-            //  Refresh
-            refresh();
+            //  Retrieve the artwork - All for now
+            retrieveArtwork();
+            
+            // Attached data to the slim adapter
             slimAdapter.updateData(data).attachTo(recyclerView);
         }
 	}
-
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.v("ArtGActivityFragment", "onCreateView");
         // Inflate all the items on the fragment_art_gallery
         View rootView = inflater.inflate(R.layout.fragment_art_gallery, container, false);
-        
+         
+        // Connect the local recycleView with the xml element on the current activity
         recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_view);
+        
+        // Create object to handle the layout of the recycleView with the current context
+        // and the number of columns
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        
+        // Detail the gridlayout per slimAdapter item
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -117,10 +129,168 @@ public class ArtGalleryActivityFragment extends Fragment {
             }
         });
         
+        // Attach the layout manager to the recycleView
         recyclerView.setLayoutManager(gridLayoutManager);
         
-        refresh();
+        // Get the artwork data from the db
+        retrieveArtwork();
         
+        // Populate the slimAdapter sections with custom object data
+        // then display to screen after everything is updated
+        inflateSlimAdapter();
+        
+        // Find the SwipeRefreshLayout and associate to local one
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.mainFragment_swipe_refresh_layout);
+	    
+        // Set-up the SwipeRefreshLayout color order
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorBlack,R.color.colorGray,R.color.colorDarkGray);
+        
+        // Set-up the SwipeRefreshLayout pull-down response
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                retrieveArtwork();
+                inflateSlimAdapter();
+            }
+        });
+        return rootView;
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.v("ArtGActivityFragment", "onResume");
+    
+        IntentFilter imageFilter = new IntentFilter("android.intent.action.MAIN");
+        
+        imageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+	            Log.v("ArtGActivityFragment","onReceive possible reload location");
+                String completed_loader = intent.getStringExtra(Constants.IMAGE_LOADER);
+	            
+	            if(!completed_loader.isEmpty()){
+                    //refresh();
+	            }
+            }
+        };
+        
+        // registering our receiver
+        this.getContext().registerReceiver(imageReceiver,imageFilter);
+    }
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.v("ArtGActivityFragment", "onPause");
+        
+        this.getContext().unregisterReceiver(imageReceiver);
+    }
+    
+    /**
+     * Refresh the screen after the artwork is loadered
+     */
+    public void refresh(){
+        //data.notifyAll();
+        retrieveArtwork();
+        inflateSlimAdapter();
+        data.notifyAll();
+    }
+    
+    /**
+     * Retrieved the artwork information from the local db
+     */
+    public void retrieveArtwork(){
+        Log.v("ArtGActivityFragment", "refresh");
+        
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Clear the List<Object>
+                data.clear();
+                
+                // Add the header to the List<Object>
+                data.add(new SectionHeader("Artwork"));
+                
+                // Retrieve all the artwork - get additional information about the artwork as necessary
+                // then add the artwork object into the data List<Object> for display
+                Cursor artwork_cursor= getContext().getContentResolver().query(DbContract.ArtworkEntry.CONTENT_URI,
+                        null,
+                        null,
+                        null,
+                        null);
+    
+                if(artwork_cursor.getCount() >= 1){
+                    while(artwork_cursor.moveToNext()){
+                        Cursor image_version_Cursor = getContext().getContentResolver().query(
+                                DbContract.LinkEntry.buildLinkDetailUri(artwork_cursor.getString(29)),
+                                null,
+                                null,
+                                null,
+                                null);
+    
+                        ArrayList<String>  image_version_list = new ArrayList<String>();
+                        ArrayList<String>  image_list = new ArrayList<String>();
+                        
+                        if(image_version_Cursor.getCount() >= 1) {
+                            while (image_version_Cursor.moveToNext()) {
+                                image_version_list.add(image_version_Cursor.getPosition(), image_version_Cursor.getString(4));
+                                image_list.add(image_version_Cursor.getPosition(), image_version_Cursor.getString(3));
+                            }
+                        }
+                        image_version_Cursor.close();
+                        
+                        Cursor thumbnail_Cursor = getContext().getContentResolver().query(
+                                DbContract.ArtworkEntry.buildArtworkThumbnail(artwork_cursor.getString(1)),
+                                null,
+                                null,
+                                null,
+                                null);
+                        
+                        String thumbnail = null;
+                        
+                        if(thumbnail_Cursor.getCount() >= 1){
+                            while(thumbnail_Cursor.moveToNext()){
+                                thumbnail = thumbnail_Cursor.getString(1);
+                            }
+                        }
+                        thumbnail_Cursor.close();
+                        
+                        data.add(new ArtworkCard(artwork_cursor.getString(5),
+                                image_list,
+                                artwork_cursor.getString(2),
+                                artwork_cursor.getString(6),
+                                artwork_cursor.getString(7),
+                                artwork_cursor.getString(8),
+                                artwork_cursor.getString(11),
+                                artwork_cursor.getString(16),
+                                artwork_cursor.getString(17),
+                                artwork_cursor.getString(18),
+                                image_version_list,
+                                thumbnail));
+                    }
+                    artwork_cursor.close();
+                }
+                
+                // Show the progress of the refresh per the color scheme above
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        },150);
+    }
+    
+    /**
+     * On rotating the screen re-display the shown
+     */
+    public void onArtworkChanged(){
+        Log.v("ArtGActivityFragment", "onArtworkChanged");
+        retrieveArtwork();
+        slimAdapter.updateData(data).attachTo(recyclerView);
+    }
+    
+    /**
+     * Inflate the individual sections of the screen with data to display
+     */
+    public void inflateSlimAdapter() {
         slimAdapter = SlimAdapter.createEx()
                 .register(R.layout.item_artwork, new SlimInjector<ArtworkCard>() {
                     @Override
@@ -135,8 +305,8 @@ public class ArtGalleryActivityFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 Log.v("clicked","Title: "+data.getAc_title() +" URL Link: "+data.getAc_thumbnail());
-                                Log.v("clicked","LastSelectionGalleryType" + LastSelectionGalleryType.getInstance().getStringKey());
-                                
+                                Log.v("clicked","LastSelectionGalleryType: " + LastSelectionGalleryType.getInstance().getStringKey());
+                            
                                 if(LastSelectionGalleryType.getInstance().getStringKey().equals("gallery")) {
                                     Intent singleImageIntent = new Intent(v.getContext(),ImageActivity.class);
                                     singleImageIntent.putExtra(ImageActivity.EXTRA_IMAGE,data);
@@ -193,107 +363,9 @@ public class ArtGalleryActivityFragment extends Fragment {
                 })
                 .enableDiff()
                 .attachTo(recyclerView);
-        
-        slimAdapter.updateData(data).attachTo(recyclerView);
-        
-        // Find the SwipeRefreshLayout and associate to local one
-        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.mainFragment_swipe_refresh_layout);
-	    
-        // Set-up the SwipeRefreshLayout color order
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorBlack,R.color.colorGray,R.color.colorDarkGray);
-        
-        // Set-up the SwipeRefreshLayout pull-down response
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refresh();
-                slimAdapter.updateData(data).attachTo(recyclerView);
-            }
-        });
-        return rootView;
-    }
     
-    public void refresh(){
-        Log.v("ArtGActivityFragment", "refresh");
-        
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                data.clear();
-                data.add(new SectionHeader("Artwork"));
-                
-                Cursor artwork_cursor= getContext().getContentResolver().query(DbContract.ArtworkEntry.CONTENT_URI,
-                        null,
-                        null,
-                        null,
-                        null);
-    
-                if(artwork_cursor.getCount() >= 1){
-                    while(artwork_cursor.moveToNext()){
-                        Cursor image_version_Cursor = getContext().getContentResolver().query(
-                                DbContract.LinkEntry.buildLinkDetailUri(artwork_cursor.getString(29)),
-                                null,
-                                null,
-                                null,
-                                null);
-    
-                        ArrayList<String>  image_version_list = new ArrayList<String>();
-                        ArrayList<String>  image_list = new ArrayList<String>();
-                        //Image image = new Image("",false);
-                        
-                        if(image_version_Cursor.getCount() >= 1) {
-                            while (image_version_Cursor.moveToNext()) {
-                                image_version_list.add(image_version_Cursor.getPosition(), image_version_Cursor.getString(4));
-                                image_list.add(image_version_Cursor.getPosition(), image_version_Cursor.getString(3));
-                                
-                                //if(image_version_Cursor.getPosition() == 1) {
-                                //    image = new Image(image_version_Cursor.getString(5), false);
-                                //}
-                            }
-                        }
-                        image_version_Cursor.close();
-                        
-                        Cursor thumbnail_Cursor = getContext().getContentResolver().query(
-                                DbContract.ArtworkEntry.buildArtworkThumbnail(artwork_cursor.getString(1)),
-                                null,
-                                null,
-                                null,
-                                null);
-                        
-                        String thumbnail = null;
-                        
-                        if(thumbnail_Cursor.getCount() >= 1){
-                            while(thumbnail_Cursor.moveToNext()){
-                                thumbnail = thumbnail_Cursor.getString(1);
-                            }
-                        }
-                        thumbnail_Cursor.close();
-                        
-                        data.add(new ArtworkCard(artwork_cursor.getString(5),
-                                image_list,
-                                artwork_cursor.getString(2),
-                                artwork_cursor.getString(6),
-                                artwork_cursor.getString(7),
-                                artwork_cursor.getString(8),
-                                artwork_cursor.getString(11),
-                                artwork_cursor.getString(16),
-                                artwork_cursor.getString(17),
-                                artwork_cursor.getString(18),
-                                image_version_list,
-                                thumbnail));
-                    }
-                    artwork_cursor.close();
-                }
-                
-                // Show the progress of the refresh per the color scheme above
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        },150);
-    }
-    
-    public void onArtworkChanged(){
-        Log.v("ArtGActivityFragment", "onArtworkChanged");
-        refresh();
+        // Added the recycleView to the slimAdapter with updated data
         slimAdapter.updateData(data).attachTo(recyclerView);
     }
+
 }

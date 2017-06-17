@@ -35,8 +35,10 @@ public class StartReceiver extends WakefulBroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
         // Go fetch Art API token
+        Log.v("StartReceiver","onReceive - ArtTokenService - Start");
         Intent artToken = new Intent(context, ArtTokenService.class);
         startWakefulService(context,artToken);
+        Log.v("StartReceiver","onReceive - ArtTokenService - End");
     }
 
     public void setAlarm(Context context){
