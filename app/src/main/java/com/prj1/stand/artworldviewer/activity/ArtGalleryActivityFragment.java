@@ -79,12 +79,15 @@ public class ArtGalleryActivityFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Log.v("ArtGActivityFragment", "OnCreate");
         refresh();
+        //slimAdapter.updateData(data);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.v("ArtGActivityFragment", "onSaveInstanceState");
+        Log.v("ArtGActivityFragment", LastSelectionGalleryType.getInstance().getStringKey());
+        Log.v("ArtGActivityFragment", Utility.getPreferredGalleryType(getContext()));
         
         // Check if LastActivity is SettingActivity then refresh
         if(LastSelectionGalleryType.getInstance().getStringKey().equals(Utility.getPreferredGalleryType(getContext()))){
@@ -93,7 +96,8 @@ public class ArtGalleryActivityFragment extends Fragment {
             LastSelectionGalleryType.getInstance().setStringKey(Utility.getPreferredGalleryType(getContext()));
             
             //  Refresh
-            onArtworkChanged();
+            refresh();
+            slimAdapter.updateData(data).attachTo(recyclerView);
         }
 	}
 
@@ -115,6 +119,8 @@ public class ArtGalleryActivityFragment extends Fragment {
         
         recyclerView.setLayoutManager(gridLayoutManager);
         
+        refresh();
+        
         slimAdapter = SlimAdapter.createEx()
                 .register(R.layout.item_artwork, new SlimInjector<ArtworkCard>() {
                     @Override
@@ -129,12 +135,18 @@ public class ArtGalleryActivityFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 Log.v("clicked","Title: "+data.getAc_title() +" URL Link: "+data.getAc_thumbnail());
+                                Log.v("clicked","LastSelectionGalleryType" + LastSelectionGalleryType.getInstance().getStringKey());
                                 
-                                //Intent singleImageIntent = new Intent(v.getContext(),ImageActivity.class);
-                                //singleImageIntent.putExtra(ImageActivity.EXTRA_IMAGE,data);
-                                Intent singleImageIntent = new Intent(v.getContext(),GalleryActivity.class);
-                                singleImageIntent.putExtra(GalleryActivity.EXTRA_GALLERY,data);
-                                startActivity(singleImageIntent);
+                                if(LastSelectionGalleryType.getInstance().getStringKey().equals("gallery")) {
+                                    Intent singleImageIntent = new Intent(v.getContext(),ImageActivity.class);
+                                    singleImageIntent.putExtra(ImageActivity.EXTRA_IMAGE,data);
+                                    startActivity(singleImageIntent);
+                                }
+                                else {
+                                    Intent singleImageIntent = new Intent(v.getContext(),GalleryActivity.class);
+                                    singleImageIntent.putExtra(GalleryActivity.EXTRA_GALLERY,data);
+                                    startActivity(singleImageIntent);
+                                }
                             }
                         });
                     }
@@ -181,7 +193,8 @@ public class ArtGalleryActivityFragment extends Fragment {
                 })
                 .enableDiff()
                 .attachTo(recyclerView);
-        slimAdapter.updateData(data);
+        
+        slimAdapter.updateData(data).attachTo(recyclerView);
         
         // Find the SwipeRefreshLayout and associate to local one
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.mainFragment_swipe_refresh_layout);
@@ -201,6 +214,8 @@ public class ArtGalleryActivityFragment extends Fragment {
     }
     
     public void refresh(){
+        Log.v("ArtGActivityFragment", "refresh");
+        
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -224,16 +239,16 @@ public class ArtGalleryActivityFragment extends Fragment {
     
                         ArrayList<String>  image_version_list = new ArrayList<String>();
                         ArrayList<String>  image_list = new ArrayList<String>();
-                        Image image = new Image("",false);
+                        //Image image = new Image("",false);
                         
                         if(image_version_Cursor.getCount() >= 1) {
                             while (image_version_Cursor.moveToNext()) {
                                 image_version_list.add(image_version_Cursor.getPosition(), image_version_Cursor.getString(4));
                                 image_list.add(image_version_Cursor.getPosition(), image_version_Cursor.getString(3));
                                 
-                                if(image_version_Cursor.getPosition() == 1) {
-                                    image = new Image(image_version_Cursor.getString(5), false);
-                                }
+                                //if(image_version_Cursor.getPosition() == 1) {
+                                //    image = new Image(image_version_Cursor.getString(5), false);
+                                //}
                             }
                         }
                         image_version_Cursor.close();
@@ -277,6 +292,7 @@ public class ArtGalleryActivityFragment extends Fragment {
     }
     
     public void onArtworkChanged(){
+        Log.v("ArtGActivityFragment", "onArtworkChanged");
         refresh();
         slimAdapter.updateData(data).attachTo(recyclerView);
     }

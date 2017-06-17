@@ -50,15 +50,6 @@ public class ImagePagerAdapter extends PagerAdapter{
 		
 		final SubsamplingScaleImageView subsamplingScaleImageView =
 				(SubsamplingScaleImageView) itemView.findViewById(R.id.image);
-		//Glide.with(_context)
-		//		.load(_singleImage)
-		//		.asBitmap()
-		//		.into(new SimpleTarget<Bitmap>() {
-		//			@Override
-		//			public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-		//				subsamplingScaleImageView.setImage(ImageSource.bitmap(resource));
-		//			}
-		//		});
 		
 		return itemView;
 	}

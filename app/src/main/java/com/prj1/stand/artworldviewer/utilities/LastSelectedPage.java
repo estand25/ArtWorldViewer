@@ -1,9 +1,5 @@
 package com.prj1.stand.artworldviewer.utilities;
 
-import android.content.Context;
-
-import com.prj1.stand.artworldviewer.constants.Constants;
-
 /**
  * Handles the setting and getting of current page to move to next page
  *
