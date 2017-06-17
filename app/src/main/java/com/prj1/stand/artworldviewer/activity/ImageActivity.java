@@ -1,37 +1,19 @@
 package com.prj1.stand.artworldviewer.activity;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.androidquery.AQuery;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.prj1.stand.artworldviewer.R;
-import com.prj1.stand.artworldviewer.activity.adapter.ImagePagerAdapter;
 import com.prj1.stand.artworldviewer.model.display_object.ArtworkCard;
-
-import junit.framework.Assert;
-
-import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 public class ImageActivity extends AppCompatActivity {

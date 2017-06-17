@@ -29,6 +29,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:src="@drawable/ic_close_grey600_24dp"
-        android:scaleType="fitCenter"
+        android:scaleType="center"
         style="@style/Widget.AppCompat.ActionButton" />
 </RelativeLayout>

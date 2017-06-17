@@ -12,9 +12,12 @@ import android.preference.PreferenceActivity;
 import android.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import com.prj1.stand.artworldviewer.R;
+import com.prj1.stand.artworldviewer.utilities.LastSelectionGalleryType;
+
 import java.util.List;
 
 /**
@@ -46,11 +49,15 @@ public class SettingsActivity extends PreferenceActivity {
 				
 				if (index >= 0) {
 					preference.setSummary(listPreference.getEntries()[index]);
+					Log.v("SettingsActivity","onPreferenceChange: "+listPreference.getEntries()[index]);
+					LastSelectionGalleryType.getInstance().setStringKey(listPreference.getEntries()[index].toString().toLowerCase());
 				}
 			} else {
 				// For all other preferences, set the summary to the value's
 				// simple string representation.
 				preference.setSummary(stringValue);
+				Log.v("SettingsActivity","onPreferenceChange: "+stringValue);
+				LastSelectionGalleryType.getInstance().setStringKey(stringValue.toLowerCase());
 			}
 			return true;
 		}

@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.prj1.stand.artworldviewer.BuildConfig;
+import com.prj1.stand.artworldviewer.constants.Constants;
 import com.prj1.stand.artworldviewer.utilities.ApiUtility;
 import com.prj1.stand.artworldviewer.utilities.TokenUtility;
 import com.prj1.stand.artworldviewer.data.DbContract;
@@ -150,14 +151,23 @@ public class ArtTokenService extends IntentService{
     
                             ArtInfo = true;
                         }
-    
                         cursor.close();
+                        
                         // Only if token is expired will I call this
                         // I will create something else to update the db
+                        // Otherwise I create an intent to broadcast the completion
+                        // of the token to get now load the artwork
                         if(ArtInfo) {
                             Log.v("ArtTokenService", "OnResponse - Got the Token " + TokenUtility.getInstance().getOurToken());
                             Log.v("ArtTokenService", "New Token get ArtInfo ");
                             startService(new Intent(getApplicationContext(), AllModelService.class));
+                        } else {
+                            Log.v("ArtTokenService", "OnResponse - Completed and using existing token");
+    
+                            Intent refreshRecycleView = new Intent("android.intent.action.MAIN")
+                                    .putExtra(Constants.IMAGE_LOADER, Constants.IMAGE_LOADER);
+    
+                            sendBroadcast(refreshRecycleView);
                         }
                     }
 

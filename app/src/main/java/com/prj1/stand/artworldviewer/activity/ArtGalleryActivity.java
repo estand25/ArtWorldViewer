@@ -32,15 +32,21 @@ public class ArtGalleryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Set the initial Gallery type for the app
         agArtType = Utility.getPreferredGalleryType(this);
         
+        // Set the content for the app initial layout
         setContentView(R.layout.activity_art_gallery);
+        
+        // Gets the xml element and support it
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     
+        // Set the local ArtGalleryActivityFragment to thee xml element equalivet
         ArtGalleryActivityFragment artGalleryActivityFragment = ((ArtGalleryActivityFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment));
 
+        // Set the local floatingActionButon to the xml element and add listeners
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +62,10 @@ public class ArtGalleryActivity extends AppCompatActivity {
         // Start the alarm to pull all the movie data
         starter.setAlarm(this);
 
+        // Set the Contents content for the app
         Constants.cConetext = getApplicationContext();
+        
+        // Get the initial Gallery type for the setting activity
         LastSelectionGalleryType.getInstance().setStringKey("gallery");
     }
     

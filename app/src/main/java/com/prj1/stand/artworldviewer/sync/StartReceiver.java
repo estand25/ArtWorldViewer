@@ -42,12 +42,7 @@ public class StartReceiver extends WakefulBroadcastReceiver{
     }
 
     public void setAlarm(Context context){
-        //try {
-        //    Log.v("ArtGalleryActivity","Sleep for 10 second...");
-        //    TimeUnit.SECONDS.sleep(10);
-        //} catch (InterruptedException e) {
-        //    Log.v("AllModelService","Can't sleep for 10 second because " + e.getMessage());
-        //}
+
         // Get the Alarm Manager from the context Alarm Service
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 

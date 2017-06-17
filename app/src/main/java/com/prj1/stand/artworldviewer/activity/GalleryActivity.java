@@ -51,7 +51,7 @@ public class GalleryActivity extends AppCompatActivity {
 				textSliderView
 						.description(artworkCard.getAc_image_version().get(loopCount))
 						.image(artworkCard.getAc_imageHref().get(loopCount))
-						.setScaleType(BaseSliderView.ScaleType.CenterInside);
+						.setScaleType(BaseSliderView.ScaleType.CenterCrop);
 						// Need to get it fit correctly
 						// Many be add new animation
 				
