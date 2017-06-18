@@ -1,16 +1,16 @@
 package com.prj1.stand.artworldviewer.services.fetching;
 
-import com.prj1.stand.artworldviewer.model.artists.Artist;
-import com.prj1.stand.artworldviewer.model.artists.Artists;
+import com.prj1.stand.artworldviewer.notInUses.artists.Artist;
+import com.prj1.stand.artworldviewer.notInUses.artists.Artists;
 import com.prj1.stand.artworldviewer.model.artworks.Artwork;
 import com.prj1.stand.artworldviewer.model.artworks.Artworks;
 import com.prj1.stand.artworldviewer.model.authorization.Token;
-import com.prj1.stand.artworldviewer.model.fairs.Fair;
-import com.prj1.stand.artworldviewer.model.fairs.Fairs;
-import com.prj1.stand.artworldviewer.model.genes.Gene;
-import com.prj1.stand.artworldviewer.model.genes.Genes;
-import com.prj1.stand.artworldviewer.model.shows.Show;
-import com.prj1.stand.artworldviewer.model.shows.Shows;
+import com.prj1.stand.artworldviewer.notInUses.fairs.Fair;
+import com.prj1.stand.artworldviewer.notInUses.fairs.Fairs;
+import com.prj1.stand.artworldviewer.notInUses.genes.Gene;
+import com.prj1.stand.artworldviewer.notInUses.genes.Genes;
+import com.prj1.stand.artworldviewer.notInUses.shows.Show;
+import com.prj1.stand.artworldviewer.notInUses.shows.Shows;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

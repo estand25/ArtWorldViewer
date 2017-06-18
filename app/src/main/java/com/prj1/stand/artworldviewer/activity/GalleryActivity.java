@@ -50,8 +50,8 @@ public class GalleryActivity extends AppCompatActivity {
 				TextSliderView textSliderView = new TextSliderView(GalleryActivity.this);
 				textSliderView
 						.description(artworkCard.getAc_image_version().get(loopCount))
-						.image(artworkCard.getAc_imageHref().get(loopCount))
-						.setScaleType(BaseSliderView.ScaleType.CenterCrop);
+						.image(artworkCard.getAc_imageHref().get(loopCount));
+						//.setScaleType(BaseSliderView.ScaleType);
 						// Need to get it fit correctly
 						// Many be add new animation
 				
@@ -66,7 +66,7 @@ public class GalleryActivity extends AppCompatActivity {
 		
 		Log.v("GalleryActivity", "OnCreate "+artworkCard.getAc_imageHref().get(0));
 		
-		titleView.setText(artworkCard.getAc_title());
+		titleView.setText("Title: "+artworkCard.getAc_title());
 		
 		closeButton.setOnClickListener(new View.OnClickListener() {
 			@Override

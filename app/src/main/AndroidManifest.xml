@@ -54,34 +54,34 @@
             android:name=".services.group_services.AllModelService"
             android:exported="false"/>
         <service
-            android:name=".services.group_services.GenesService"
+            android:name=".notInUses.group_service.GenesService"
             android:exported="false"/>
         <service
-            android:name=".services.single_services.GeneSingleService"
+            android:name=".notInUses.single_services.GeneSingleService"
             android:exported="false"/>
         <service
-            android:name=".services.group_services.ArtistsService"
+            android:name=".notInUses.group_service.ArtistsService"
             android:exported="false"/>
         <service
-            android:name=".services.single_services.ArtistSingleService"
+            android:name=".notInUses.single_services.ArtistSingleService"
             android:exported="false"/>
         <service
             android:name=".services.group_services.ArtworksService"
             android:exported="false"/>
         <service
-            android:name=".services.single_services.ArtworkSingleService"
+            android:name=".notInUses.single_services.ArtworkSingleService"
             android:exported="false"/>
         <service
-            android:name=".services.group_services.FairsService"
+            android:name=".notInUses.group_service.FairsService"
             android:exported="false"/>
         <service
-            android:name=".services.single_services.FairSingleService"
+            android:name=".notInUses.single_services.FairSingleService"
             android:exported="false"/>
         <service
-            android:name=".services.group_services.ShowsService"
+            android:name=".notInUses.group_service.ShowsService"
             android:exported="false"/>
         <service
-            android:name=".services.single_services.ShowSingleService"
+            android:name=".notInUses.single_services.ShowSingleService"
             android:exported="false"/>
 
         <receiver

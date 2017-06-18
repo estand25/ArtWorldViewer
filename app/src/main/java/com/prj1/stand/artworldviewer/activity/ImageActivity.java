@@ -17,12 +17,14 @@ import com.prj1.stand.artworldviewer.model.display_object.ArtworkCard;
 
 
 public class ImageActivity extends AppCompatActivity {
-	public static final String TAG = "ImageActivity";
 	public static final String EXTRA_IMAGE = "image";
 	
 	
 	SubsamplingScaleImageView subsamplingScaleImageView;
 	TextView titleView;
+	TextView collectionInstitutionView;
+	TextView additionalInformationView;
+	//TextView websiteView;
 	ImageButton closeButton;
 	
 	@Override
@@ -33,6 +35,9 @@ public class ImageActivity extends AppCompatActivity {
 		closeButton = (ImageButton) findViewById(R.id.btnImage_close);
 		subsamplingScaleImageView = (SubsamplingScaleImageView) findViewById(R.id.image);
 		titleView = (TextView) findViewById(R.id.image_title);
+		collectionInstitutionView = (TextView) findViewById(R.id.image_collection_Institution);
+		additionalInformationView = (TextView) findViewById(R.id.image_additional_information);
+		//websiteView = (TextView) findViewById(R.id.image_website);
 		
 		ArtworkCard artworkCard = getIntent().getParcelableExtra(EXTRA_IMAGE);
 		
@@ -43,10 +48,14 @@ public class ImageActivity extends AppCompatActivity {
 					@Override
 					public void onResourceReady(Bitmap  bitmap, GlideAnimation anim) {
 						subsamplingScaleImageView.setImage(ImageSource.bitmap(bitmap));
+						//subsamplingScaleImageView.setS;
 					}
 				});
 		
-		titleView.setText(artworkCard.getAc_title());
+		titleView.setText("Title: "+artworkCard.getAc_title());
+		collectionInstitutionView.setText("Collection Institution: "+artworkCard.getAc_collective_institution());
+		additionalInformationView.setText("Additional Information: "+artworkCard.getAc_additional_information());
+		//websiteView.setText("Website"+artworkCard.getAc_website());
 		
 		closeButton.setOnClickListener(new View.OnClickListener() {
 			@Override
