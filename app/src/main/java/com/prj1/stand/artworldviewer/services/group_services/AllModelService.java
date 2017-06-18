@@ -9,8 +9,6 @@ import com.prj1.stand.artworldviewer.utilities.ArtPage;
 import com.prj1.stand.artworldviewer.utilities.LastSelectedPage;
 import com.prj1.stand.artworldviewer.utilities.TokenUtility;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * IntentService that handles that retrieve of all service information from the Art World API
  * extends IntentService

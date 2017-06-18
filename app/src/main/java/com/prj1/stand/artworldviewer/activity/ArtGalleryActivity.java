@@ -6,24 +6,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.prj1.stand.artworldviewer.R;
 import com.prj1.stand.artworldviewer.constants.Constants;
-import com.prj1.stand.artworldviewer.services.group_services.ArtTokenService;
 import com.prj1.stand.artworldviewer.sync.StartReceiver;
-import com.prj1.stand.artworldviewer.utilities.ArtPage;
-import com.prj1.stand.artworldviewer.utilities.LastSelectedPage;
 import com.prj1.stand.artworldviewer.utilities.LastSelectionGalleryType;
 import com.prj1.stand.artworldviewer.utilities.Utility;
-
-import java.util.concurrent.TimeUnit;
 
 public class ArtGalleryActivity extends AppCompatActivity {
     private String agArtType;

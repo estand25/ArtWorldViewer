@@ -9,7 +9,7 @@
     android:padding="8dp"
     android:id="@+id/relativeLout">
 
-    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+    <com.prj1.stand.artworldviewer.activity.CustonUI.TouchImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/image"

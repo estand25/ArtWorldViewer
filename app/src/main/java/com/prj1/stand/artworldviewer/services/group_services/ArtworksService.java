@@ -9,7 +9,6 @@ import android.util.Log;
 import com.prj1.stand.artworldviewer.constants.Constants;
 import com.prj1.stand.artworldviewer.utilities.ApiUtility;
 import com.prj1.stand.artworldviewer.utilities.ArtPage;
-import com.prj1.stand.artworldviewer.utilities.TokenUtility;
 import com.prj1.stand.artworldviewer.data.DbContract;
 import com.prj1.stand.artworldviewer.model.artworks.Artwork;
 import com.prj1.stand.artworldviewer.model.artworks.Artworks;

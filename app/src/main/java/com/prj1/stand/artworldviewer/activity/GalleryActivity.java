@@ -50,10 +50,8 @@ public class GalleryActivity extends AppCompatActivity {
 				TextSliderView textSliderView = new TextSliderView(GalleryActivity.this);
 				textSliderView
 						.description(artworkCard.getAc_image_version().get(loopCount))
-						.image(artworkCard.getAc_imageHref().get(loopCount));
-						//.setScaleType(BaseSliderView.ScaleType);
-						// Need to get it fit correctly
-						// Many be add new animation
+						.image(artworkCard.getAc_imageHref().get(loopCount))
+						.setScaleType(BaseSliderView.ScaleType.CenterInside);
 				
 				sliderLayout.addSlider(textSliderView);
 				

@@ -65,7 +65,7 @@ public class ArtGalleryActivityFragment extends Fragment {
         Log.v("ArtGActivityFragment", Utility.getPreferredGalleryType(getContext()));
         
         // Check if LastActivity is SettingActivity then refresh
-        if(LastSelectionGalleryType.getInstance().getStringKey().equals(Utility.getPreferredGalleryType(getContext()))){
+        if(!LastSelectionGalleryType.getInstance().getStringKey().equals(Utility.getPreferredGalleryType(getContext()))){
             
             //  Set the Last Gallery Type String
             LastSelectionGalleryType.getInstance().setStringKey(Utility.getPreferredGalleryType(getContext()));
