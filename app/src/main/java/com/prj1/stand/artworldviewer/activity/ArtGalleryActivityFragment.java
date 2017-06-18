@@ -125,6 +125,7 @@ public class ArtGalleryActivityFragment extends Fragment {
                 inflateSlimAdapter();
             }
         });
+        
         return rootView;
     }
     

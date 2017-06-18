@@ -56,8 +56,11 @@ public class ArtGalleryActivity extends AppCompatActivity {
         // Set the Contents content for the app
         Constants.cConetext = getApplicationContext();
         
-        // Get the initial Gallery type for the setting activity
-        LastSelectionGalleryType.getInstance().setStringKey("gallery");
+        // Check if setting preferences exist yet and if not set it here
+        if(agArtType != null) {
+            // Get the initial Gallery type for the setting activity
+            LastSelectionGalleryType.getInstance().setStringKey("gallery");
+        }
     }
     
     @Override

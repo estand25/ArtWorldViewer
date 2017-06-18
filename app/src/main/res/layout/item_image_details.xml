@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlack"
+    android:gravity="top"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:id="@+id/relativeLout">
+
+    <com.prj1.stand.artworldviewer.activity.CustonUI.TouchImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/image"
+        android:layout_below="@+id/image_additional_information"/>
+
+    <TextView
+        android:id="@+id/image_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorLTGray"
+        android:text="Title"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/image_collection_Institution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_title"
+        android:textColor="@color/colorLTGray"
+        android:text="Collection Institution"/>
+
+    <TextView
+        android:id="@+id/image_additional_information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_collection_Institution"
+        android:textColor="@color/colorLTGray"
+        android:text="Additional information"/>
+
+    <ImageButton
+        android:id="@+id/btnImage_close"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_close_grey600_24dp"
+        android:scaleType="center"
+        style="@style/Widget.AppCompat.ActionButton" />
+
+</RelativeLayout>
