@@ -15,20 +15,14 @@ public class ImageActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_image);
-		
-		// Pass the ArtworkCard to the fragment
-		//savedInstanceState.putParcelable(ImageDetailFragment.EXTRA_IMAGE_DETAIL,getIntent().getParcelableExtra(EXTRA_IMAGE));
-		
-		//ImageDetailFragment imageDetailFragment = ((ImageDetailFragment) getSupportFragmentManager()
-		//	.findFragmentById(R.id.fragmentDetail));
-		
-		if(savedInstanceState == null)
-		{
-			FragmentManager fragmentManager = getFragmentManager();
-			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-			
-			ImageDetailFragment imageDetailFragment = new ImageDetailFragment();
-			fragmentTransaction.add(R.)
-		}
+
+//		if(savedInstanceState == null)
+//		{
+//			FragmentManager fragmentManager = getFragmentManager();
+//			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//
+//			ImageDetailFragment imageDetailFragment = new ImageDetailFragment();
+//			fragmentTransaction.add(R.layout.fragment_image_detail,imageDetailFragment);
+//		}
 	}
 }
