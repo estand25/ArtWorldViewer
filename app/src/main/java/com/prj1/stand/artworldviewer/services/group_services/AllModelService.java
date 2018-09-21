@@ -40,13 +40,9 @@ public class AllModelService extends IntentService{
         Log.v("AllModuleService","Starting All Services ...");
         
         LastSelectedPage.getInstance().setArtPage(new ArtPage(0,"27", TokenUtility.getInstance().getOurToken()));
-        
-        //getApplicationContext().startService(new Intent(getApplicationContext(), ArtistsService.class));
+
         getApplicationContext().startService(new Intent(getApplicationContext(), ArtworksService.class)
         .putExtra(Constants.ARTPAGE, LastSelectedPage.getInstance().getArtPage()));
-        //getApplicationContext().startService(new Intent(getApplicationContext(), GenesService.class));
-        //getApplicationContext().startService(new Intent(getApplicationContext(), ShowsService.class));
-        //getApplicationContext().startService(new Intent(getApplicationContext(), FairsService.class));
 
         Log.v("AllModuleService","Ending All Services ...");
     }

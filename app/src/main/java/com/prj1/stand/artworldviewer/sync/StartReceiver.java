@@ -2,36 +2,34 @@ package com.prj1.stand.artworldviewer.sync;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.job.JobParameters;
+import android.app.job.JobService;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
-
 import com.prj1.stand.artworldviewer.services.group_services.AllModelService;
 import com.prj1.stand.artworldviewer.services.group_services.ArtTokenService;
+import android.content.BroadcastReceiver;
 
-import java.util.concurrent.TimeUnit;
+import java.util.logging.Handler;
+
+import static android.support.v4.content.WakefulBroadcastReceiver.startWakefulService;
 
 /**
- * Handles the wakefulness and start populating art
- * with IntentSerice
+ * Handles the start populating art
+ * with IntentService
  *
  * Created by Standley Eugene on 5/5/2017.
  */
 
-public class StartReceiver extends WakefulBroadcastReceiver{
+public class StartReceiver extends WakefulBroadcastReceiver {
     // Alarm Manager, which provides access to the system alarm services
     private AlarmManager alarmManager;
-
 
     // The pending intent that is triggered when the alarm fires
     private PendingIntent alarmIntent;
 
-    /**
-     * onReceive of the Broadcast I trigger the Art Geners IntentService
-     * @param context - The current app context
-     * @param intent - The current app intent
-     */
     @Override
     public void onReceive(Context context, Intent intent) {
         // Go fetch Art API token
@@ -58,4 +56,16 @@ public class StartReceiver extends WakefulBroadcastReceiver{
                 AlarmManager.INTERVAL_HOUR,
                 alarmIntent);
     }
+
+//    @Override
+//    public boolean onStartJob(JobParameters jobParameters) {
+//        Intent startIntent = new Intent(getApplicationContext(),AllModelService.class);
+//        Handler handle
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onStopJob(JobParameters jobParameters) {
+//        return false;
+//    }
 }
