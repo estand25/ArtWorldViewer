@@ -18,6 +18,7 @@ android {
         }
     }
 
+    
     buildTypes.each {
         it.buildConfigField 'String', 'AWV_Client_Id', CLIENT_ID
     }
