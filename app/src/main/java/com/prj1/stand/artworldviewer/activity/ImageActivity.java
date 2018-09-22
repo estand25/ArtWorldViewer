@@ -1,5 +1,6 @@
 package com.prj1.stand.artworldviewer.activity;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v4.app.FragmentActivity;
@@ -16,13 +17,10 @@ public class ImageActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_image);
 
-//		if(savedInstanceState == null)
-//		{
-//			FragmentManager fragmentManager = getFragmentManager();
-//			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//
-//			ImageDetailFragment imageDetailFragment = new ImageDetailFragment();
-//			fragmentTransaction.add(R.layout.fragment_image_detail,imageDetailFragment);
-//		}
+		if(savedInstanceState == null)
+		{
+            ImageDetailFragment imageDetailFragment = (ImageDetailFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.fragmentDetail);
+		}
 	}
 }
