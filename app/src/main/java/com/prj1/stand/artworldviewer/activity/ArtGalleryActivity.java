@@ -17,18 +17,14 @@ import com.prj1.stand.artworldviewer.utilities.LastSelectionGalleryType;
 import com.prj1.stand.artworldviewer.utilities.Utility;
 
 public class ArtGalleryActivity extends AppCompatActivity {
-    private String agArtType;
-    StartReceiver starter = new StartReceiver();
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Set the initial Gallery type for the app
-        agArtType = Utility.getPreferredGalleryType(this);
         
         // Set the content for the app initial layout
         setContentView(R.layout.activity_art_gallery);
-        
+
         // Gets the xml element and support it
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,21 +42,6 @@ public class ArtGalleryActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        // Send Broadcast to get the Art API Token
-        sendBroadcast(new Intent(this, StartReceiver.class));
-
-        // Start the alarm to pull all the movie data
-        starter.setAlarm(this);
-
-        // Set the Contents content for the app
-        Constants.cConetext = getApplicationContext();
-        
-        // Check if setting preferences exist yet and if not set it here
-        if(agArtType != null) {
-            // Get the initial Gallery type for the setting activity
-            LastSelectionGalleryType.getInstance().setStringKey("gallery");
-        }
     }
     
     @Override
@@ -91,6 +72,7 @@ public class ArtGalleryActivity extends AppCompatActivity {
     
         // Get the current Gallery type from the setting page
         String galleryType = Utility.getPreferredGalleryType(this);
+        String agArtType = LastSelectionGalleryType.getInstance().getStringKey();
         
         // Check if the gallery type exist and if it doesn't equal the gallery
         // type at the start on the app
