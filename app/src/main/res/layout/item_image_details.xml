@@ -9,10 +9,10 @@
     android:padding="8dp"
     android:id="@+id/relativeLout">
 
-    <com.prj1.stand.artworldviewer.activity.CustonUI.TouchImageView
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/image"
+        android:id="@+id/pic_image"
         android:layout_below="@+id/image_additional_information"/>
 
     <TextView
