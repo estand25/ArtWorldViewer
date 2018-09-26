@@ -274,7 +274,7 @@ public class ArtGalleryActivityFragment extends Fragment {
      * Inflate the individual sections of the screen with data to display
      */
     public void inflateSlimAdapter() {
-        slimAdapter = SlimAdapter.createEx()
+        slimAdapter = SlimAdapter.create()
                 .register(R.layout.item_artwork, new SlimInjector<ArtworkCard>() {
                     @Override
                     public void onInject(final ArtworkCard data, IViewInjector injector) {

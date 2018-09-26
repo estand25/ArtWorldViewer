@@ -6,5 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.prj1.stand.artworldviewer.activity.ImageActivity">
 
+        <!--android:id="@+id/imageFragment"-->
     <include layout="@layout/fragment_image_detail" />
 </android.support.constraint.ConstraintLayout>
