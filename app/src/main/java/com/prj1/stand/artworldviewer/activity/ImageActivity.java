@@ -11,7 +11,7 @@ import com.prj1.stand.artworldviewer.R;
 public class ImageActivity extends AppCompatActivity {
 	public static final String EXTRA_IMAGE = "image";
 	ImageDetailFragment imageDetailFragment;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -19,8 +19,8 @@ public class ImageActivity extends AppCompatActivity {
 
 		if(savedInstanceState == null)
 		{
-            ImageDetailFragment imageDetailFragment = (ImageDetailFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.fragmentDetail);
+            ImageDetailFragment imageDetailFragment = ((ImageDetailFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.fragmentDetail));
 		}
 	}
 }

@@ -291,11 +291,13 @@ public class ArtGalleryActivityFragment extends Fragment {
                                 Log.v("clicked","LastSelectionGalleryType: " + LastSelectionGalleryType.getInstance().getStringKey());
                             
                                 if(LastSelectionGalleryType.getInstance().getStringKey().equals("gallery+")) {
+                                    Log.v("clicked", "Image View");
                                     Intent singleImageIntent = new Intent(v.getContext(),ImageActivity.class);
                                     singleImageIntent.putExtra(ImageActivity.EXTRA_IMAGE,data);
                                     startActivity(singleImageIntent);
                                 }
                                 else {
+                                    Log.v("clicked", "Image SlideView");
                                     Intent singleImageIntent = new Intent(v.getContext(),GalleryActivity.class);
                                     singleImageIntent.putExtra(GalleryActivity.EXTRA_GALLERY,data);
                                     startActivity(singleImageIntent);
