@@ -1,6 +1,7 @@
 package com.prj1.stand.artworldviewer.constants;
 
 import android.content.Context;
+import android.widget.ProgressBar;
 
 /**
  * A constants class used by multiple package
@@ -23,5 +24,4 @@ public final class Constants {
     public static final String ARTPAGE= "artpage";
     
     public static final String IMAGE_LOADER = "image_loader";
-
 }

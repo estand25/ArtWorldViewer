@@ -8,6 +8,7 @@ import com.prj1.stand.artworldviewer.constants.Constants;
 import com.prj1.stand.artworldviewer.utilities.ArtPage;
 import com.prj1.stand.artworldviewer.utilities.LastSelectedPage;
 import com.prj1.stand.artworldviewer.utilities.TokenUtility;
+import com.prj1.stand.artworldviewer.utilities.Utility;
 
 /**
  * IntentService that handles that retrieve of all service information from the Art World API
@@ -38,11 +39,12 @@ public class AllModelService extends IntentService{
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.v("AllModuleService","Starting All Services ...");
-        
+
+        Utility.createProgressDialog(getApplicationContext());
+
         LastSelectedPage.getInstance().setArtPage(new ArtPage(0,"27", TokenUtility.getInstance().getOurToken()));
 
-        getApplicationContext().startService(new Intent(getApplicationContext(), ArtworksService.class)
-        .putExtra(Constants.ARTPAGE, LastSelectedPage.getInstance().getArtPage()));
+        getApplicationContext().startService(new Intent(getApplicationContext(), ArtworksService.class).putExtra(Constants.ARTPAGE, LastSelectedPage.getInstance().getArtPage()));
 
         Log.v("AllModuleService","Ending All Services ...");
     }

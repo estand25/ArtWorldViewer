@@ -46,7 +46,7 @@ public class ArtGalleryActivityFragment extends Fragment {
     private SlimAdapter slimAdapter;
     private EditText pageNumber;
     
-//    private BroadcastReceiver imageReceiver;
+    private BroadcastReceiver imageReceiver;
     
     public ArtGalleryActivityFragment() {
     }
@@ -133,26 +133,26 @@ public class ArtGalleryActivityFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.v("ArtGActivityFragment", "onResume");
-    
-//        // Create IntentFilter for the main activity
-//        IntentFilter imageFilter = new IntentFilter("android.intent.action.MAIN");
-//
-//        // Set local BroadcastReceiver to new instance of the BroadcastReceiver
-//        // then goes to onReceive to refresh the screen if other service has completed
-//        imageReceiver = new BroadcastReceiver() {
-//            @Override
-//            public void onReceive(Context context, Intent intent) {
-//	            Log.v("ArtGActivityFragment","onReceive possible reload location");
-//                String completed_loader = intent.getStringExtra(Constants.IMAGE_LOADER);
-//
-//	            if(!completed_loader.isEmpty()){
-//                    refresh();
-//	            }
-//            }
-//        };
-//
-//        // registering our receiver
-//        this.getContext().registerReceiver(imageReceiver,imageFilter);
+
+        // Create IntentFilter for the main activity
+        IntentFilter imageFilter = new IntentFilter("android.intent.action.MAIN");
+
+        // Set local BroadcastReceiver to new instance of the BroadcastReceiver
+        // then goes to onReceive to refresh the screen if other service has completed
+        imageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+	            Log.v("ArtGActivityFragment","onReceive possible reload location");
+                String completed_loader = intent.getStringExtra(Constants.IMAGE_LOADER);
+
+	            if(!completed_loader.isEmpty()){
+                    refresh();
+	            }
+            }
+        };
+
+        // registering our receiver
+        this.getContext().registerReceiver(imageReceiver,imageFilter);
 
 
         refresh();
@@ -162,9 +162,9 @@ public class ArtGalleryActivityFragment extends Fragment {
     public void onPause() {
         super.onPause();
         Log.v("ArtGActivityFragment", "onPause");
-        
+
         // unregister our receiver after we done using
-//        this.getContext().unregisterReceiver(imageReceiver);
+        this.getContext().unregisterReceiver(imageReceiver);
     }
     
     /**
@@ -195,7 +195,7 @@ public class ArtGalleryActivityFragment extends Fragment {
      */
     public void onArtworkChanged(){
         Log.v("ArtGActivityFragment", "onArtworkChanged");
-        retrieveArtwork(10);
+        retrieveArtwork(1);
         slimAdapter.updateData(data).attachTo(recyclerView);
     }
     

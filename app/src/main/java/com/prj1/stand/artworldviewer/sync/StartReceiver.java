@@ -56,16 +56,4 @@ public class StartReceiver extends WakefulBroadcastReceiver {
                 AlarmManager.INTERVAL_HOUR,
                 alarmIntent);
     }
-
-//    @Override
-//    public boolean onStartJob(JobParameters jobParameters) {
-//        Intent startIntent = new Intent(getApplicationContext(),AllModelService.class);
-//        Handler handle
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean onStopJob(JobParameters jobParameters) {
-//        return false;
-//    }
 }

@@ -15,12 +15,6 @@ public class MainApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // Send Broadcast to get the Art API Token
-        sendBroadcast(new Intent(this, StartReceiver.class));
-
-        // Start the alarm to pull all the movie data
-        starter.setAlarm(this);
-
         // Set the Contents content for the app
         Constants.cConetext = getApplicationContext();
 
@@ -32,5 +26,11 @@ public class MainApp extends Application {
             // Get the initial Gallery type for the setting activity
             LastSelectionGalleryType.getInstance().setStringKey("gallery");
         }
+
+        // Send Broadcast to get the Art API Token
+        sendBroadcast(new Intent(this, StartReceiver.class));
+
+        // Start the alarm to pull all the movie data
+        starter.setAlarm(this);
     }
 }
