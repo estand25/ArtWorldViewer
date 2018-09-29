@@ -17,6 +17,7 @@ import com.prj1.stand.artworldviewer.services.fetching.ApiFetchingService;
 import java.util.List;
 import java.util.UUID;
 
+import com.prj1.stand.artworldviewer.utilities.ProgressStatusUtility;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -250,6 +251,8 @@ public class ArtworksService extends IntentService{
                                 .putExtra(Constants.IMAGE_LOADER, Constants.IMAGE_LOADER);
                         
                         sendBroadcast(refreshRecycleView);
+
+                        ProgressStatusUtility.getInstance().setProgressStatus(true);
                     }
 
                     @Override

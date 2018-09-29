@@ -49,11 +49,17 @@
             android:syncable="true"/>
 
         <service
+                android:name=".services.InitialSyncService"
+                android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
             android:name=".services.group_services.ArtTokenService"
             android:exported="false"/>
+
         <service
             android:name=".services.group_services.AllModelService"
             android:exported="false"/>
+
         <service
             android:name=".notInUses.group_service.GenesService"
             android:exported="false"/>
@@ -85,9 +91,6 @@
             android:name=".notInUses.single_services.ShowSingleService"
             android:exported="false"/>
 
-        <receiver
-            android:name=".sync.StartReceiver"
-            android:exported="false"/>
 
         <activity
             android:name=".activity.SettingsActivity"

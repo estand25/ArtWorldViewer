@@ -11,8 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.prj1.stand.artworldviewer.R;
-import com.prj1.stand.artworldviewer.constants.Constants;
-import com.prj1.stand.artworldviewer.sync.StartReceiver;
 import com.prj1.stand.artworldviewer.utilities.LastSelectionGalleryType;
 import com.prj1.stand.artworldviewer.utilities.Utility;
 

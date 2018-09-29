@@ -28,20 +28,4 @@ public class Utility {
 				context.getString(R.string.pref_gallery_option_default)
 		);
 	}
-
-	public static ProgressDialog createProgressDialog(Context context) {
-		Log.v("Utility","CreateProgressDialog...");
-		ProgressDialog dialog = new ProgressDialog(context);
-		try {
-			dialog.show();
-		} catch (WindowManager.BadTokenException e) {
-
-		}
-		dialog.setCancelable(false);
-		dialog.getWindow()
-				.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-		dialog.setContentView(R.layout.progressbar_layout);
-		dialog.setMessage("Loading...");
-		return dialog;
-	}
 }

@@ -24,4 +24,12 @@ public final class Constants {
     public static final String ARTPAGE= "artpage";
     
     public static final String IMAGE_LOADER = "image_loader";
+
+    public static final int PAGE_COUNT = 27;
+
+    public static final int _OFFSE_INTERVAL = 27;
+
+    public static final String _OFFSET_EXTRA_ = "offset";
+
+    public static final String _SIZE_EXTRA_ = "size";
 }

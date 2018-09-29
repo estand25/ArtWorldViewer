@@ -1,7 +1,11 @@
 package com.prj1.stand.artworldviewer.services.group_services;
 
 import android.app.IntentService;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.util.Log;
 
 import com.prj1.stand.artworldviewer.constants.Constants;
@@ -40,9 +44,10 @@ public class AllModelService extends IntentService{
     protected void onHandleIntent(Intent intent) {
         Log.v("AllModuleService","Starting All Services ...");
 
-        Utility.createProgressDialog(getApplicationContext());
+        int _offset = intent.getIntExtra(Constants._OFFSET_EXTRA_,0);
+        String _size = String.valueOf(intent.getIntExtra(Constants._SIZE_EXTRA_, Constants.PAGE_COUNT));
 
-        LastSelectedPage.getInstance().setArtPage(new ArtPage(0,"27", TokenUtility.getInstance().getOurToken()));
+        LastSelectedPage.getInstance().setArtPage(new ArtPage(_offset,_size, TokenUtility.getInstance().getOurToken()));
 
         getApplicationContext().startService(new Intent(getApplicationContext(), ArtworksService.class).putExtra(Constants.ARTPAGE, LastSelectedPage.getInstance().getArtPage()));
 

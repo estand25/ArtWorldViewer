@@ -3,13 +3,14 @@ package com.prj1.stand.artworldviewer;
 import android.app.Application;
 import android.content.Intent;
 import com.prj1.stand.artworldviewer.constants.Constants;
-import com.prj1.stand.artworldviewer.sync.StartReceiver;
+import com.prj1.stand.artworldviewer.services.group_services.ArtTokenService;
+//import com.prj1.stand.artworldviewer.sync.StartReceiver;
 import com.prj1.stand.artworldviewer.utilities.LastSelectionGalleryType;
 import com.prj1.stand.artworldviewer.utilities.Utility;
 
 public class MainApp extends Application {
     private String agArtType;
-    StartReceiver starter = new StartReceiver();
+//    StartReceiver starter = new StartReceiver();
 
     @Override
     public void onCreate() {
@@ -27,10 +28,11 @@ public class MainApp extends Application {
             LastSelectionGalleryType.getInstance().setStringKey("gallery");
         }
 
-        // Send Broadcast to get the Art API Token
-        sendBroadcast(new Intent(this, StartReceiver.class));
-
-        // Start the alarm to pull all the movie data
-        starter.setAlarm(this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                startService(new Intent(getApplicationContext(), ArtTokenService.class));
+            }
+        }).start();
     }
 }
